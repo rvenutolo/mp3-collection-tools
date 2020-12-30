@@ -18,7 +18,7 @@ class OverlappingTrackCheck extends AbstractMultipleMp3FilesCheck {
     protected void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
         def seenTrackNumbers = [:].withDefault { 0 } as Map<String, Integer>
         mp3Files.each { mp3File ->
-            def track = mp3File.getID3v2Tag().getFirst(TRACK.key)
+            def track = mp3File.getID3v2TagAsv24().getFirst(TRACK.key)
             if (track) {
                 seenTrackNumbers[track] += 1
             }
