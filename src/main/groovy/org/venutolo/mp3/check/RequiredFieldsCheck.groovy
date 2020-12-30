@@ -23,7 +23,7 @@ class RequiredFieldsCheck extends AbstractMp3FileCheck {
                 warningOutput.write(mp3File, "Missing field: ${field.desc}")
             } else {
                 if (fieldValues.size() > 1) {
-                    warningOutput.write(mp3File, "Multiple field: ${field.desc}", fieldValues.join(', '))
+                    warningOutput.write(mp3File, "Multiple values for field: ${field.desc}", fieldValues.join(', '))
                 }
             }
         }

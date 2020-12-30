@@ -1,6 +1,9 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.fields.Field.GENRE
 import static org.venutolo.mp3.fields.Field.REQUIRED_FIELDS
+import static org.venutolo.mp3.fields.Field.TRACK
+import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
@@ -93,6 +96,34 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
         then:
         0 * mockWarnings._
+
+    }
+
+    def "Warning when multiple #field"() {
+
+        setup:
+        def tag = new ID3v24Tag()
+        // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
+        REQUIRED_FIELDS.each { tag.setField(it.key, it == GENRE ? 'genre1' : '1') }
+        tag.addField(field.key, field == GENRE ? 'genre2' : '2')
+        mp3File.setID3v2Tag(tag)
+        assert mp3File.hasID3v2Tag()
+        assert REQUIRED_FIELDS.every { mp3File.getID3v2Tag().getFirst(it.key) }
+        assert mp3File.getID3v2Tag().getAll(field.key).size() == 2
+
+        when:
+        checker.check(mp3File)
+
+        then:
+        1 * mockWarnings.write(
+            mp3File,
+            "Multiple values for field: ${field.desc}",
+            field == GENRE ? 'genre1, genre2' : '1, 2'
+        )
+
+        where:
+        // track and track total do not support multiple fields
+        field << REQUIRED_FIELDS.findAll { it != TRACK && it != TRACK_TOTAL }
 
     }
 
