@@ -16,8 +16,16 @@ import spock.lang.Specification
 class CheckSpecification extends Specification {
 
     protected static final Collection<Field> ID3_FIELDS = [ARTIST, ALBUM, TITLE, TRACK, YEAR, GENRE, COMMENT]
+    protected static final File RESOURCE_DIR = new File('src/test/resources')
+
+    protected static MP3File newMp3File() {
+        new MP3File("${RESOURCE_DIR.path}/test.mp3")
+    }
+
     protected def mockWarnings = Mock(WarningOutput)
-    protected def mp3File = new MP3File('src/test/resources/test.mp3')
-    protected def artFile = new File('src/test/resources/test_cover.jpg')
+    protected def mp3File = newMp3File()
+    protected def mp3Files = [newMp3File(), newMp3File()]
+    protected def dir = RESOURCE_DIR
+    protected def artFile = new File("${RESOURCE_DIR.path}/test_cover.jpg")
 
 }
