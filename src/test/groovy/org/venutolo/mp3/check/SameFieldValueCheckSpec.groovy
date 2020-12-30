@@ -124,20 +124,20 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
             // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
-            def fieldValue = field == GENRE ? "genre${idx}" : "${idx}"
+            def fieldValue = field == GENRE ? "genre${idx + 1}" : "${idx + 1}"
             tag.setField(field.key, fieldValue)
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag() &&
-                mp3File.getID3v2Tag().getFirst(field.key) == (field == GENRE ? "genre${idx}" : "${idx}")
+                mp3File.getID3v2Tag().getFirst(field.key) == (field == GENRE ? "genre${idx + 1}" : "${idx + 1}")
         }
 
         when:
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockWarnings.write(dir, "Non-uniform ${field.desc} values", field == GENRE ? 'genre0, genre1' : '0, 1')
+        1 * mockWarnings.write(dir, "Non-uniform ${field.desc} values", field == GENRE ? 'genre1, genre2' : '1, 2')
 
         where:
         field << SAME_VALUE_FIELDS
