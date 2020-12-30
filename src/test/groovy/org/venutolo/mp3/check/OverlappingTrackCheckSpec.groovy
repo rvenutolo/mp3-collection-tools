@@ -80,7 +80,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have empty ID3v2 tags"() {
+    def "No warning when MP3 files have no track numbers"() {
 
         setup:
         mp3Files.each { mp3File ->
