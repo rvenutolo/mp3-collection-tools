@@ -5,7 +5,6 @@ import static org.venutolo.mp3.fields.Field.GENRE
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.fields.Field
 import org.venutolo.mp3.output.WarningOutput
 
 @Slf4j
