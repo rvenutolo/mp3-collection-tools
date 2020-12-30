@@ -89,7 +89,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         REQUIRED_FIELDS.each { tag.setField(it.key, '1') }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert REQUIRED_FIELDS.every { mp3File.getID3v2Tag().getFirst(it.key) }
+        REQUIRED_FIELDS.each {assert mp3File.getID3v2Tag().getFirst(it.key) }
 
         when:
         checker.check(mp3File)
@@ -108,7 +108,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         tag.addField(field.key, field == GENRE ? 'genre2' : '2')
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert REQUIRED_FIELDS.every { mp3File.getID3v2Tag().getFirst(it.key) }
+        REQUIRED_FIELDS.every { assert mp3File.getID3v2Tag().getFirst(it.key) }
         assert mp3File.getID3v2Tag().getAll(field.key).size() == 2
 
         when:
