@@ -16,13 +16,11 @@ class MissingTrackCheck extends AbstractMultipleMp3FilesCheck {
 
     @Override
     protected void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
-        def seenTrackNumbers = [] as Set<Integer>
-        mp3Files.each { mp3File ->
-            def track = mp3File.getID3v2Tag().getFirst(TRACK.key)
-            if (track) {
-                seenTrackNumbers << (track as int)
-            }
-        }
+        def seenTrackNumbers = mp3Files
+            .collect { it.getID3v2TagAsv24().getFirst(TRACK.key) }
+            .findAll { it }
+            .collect { it as Integer }
+            .toSet()
         if (!seenTrackNumbers) {
             return
         }
