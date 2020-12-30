@@ -13,7 +13,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
     def "NPE when WarningOutput is null"() {
 
         when:
-        new TagTypeCheck(null)
+        new GenreFieldsCheck(null)
 
         then:
         thrown(NullPointerException)

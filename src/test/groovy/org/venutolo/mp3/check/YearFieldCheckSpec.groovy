@@ -12,7 +12,7 @@ class YearFieldCheckSpec extends CheckSpecification {
     def "NPE when WarningOutput is null"() {
 
         when:
-        new TagTypeCheck(null)
+        new YearFieldCheck(null)
 
         then:
         thrown(NullPointerException)

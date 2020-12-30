@@ -13,7 +13,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
     def "NPE when WarningOutput is null"() {
 
         when:
-        new TagTypeCheck(null)
+        new TrackFieldsCheck(null)
 
         then:
         thrown(NullPointerException)

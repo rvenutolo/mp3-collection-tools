@@ -13,7 +13,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
     def "NPE when WarningOutput is null"() {
 
         when:
-        new TagTypeCheck(null)
+        new SameFieldValueCheck(null)
 
         then:
         thrown(NullPointerException)
