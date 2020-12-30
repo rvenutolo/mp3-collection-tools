@@ -25,6 +25,7 @@ abstract class AbstractMp3FileCheck implements Mp3FileCheck {
         this.requiresId3v2Tags = requiresId3v2Tags
     }
 
+    @Override
     void check(@Nonnull final MP3File mp3File) {
         log.debug('Checking: {}', mp3File.file.canonicalPath)
         requireNonNull(mp3File, 'MP3 file cannot be null')
