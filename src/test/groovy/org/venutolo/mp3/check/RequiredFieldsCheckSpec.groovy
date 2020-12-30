@@ -89,7 +89,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         REQUIRED_FIELDS.each { tag.setField(it.key, '1') }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        REQUIRED_FIELDS.each {assert mp3File.getID3v2Tag().getFirst(it.key) }
+        REQUIRED_FIELDS.each { assert mp3File.getID3v2Tag().getFirst(it.key) }
 
         when:
         checker.check(mp3File)
@@ -104,8 +104,10 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         setup:
         def tag = new ID3v24Tag()
         // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
-        REQUIRED_FIELDS.each { tag.setField(it.key, it == GENRE ? 'genre1' : '1') }
-        tag.addField(field.key, field == GENRE ? 'genre2' : '2')
+        def fieldValue = field == GENRE ? 'genre1' : '1'
+        def extraFieldValue = field == GENRE ? 'genre2' : '2'
+        REQUIRED_FIELDS.each { tag.setField(it.key, fieldValue) }
+        tag.addField(field.key, extraFieldValue)
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
         REQUIRED_FIELDS.every { assert mp3File.getID3v2Tag().getFirst(it.key) }
@@ -115,11 +117,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(
-            mp3File,
-            "Multiple values for field: ${field.desc}",
-            field == GENRE ? 'genre1, genre2' : '1, 2'
-        )
+        1 * mockWarnings.write(mp3File, "Multiple values for field: ${field.desc}", "${fieldValue}, ${extraFieldValue}")
 
         where:
         // track and track total do not support multiple fields
