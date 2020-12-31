@@ -1,0 +1,134 @@
+package org.venutolo.mp3.check
+
+import java.nio.file.Files
+import spock.lang.TempDir
+
+class Mp3DirContentsCheckSpec extends CheckSpecification {
+
+    @TempDir
+    private File tempDir
+
+    private def checker = new Mp3DirContentsCheck(mockWarnings)
+
+    def "NPE when WarningOutput is null"() {
+
+        when:
+        new Mp3DirContentsCheck(null)
+
+        then:
+        thrown(NullPointerException)
+
+    }
+
+    def "NPE when dir is null"() {
+
+        when:
+        checker.check(null)
+
+        then:
+        thrown(NullPointerException)
+
+    }
+
+    def "IAE when dir is not a directory"() {
+
+        when:
+        checker.check(newMp3File().file)
+
+        then:
+        thrown(IllegalArgumentException)
+
+    }
+
+    def "Warning when there are no MP3 files"() {
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        1 * mockWarnings.write(tempDir, 'No MP3 files')
+
+    }
+
+    def "No warning when all mp3 files with lowercase file extension"() {
+
+        setup:
+        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
+        (1..3).each { idx ->
+            Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+        }
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        0 * mockWarnings._
+
+    }
+
+    def "No warning when all mp3 files with lowercase file extension and album image"() {
+
+        setup:
+        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
+        def origImageFile = new File("${RESOURCE_DIR}/test_cover.jpg")
+        (1..3).each { idx ->
+            Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+        }
+        Files.copy(origImageFile.toPath(), new File("${tempDir}/Folder.jpg").toPath())
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        0 * mockWarnings._
+
+    }
+
+    def "Warning when some mp3 files have non-lowercase file extension"() {
+
+        setup:
+        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
+        def lowercaseFile = new File("${tempDir}/lower.mp3")
+        def uppercaseFile1 = new File("${tempDir}/upper1.MP3")
+        def uppercaseFile2 = new File("${tempDir}/upper2.Mp3")
+        Files.copy(origMp3File.toPath(), lowercaseFile.toPath())
+        Files.copy(origMp3File.toPath(), uppercaseFile1.toPath())
+        Files.copy(origMp3File.toPath(), uppercaseFile2.toPath())
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        1 * mockWarnings.write(uppercaseFile1, 'Non-lowercase file extension')
+        1 * mockWarnings.write(uppercaseFile2, 'Non-lowercase file extension')
+        0 * mockWarnings._
+
+    }
+
+    def "Warning when there are unexpected files"() {
+
+        setup:
+        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
+        def origImageFile = new File("${RESOURCE_DIR}/test_cover.jpg")
+        def lowercaseFolderJpg = new File("${tempDir}/folder.jpg")
+        def randomFile1 = new File("${tempDir}/foo.jpg")
+        def randomFile2 = new File("${tempDir}/bar.txt")
+        (1..3).each { idx ->
+            Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+        }
+        Files.copy(origImageFile.toPath(), lowercaseFolderJpg.toPath())
+        Files.copy(origImageFile.toPath(), randomFile1.toPath())
+        Files.copy(origImageFile.toPath(), randomFile2.toPath())
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        1 * mockWarnings.write(lowercaseFolderJpg, 'Unexpected file')
+        1 * mockWarnings.write(randomFile1, 'Unexpected file')
+        1 * mockWarnings.write(randomFile2, 'Unexpected file')
+        0 * mockWarnings._
+
+    }
+
+}
