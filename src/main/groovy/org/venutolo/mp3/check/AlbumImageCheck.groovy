@@ -1,31 +1,22 @@
 package org.venutolo.mp3.check
 
-import static java.util.Objects.requireNonNull
-
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import javax.imageio.ImageIO
 import org.venutolo.mp3.output.WarningOutput
 
 @Slf4j
-class AlbumImageCheck {
+class AlbumImageCheck extends AbstractDirCheck {
 
     private static final String ALBUM_IMAGE_FILENAME = 'Folder.jpg'
     private static final int TARGET_IMAGE_DIMENSION = 1000
 
-    @Nonnull
-    protected final WarningOutput warningOutput
-
     AlbumImageCheck(@Nonnull final WarningOutput warningOutput) {
-        this.warningOutput = requireNonNull(warningOutput, 'Warning output cannot be null')
+        super(log, warningOutput)
     }
 
-    void check(@Nonnull final File dir) {
-        log.debug('Checking album art in: {}', dir.canonicalPath)
-        requireNonNull(dir, 'Directory cannot be null')
-        if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
-        }
+    @Override
+    void checkInternal(@Nonnull final File dir) {
         def albumArtFile = new File(dir, ALBUM_IMAGE_FILENAME)
         log.debug("Checking album art: {}", albumArtFile.canonicalPath)
         if (albumArtFile.exists()) {
@@ -56,7 +47,6 @@ class AlbumImageCheck {
         } else {
             warningOutput.write(dir, 'No album image')
         }
-        log.debug('Checked album art in: {}', dir.canonicalPath)
     }
 
 }
