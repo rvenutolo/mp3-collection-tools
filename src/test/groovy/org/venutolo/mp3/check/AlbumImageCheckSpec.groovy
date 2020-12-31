@@ -49,7 +49,8 @@ class AlbumImageCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        mockWarnings.write(tempDir, 'No album image')
+        1 * mockWarnings.write(tempDir, 'No album image')
+        0 * mockWarnings._
 
     }
 

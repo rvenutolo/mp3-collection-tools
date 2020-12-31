@@ -135,6 +135,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(dir, 'Wrong total tracks')
+        0 * mockWarnings._
 
     }
 

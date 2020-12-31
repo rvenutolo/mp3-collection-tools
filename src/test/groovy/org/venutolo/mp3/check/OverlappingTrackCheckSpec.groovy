@@ -129,6 +129,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(dir, 'Multiple track #1')
+        0 * mockWarnings._
 
     }
 

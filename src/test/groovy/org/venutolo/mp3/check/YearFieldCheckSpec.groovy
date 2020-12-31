@@ -89,6 +89,7 @@ class YearFieldCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, 'Year not in #### format', yearVal)
+        0 * mockWarnings._
 
         where:
         desc           | yearVal

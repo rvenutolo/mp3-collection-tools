@@ -90,6 +90,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, 'Unexpected genre: BAD_GENRE')
+        0 * mockWarnings._
 
     }
 

@@ -33,13 +33,16 @@ class TagTypeCheckSpec extends CheckSpecification {
 
         setup:
         mp3File.setID3v1Tag(new ID3v1Tag())
+        mp3File.setID3v2Tag(new ID3v24Tag())
         assert mp3File.hasID3v1Tag()
+        assert mp3File.hasID3v2Tag()
 
         when:
         checker.check(mp3File)
 
         then:
         1 * mockWarnings.write(mp3File, 'Has ID3v1 tag')
+        0 * mockWarnings._
 
     }
 
@@ -53,6 +56,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, 'Does not have ID3v2 tag')
+        0 * mockWarnings._
 
     }
 
@@ -68,6 +72,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, 'ID3v2 tag is not v2.4', "v2.${version}")
+        0 * mockWarnings._
 
         where:
         version | tag

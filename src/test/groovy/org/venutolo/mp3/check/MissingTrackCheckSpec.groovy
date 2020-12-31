@@ -130,6 +130,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
         then:
         1 * mockWarnings.write(dir, 'Missing track #1')
         1 * mockWarnings.write(dir, 'Missing track #2')
+        0 * mockWarnings._
 
     }
 

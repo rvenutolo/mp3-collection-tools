@@ -49,6 +49,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(tempDir, 'No MP3 files')
+        0 * mockWarnings._
 
     }
 

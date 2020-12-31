@@ -114,6 +114,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, "Extraneous field: ${field.desc}")
+        0 * mockWarnings._
 
         where:
         field << EXTRANEOUS_FIELDS.findAll { it != COVER_ART }
@@ -134,6 +135,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, "Extraneous field: ${COVER_ART.desc}")
+        0 * mockWarnings._
 
     }
 

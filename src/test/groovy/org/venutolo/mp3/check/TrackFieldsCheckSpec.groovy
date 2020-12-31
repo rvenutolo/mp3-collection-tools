@@ -129,6 +129,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
+        0 * mockWarnings._
 
         where:
         desc        | trackVal | totalVal
@@ -177,6 +178,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
+        0 * mockWarnings._
 
         where:
         trackDesc | trackVal | totalDesc | totalVal

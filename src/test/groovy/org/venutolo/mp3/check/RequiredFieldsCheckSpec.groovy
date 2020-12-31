@@ -66,7 +66,9 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
     def "Warning when missing #field"() {
 
         setup:
-        mp3File.setID3v2Tag(new ID3v24Tag())
+        def tag = new ID3v24Tag()
+        REQUIRED_FIELDS.findAll{it != field}.each {            tag.setField(it.key, '1')        }
+        mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getAll(field.key).empty
 
@@ -75,6 +77,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, "Missing field: ${field.desc}")
+        0 * mockWarnings._
 
         where:
         field << REQUIRED_FIELDS
@@ -103,6 +106,8 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
         setup:
         def tag = new ID3v24Tag()
+        tag.setField(TRACK.key, '1')
+        tag.setField(TRACK_TOTAL.key, '1')
         // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
         def fieldValue = field == GENRE ? 'genre1' : '1'
         def extraFieldValue = field == GENRE ? 'genre2' : '2'
@@ -118,6 +123,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(mp3File, "Multiple values for field: ${field.desc}", "${fieldValue}, ${extraFieldValue}")
+        0 * mockWarnings._
 
         where:
         // track and track total do not support multiple fields

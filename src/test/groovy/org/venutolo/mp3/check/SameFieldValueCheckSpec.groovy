@@ -138,6 +138,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
         then:
         1 * mockWarnings.write(dir, "Non-uniform ${field.desc} values", field == GENRE ? 'genre1, genre2' : '1, 2')
+        0 * mockWarnings._
 
         where:
         field << SAME_VALUE_FIELDS
