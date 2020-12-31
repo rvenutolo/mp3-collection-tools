@@ -45,7 +45,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
         where:
         desc                      | mp3s           | dir
         'MP3 collection is empty' | []             | RESOURCE_DIR
-        'dir is not a directory'  | [newMp3File()] | new File(newMp3File().file.path)
+        'dir is not a directory'  | [newMp3File()] | newMp3File().file
 
     }
 
