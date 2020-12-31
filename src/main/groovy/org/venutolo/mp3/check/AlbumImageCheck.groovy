@@ -12,7 +12,7 @@ import org.venutolo.mp3.output.WarningOutput
 class AlbumImageCheck extends AbstractDirCheck {
 
     AlbumImageCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput)
+        super(log, warningOutput, true)
     }
 
     @Override

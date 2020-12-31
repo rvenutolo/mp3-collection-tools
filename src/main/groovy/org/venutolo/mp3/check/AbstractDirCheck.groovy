@@ -14,9 +14,14 @@ abstract class AbstractDirCheck implements DirCheck {
     @Nonnull
     protected final WarningOutput warningOutput
 
-    AbstractDirCheck(@Nonnull final Logger log, @Nonnull final WarningOutput warningOutput) {
+    private final boolean requiresMp3Files
+
+    AbstractDirCheck(
+        @Nonnull final Logger log, @Nonnull final WarningOutput warningOutput, final boolean requiresMp3Files
+    ) {
         this.log = requireNonNull(log, 'Logger cannot be null')
         this.warningOutput = requireNonNull(warningOutput, 'Warning output cannot be null')
+        this.requiresMp3Files = requiresMp3Files
     }
 
     @Override
@@ -26,7 +31,9 @@ abstract class AbstractDirCheck implements DirCheck {
         if (!dir.isDirectory()) {
             throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
         }
-        checkInternal(dir)
+        if (!requiresMp3Files || (requiresMp3Files && dir.listFiles().any { it.name.toLowerCase().endsWith('.mp3') })) {
+            checkInternal(dir)
+        }
         log.debug('Checked MP3 files in: {}', dir.canonicalPath)
     }
 

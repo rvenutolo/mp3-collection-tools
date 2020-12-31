@@ -10,17 +10,14 @@ import org.venutolo.mp3.output.WarningOutput
 class Mp3DirContentsCheck extends AbstractDirCheck {
 
     Mp3DirContentsCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput)
+        super(log, warningOutput, true)
     }
 
     @Override
     void checkInternal(@Nonnull final File dir) {
-        def allFiles = dir.listFiles()
+        def allFiles = dir.listFiles().findAll { !it.isDirectory() }
         def mp3Files = allFiles.findAll { it.name.toLowerCase().endsWith('.mp3') }
         def otherFiles = (allFiles - mp3Files).findAll { it.name != ALBUM_IMAGE_FILENAME }
-        if (!mp3Files) {
-            warningOutput.write(dir, 'No MP3 files')
-        }
         mp3Files.findAll { !it.name.endsWith('.mp3') }.each {
             warningOutput.write(it, 'Non-lowercase file extension')
         }

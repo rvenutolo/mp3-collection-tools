@@ -42,13 +42,12 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when there are no MP3 files"() {
+    def "No warning when directory is empty"() {
 
         when:
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(tempDir, 'No MP3 files')
         0 * mockWarnings._
 
     }

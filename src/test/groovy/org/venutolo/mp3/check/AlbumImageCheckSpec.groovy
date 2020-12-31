@@ -43,7 +43,20 @@ class AlbumImageCheckSpec extends CheckSpecification {
 
     }
 
+    def "No warning when directory is empty"() {
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        0 * mockWarnings._
+
+    }
+
     def "Warning when no album image"() {
+
+        setup:
+        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
 
         when:
         checker.check(tempDir)
@@ -57,6 +70,7 @@ class AlbumImageCheckSpec extends CheckSpecification {
     def "Produces expected warnings for #width x #height album image"() {
 
         setup:
+        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
         def origImageFile = new File("${RESOURCE_DIR}/images/${width}x${height}.jpg")
         def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
         Files.copy(origImageFile.toPath(), imageFile.toPath())

@@ -8,18 +8,20 @@ import org.venutolo.mp3.output.WarningOutput
 class GenericDirContentsCheck extends AbstractDirCheck {
 
     GenericDirContentsCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput)
+        super(log, warningOutput, false)
     }
 
     @Override
     void checkInternal(@Nonnull final File dir) {
         def containsDirs = dir.listFiles().any { it.isDirectory() }
         def containsFiles = dir.listFiles().any { !it.isDirectory() }
+        def containsMp3Files = dir.listFiles().any { it.name.toLowerCase().endsWith('mp3') }
         if (!containsDirs && !containsFiles) {
             warningOutput.write(dir, 'Empty directory')
-        }
-        if (containsDirs && containsFiles) {
+        } else if (containsDirs && containsFiles) {
             warningOutput.write(dir, 'Contains both directories and files')
+        } else if (containsFiles && !containsMp3Files) {
+            warningOutput.write(dir, 'Contains no MP3 files')
         }
     }
 
