@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.specs
 
 import static org.venutolo.mp3.fields.Field.ALBUM
 import static org.venutolo.mp3.fields.Field.ARTIST

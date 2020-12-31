@@ -7,6 +7,7 @@ import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.specs.CheckSpecification
 
 class RequiredFieldsCheckSpec extends CheckSpecification {
 

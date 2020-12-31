@@ -4,6 +4,7 @@ import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.Constants.TARGET_IMAGE_DIMENSION
 
 import java.nio.file.Files
+import org.venutolo.mp3.specs.CheckSpecification
 import spock.lang.TempDir
 
 class AlbumImageCheckSpec extends CheckSpecification {

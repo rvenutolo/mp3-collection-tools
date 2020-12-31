@@ -3,6 +3,7 @@ package org.venutolo.mp3.check
 import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 
 import java.nio.file.Files
+import org.venutolo.mp3.specs.CheckSpecification
 import spock.lang.TempDir
 
 class Mp3DirContentsCheckSpec extends CheckSpecification {

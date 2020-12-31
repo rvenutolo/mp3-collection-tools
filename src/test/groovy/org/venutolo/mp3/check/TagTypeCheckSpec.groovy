@@ -4,6 +4,7 @@ import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v22Tag
 import org.jaudiotagger.tag.id3.ID3v23Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.specs.CheckSpecification
 
 class TagTypeCheckSpec extends CheckSpecification {
 

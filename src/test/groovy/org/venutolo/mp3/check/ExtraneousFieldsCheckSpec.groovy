@@ -7,6 +7,7 @@ import static org.venutolo.mp3.fields.Field.COVER_ART
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.specs.CheckSpecification
 
 class ExtraneousFieldsCheckSpec extends CheckSpecification {
 

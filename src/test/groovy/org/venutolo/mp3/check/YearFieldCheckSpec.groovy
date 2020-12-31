@@ -4,6 +4,7 @@ import static org.venutolo.mp3.fields.Field.YEAR
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.specs.CheckSpecification
 
 class YearFieldCheckSpec extends CheckSpecification {
 
