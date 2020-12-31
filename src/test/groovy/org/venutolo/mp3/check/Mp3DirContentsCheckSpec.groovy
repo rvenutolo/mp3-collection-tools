@@ -55,9 +55,8 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
     def "No warning when all mp3 files with lowercase file extension"() {
 
         setup:
-        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
         (1..3).each { idx ->
-            Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
         }
 
         when:
@@ -71,12 +70,10 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
     def "No warning when all mp3 files with lowercase file extension and album image"() {
 
         setup:
-        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
-        def origImageFile = new File("${RESOURCE_DIR}/test_cover.jpg")
         (1..3).each { idx ->
-            Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
         }
-        Files.copy(origImageFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
+        Files.copy(artFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
 
         when:
         checker.check(tempDir)
@@ -89,13 +86,12 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
     def "Warning when some mp3 files have non-lowercase file extension"() {
 
         setup:
-        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
         def lowercaseFile = new File("${tempDir}/lower.mp3")
         def uppercaseFile1 = new File("${tempDir}/upper1.MP3")
         def uppercaseFile2 = new File("${tempDir}/upper2.Mp3")
-        Files.copy(origMp3File.toPath(), lowercaseFile.toPath())
-        Files.copy(origMp3File.toPath(), uppercaseFile1.toPath())
-        Files.copy(origMp3File.toPath(), uppercaseFile2.toPath())
+        Files.copy(mp3File.file.toPath(), lowercaseFile.toPath())
+        Files.copy(mp3File.file.toPath(), uppercaseFile1.toPath())
+        Files.copy(mp3File.file.toPath(), uppercaseFile2.toPath())
 
         when:
         checker.check(tempDir)
@@ -110,17 +106,15 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
     def "Warning when there are unexpected files"() {
 
         setup:
-        def origMp3File = new File("${RESOURCE_DIR}/test.mp3")
-        def origImageFile = new File("${RESOURCE_DIR}/test_cover.jpg")
         def lowercaseFolderJpg = new File("${tempDir}/folder.jpg")
         def randomFile1 = new File("${tempDir}/foo.jpg")
         def randomFile2 = new File("${tempDir}/bar.txt")
         (1..3).each { idx ->
-            Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
         }
-        Files.copy(origImageFile.toPath(), lowercaseFolderJpg.toPath())
-        Files.copy(origImageFile.toPath(), randomFile1.toPath())
-        Files.copy(origImageFile.toPath(), randomFile2.toPath())
+        Files.copy(artFile.toPath(), lowercaseFolderJpg.toPath())
+        Files.copy(artFile.toPath(), randomFile1.toPath())
+        Files.copy(artFile.toPath(), randomFile2.toPath())
 
         when:
         checker.check(tempDir)
