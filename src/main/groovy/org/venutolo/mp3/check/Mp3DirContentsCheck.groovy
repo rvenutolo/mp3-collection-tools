@@ -15,7 +15,7 @@ class Mp3DirContentsCheck extends AbstractDirCheck {
 
     @Override
     void checkInternal(@Nonnull final File dir) {
-        def allFiles = dir.listFiles().findAll { !it.isDirectory() }
+        def allFiles = dir.listFiles().findAll { it.isFile() }
         def mp3Files = allFiles.findAll { it.name.toLowerCase().endsWith('.mp3') }
         def otherFiles = (allFiles - mp3Files).findAll { it.name != ALBUM_IMAGE_FILENAME }
         mp3Files.findAll { !it.name.endsWith('.mp3') }.each {

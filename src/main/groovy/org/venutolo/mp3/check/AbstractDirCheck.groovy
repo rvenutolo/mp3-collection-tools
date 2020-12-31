@@ -28,7 +28,7 @@ abstract class AbstractDirCheck implements DirCheck {
     void check(@Nonnull final File dir) {
         log.debug('Checking dir: {}', dir.canonicalPath)
         requireNonNull(dir, 'Directory cannot be null')
-        if (!dir.isDirectory()) {
+        if (dir.isFile()) {
             throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
         }
         if (!requiresMp3Files || (requiresMp3Files && dir.listFiles().any { it.name.toLowerCase().endsWith('.mp3') })) {

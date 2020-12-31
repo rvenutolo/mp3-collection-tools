@@ -14,7 +14,7 @@ class GenericDirContentsCheck extends AbstractDirCheck {
     @Override
     void checkInternal(@Nonnull final File dir) {
         def containsDirs = dir.listFiles().any { it.isDirectory() }
-        def containsFiles = dir.listFiles().any { !it.isDirectory() }
+        def containsFiles = dir.listFiles().any { it.isFile() }
         def containsMp3Files = dir.listFiles().any { it.name.toLowerCase().endsWith('mp3') }
         if (!containsDirs && !containsFiles) {
             warningOutput.write(dir, 'Empty directory')

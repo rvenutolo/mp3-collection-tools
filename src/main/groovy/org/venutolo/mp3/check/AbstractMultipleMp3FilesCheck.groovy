@@ -33,7 +33,7 @@ abstract class AbstractMultipleMp3FilesCheck implements MultipleMp3FilesCheck {
         if (mp3Files.isEmpty()) {
             throw new IllegalArgumentException('MP3 files cannot be empty')
         }
-        if (!dir.isDirectory()) {
+        if (dir.isFile()) {
             throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
         }
         if (requiresId3v2Tags) {
