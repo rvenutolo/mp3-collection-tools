@@ -83,6 +83,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <version>3.0.0-M3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>1.3</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>enforce-maven</id>
@@ -97,7 +104,10 @@
                                 <requireMavenVersion>
                                     <version>3.3.9</version>
                                 </requireMavenVersion>
+                                <banCircularDependencies/>
+                                <requireSameVersions/>
                             </rules>
+                            <fail>true</fail>
                         </configuration>
                     </execution>
                 </executions>
