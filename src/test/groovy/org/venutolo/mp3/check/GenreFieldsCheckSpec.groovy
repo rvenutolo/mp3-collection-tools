@@ -1,6 +1,6 @@
 package org.venutolo.mp3.check
 
-import static GenreFieldsCheck.ALLOWED_GENRES
+import static org.venutolo.mp3.Constants.ALLOWED_GENRES
 import static org.venutolo.mp3.fields.Field.GENRE
 
 import org.jaudiotagger.tag.id3.ID3v1Tag

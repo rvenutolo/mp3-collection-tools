@@ -1,5 +1,8 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
+import static org.venutolo.mp3.Constants.TARGET_IMAGE_DIMENSION
+
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import javax.imageio.ImageIO
@@ -7,9 +10,6 @@ import org.venutolo.mp3.output.WarningOutput
 
 @Slf4j
 class AlbumImageCheck extends AbstractDirCheck {
-
-    private static final String ALBUM_IMAGE_FILENAME = 'Folder.jpg'
-    private static final int TARGET_IMAGE_DIMENSION = 1000
 
     AlbumImageCheck(@Nonnull final WarningOutput warningOutput) {
         super(log, warningOutput)

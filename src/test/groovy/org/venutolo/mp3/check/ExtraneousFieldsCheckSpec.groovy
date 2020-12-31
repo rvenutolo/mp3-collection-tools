@@ -1,9 +1,9 @@
 package org.venutolo.mp3.check
 
 import static org.jaudiotagger.tag.images.ArtworkFactory.createArtworkFromFile
+import static org.venutolo.mp3.Constants.EXTRANEOUS_FIELDS
+import static org.venutolo.mp3.Constants.REQUIRED_FIELDS
 import static org.venutolo.mp3.fields.Field.COVER_ART
-import static org.venutolo.mp3.fields.Field.EXTRANEOUS_FIELDS
-import static org.venutolo.mp3.fields.Field.REQUIRED_FIELDS
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag

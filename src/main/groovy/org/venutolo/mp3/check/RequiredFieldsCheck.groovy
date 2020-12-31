@@ -1,6 +1,6 @@
 package org.venutolo.mp3.check
 
-import static org.venutolo.mp3.fields.Field.REQUIRED_FIELDS
+import static org.venutolo.mp3.Constants.REQUIRED_FIELDS
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull

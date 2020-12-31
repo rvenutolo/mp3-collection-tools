@@ -100,7 +100,4 @@ enum Field {
         this.required = required
     }
 
-    public static final Collection<Field> REQUIRED_FIELDS = values().findAll { it.required }
-    public static final Collection<Field> EXTRANEOUS_FIELDS = values().findAll { !it.required }
-
 }

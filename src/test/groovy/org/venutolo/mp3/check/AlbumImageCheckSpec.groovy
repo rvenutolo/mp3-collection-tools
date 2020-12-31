@@ -1,5 +1,8 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
+import static org.venutolo.mp3.Constants.TARGET_IMAGE_DIMENSION
+
 import java.nio.file.Files
 import spock.lang.TempDir
 
@@ -54,15 +57,19 @@ class AlbumImageCheckSpec extends CheckSpecification {
 
         setup:
         def origImageFile = new File("${RESOURCE_DIR}/images/${width}x${height}.jpg")
-        def imageFile = new File("${tempDir}/Folder.jpg")
+        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
         Files.copy(origImageFile.toPath(), imageFile.toPath())
 
         when:
         checker.check(tempDir)
 
         then:
-        minDimensionWarn * mockWarnings.write(imageFile, 'Dimensions less than 1000', "${width}x${height}")
-        largeWarn * mockWarnings.write(imageFile, 'Larger than 1000x1000', "${width}x${height}")
+        minDimensionWarn * mockWarnings.write(
+            imageFile, "Dimensions less than ${TARGET_IMAGE_DIMENSION}", "${width}x${height}"
+        )
+        largeWarn * mockWarnings.write(
+            imageFile, "Larger than ${TARGET_IMAGE_DIMENSION}x${TARGET_IMAGE_DIMENSION}", "${width}x${height}"
+        )
         notSquareWarn * mockWarnings.write(imageFile, 'Not square', "${width}x${height}")
         0 * mockWarnings._
 

@@ -1,5 +1,7 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.ID3V2_TARGET_MAJOR_VERSION
+
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
@@ -7,8 +9,6 @@ import org.venutolo.mp3.output.WarningOutput
 
 @Slf4j
 class TagTypeCheck extends AbstractMp3FileCheck {
-
-    private static final int ID3V2_TARGET_MAJOR_VERSION = 4
 
     TagTypeCheck(@Nonnull final WarningOutput warningOutput) {
         super(log, warningOutput, false)

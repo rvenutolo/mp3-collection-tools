@@ -1,7 +1,8 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.FOUR_DIGITS
+
 import groovy.util.logging.Slf4j
-import java.util.regex.Pattern
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
 import org.venutolo.mp3.fields.Field
@@ -9,8 +10,6 @@ import org.venutolo.mp3.output.WarningOutput
 
 @Slf4j
 class YearFieldCheck extends AbstractMp3FileCheck {
-
-    private static final Pattern FOUR_DIGITS = ~$/\d{4}/$
 
     YearFieldCheck(@Nonnull final WarningOutput warningOutput) {
         super(log, warningOutput, true)

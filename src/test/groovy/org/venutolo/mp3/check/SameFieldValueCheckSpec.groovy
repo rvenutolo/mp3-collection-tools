@@ -1,6 +1,6 @@
 package org.venutolo.mp3.check
 
-import static org.venutolo.mp3.check.SameFieldValueCheck.SAME_VALUE_FIELDS
+import static org.venutolo.mp3.Constants.SAME_VALUE_FIELDS
 import static org.venutolo.mp3.fields.Field.GENRE
 
 import org.jaudiotagger.tag.id3.ID3v1Tag

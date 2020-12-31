@@ -1,5 +1,6 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.ALLOWED_GENRES
 import static org.venutolo.mp3.fields.Field.GENRE
 
 import groovy.util.logging.Slf4j
@@ -9,31 +10,6 @@ import org.venutolo.mp3.output.WarningOutput
 
 @Slf4j
 class GenreFieldsCheck extends AbstractMp3FileCheck {
-
-    public static final Set<String> ALLOWED_GENRES = [
-        'Alternative Metal',
-        'Ambient',
-        'Audiobook',
-        'Blues',
-        'Classical',
-        'Comedy',
-        'Country',
-        'Electronic',
-        'Funk',
-        'Hardcore',
-        'Hip-Hop',
-        'Jazz',
-        'Metal',
-        'Metalcore',
-        'Noise',
-        'Pop',
-        'Punk',
-        'Reggae',
-        'Rock',
-        'Ska',
-        'Soul',
-        'World'
-    ]
 
     GenreFieldsCheck(@Nonnull final WarningOutput warningOutput) {
         super(log, warningOutput, true)

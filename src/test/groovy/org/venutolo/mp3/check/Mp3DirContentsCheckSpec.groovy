@@ -1,5 +1,7 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
+
 import java.nio.file.Files
 import spock.lang.TempDir
 
@@ -74,7 +76,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
         (1..3).each { idx ->
             Files.copy(origMp3File.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
         }
-        Files.copy(origImageFile.toPath(), new File("${tempDir}/Folder.jpg").toPath())
+        Files.copy(origImageFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
 
         when:
         checker.check(tempDir)

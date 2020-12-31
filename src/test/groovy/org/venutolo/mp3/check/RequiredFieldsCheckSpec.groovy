@@ -1,7 +1,7 @@
 package org.venutolo.mp3.check
 
+import static org.venutolo.mp3.Constants.REQUIRED_FIELDS
 import static org.venutolo.mp3.fields.Field.GENRE
-import static org.venutolo.mp3.fields.Field.REQUIRED_FIELDS
 import static org.venutolo.mp3.fields.Field.TRACK
 import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
 
