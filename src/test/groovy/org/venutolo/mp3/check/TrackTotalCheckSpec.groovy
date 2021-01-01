@@ -140,4 +140,46 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
+    def "No warning when MP3 files have empty track values"() {
+
+        setup:
+        mp3Files.each { mp3File ->
+            def tag = new ID3v24Tag()
+            tag.setField(TRACK.key, '')
+            tag.setField(TRACK_TOTAL.key, '99')
+            mp3File.setID3v2Tag(tag)
+        }
+        mp3Files.each {
+            assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key).isEmpty() && it.getID3v2Tag().getFirst(TRACK_TOTAL.key) == '99'
+        }
+
+        when:
+        checker.check(mp3Files, dir)
+
+        then:
+        0 * mockWarnings._
+
+    }
+
+    def "No warning when MP3 files have empty track total values"() {
+
+        setup:
+        mp3Files.each { mp3File ->
+            def tag = new ID3v24Tag()
+            tag.setField(TRACK.key, '1')
+            tag.setField(TRACK_TOTAL.key, '')
+            mp3File.setID3v2Tag(tag)
+        }
+        mp3Files.each {
+            assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key) == '1' && it.getID3v2Tag().getFirst(TRACK_TOTAL.key).isEmpty()
+        }
+
+        when:
+        checker.check(mp3Files, dir)
+
+        then:
+        0 * mockWarnings._
+
+    }
+
 }
