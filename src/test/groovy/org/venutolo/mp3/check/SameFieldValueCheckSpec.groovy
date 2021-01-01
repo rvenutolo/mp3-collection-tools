@@ -54,7 +54,10 @@ class SameFieldValueCheckSpec extends CheckSpecification {
     def "No warning when MP3 files don't have tags"() {
 
         setup:
-        mp3Files.each { assert !it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each {
+            assert !it.hasID3v1Tag()
+            assert !it.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -72,7 +75,10 @@ class SameFieldValueCheckSpec extends CheckSpecification {
             tag.setAlbum("album${idx}")
             mp3File.setID3v1Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each {
+            assert it.hasID3v1Tag()
+            assert !it.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -106,7 +112,10 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         def fieldValue = field == GENRE ? 'genre1' : '1'
         tag.setField(field.key, fieldValue)
         mp3Files.each { it.setID3v2Tag(tag) }
-        mp3Files.each { assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(field.key) == fieldValue }
+        mp3Files.each {
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(field.key) == fieldValue
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -130,8 +139,8 @@ class SameFieldValueCheckSpec extends CheckSpecification {
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v2Tag() &&
-                mp3File.getID3v2Tag().getFirst(field.key) == (field == GENRE ? "genre${idx + 1}" : "${idx + 1}")
+            assert mp3File.hasID3v2Tag()
+            assert mp3File.getID3v2Tag().getFirst(field.key) == (field == GENRE ? "genre${idx + 1}" : "${idx + 1}")
         }
 
         when:

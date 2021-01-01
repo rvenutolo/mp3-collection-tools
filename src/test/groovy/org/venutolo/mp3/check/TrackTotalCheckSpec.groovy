@@ -54,7 +54,10 @@ class TrackTotalCheckSpec extends CheckSpecification {
     def "No warning when MP3 files don't have tags"() {
 
         setup:
-        mp3Files.each { assert !it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each {
+            assert !it.hasID3v1Tag()
+            assert !it.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -73,7 +76,10 @@ class TrackTotalCheckSpec extends CheckSpecification {
             // id3v1 doesn't support total tracks
             mp3File.setID3v1Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each {
+            assert it.hasID3v1Tag()
+            assert !it.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -110,7 +116,10 @@ class TrackTotalCheckSpec extends CheckSpecification {
             tag.setField(TRACK_TOTAL.key, '2')
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key) }
+        mp3Files.each {
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(TRACK.key)
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -129,7 +138,10 @@ class TrackTotalCheckSpec extends CheckSpecification {
             tag.setField(TRACK_TOTAL.key, "${idx + 1}")
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key) }
+        mp3Files.each {
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(TRACK.key)
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -150,7 +162,9 @@ class TrackTotalCheckSpec extends CheckSpecification {
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.each {
-            assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key).isEmpty() && it.getID3v2Tag().getFirst(TRACK_TOTAL.key) == '99'
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(TRACK.key).isEmpty()
+            assert it.getID3v2Tag().getFirst(TRACK_TOTAL.key) == '99'
         }
 
         when:
@@ -171,7 +185,9 @@ class TrackTotalCheckSpec extends CheckSpecification {
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.each {
-            assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key) == '1' && it.getID3v2Tag().getFirst(TRACK_TOTAL.key).isEmpty()
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(TRACK.key) == '1'
+            assert it.getID3v2Tag().getFirst(TRACK_TOTAL.key).isEmpty()
         }
 
         when:

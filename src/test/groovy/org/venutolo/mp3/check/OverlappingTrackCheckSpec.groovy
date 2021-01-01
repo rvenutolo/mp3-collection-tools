@@ -53,7 +53,10 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
     def "No warning when MP3 files don't have tags"() {
 
         setup:
-        mp3Files.each { assert !it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each {
+            assert !it.hasID3v1Tag()
+            assert !it.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -71,7 +74,10 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, '1')
             mp3File.setID3v1Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each {
+            assert it.hasID3v1Tag()
+            assert !it.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -105,7 +111,10 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, "${idx + 1}")
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key) }
+        mp3Files.each {
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(TRACK.key)
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -123,7 +132,10 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, '1')
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key) }
+        mp3Files.each {
+            assert it.hasID3v2Tag()
+            assert it.getID3v2Tag().getFirst(TRACK.key)
+        }
 
         when:
         checker.check(mp3Files, dir)
