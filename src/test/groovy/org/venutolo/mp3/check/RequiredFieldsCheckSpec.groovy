@@ -68,7 +68,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
         setup:
         def tag = new ID3v24Tag()
-        REQUIRED_FIELDS.findAll{it != field}.each {            tag.setField(it.key, '1')        }
+        REQUIRED_FIELDS.findAll { it != field }.each { tag.setField(it.key, '1') }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getAll(field.key).empty

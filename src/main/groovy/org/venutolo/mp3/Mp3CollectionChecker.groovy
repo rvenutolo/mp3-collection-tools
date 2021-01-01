@@ -41,12 +41,15 @@ class Mp3CollectionChecker {
 
     private void processDir(@Nonnull final File dir) {
         checkDir(dir)
-        dir.listFiles().findAll {it.isDirectory()}.sort().each {processDir(it) }
+        dir.listFiles().findAll { it.isDirectory() }.sort().each { processDir(it) }
     }
 
     private void checkDir(@Nonnull final File dir) {
         dirChecks.each { it.check(dir) }
-        def mp3Files = dir.listFiles().findAll { it.name.toLowerCase().endsWith('.mp3') }.sort().collect { new MP3File(it) }
+        def mp3Files = dir.listFiles()
+            .findAll { it.name.toLowerCase().endsWith('.mp3') }
+            .sort()
+            .collect { new MP3File(it) }
         if (mp3Files) {
             mp3FilesChecks.each { it.check(mp3Files, dir) }
             mp3FileChecks.each { mp3FileCheck ->
