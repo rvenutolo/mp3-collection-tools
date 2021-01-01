@@ -135,4 +135,22 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
+    def "No warning when MP3 files have empty track values"() {
+
+        setup:
+        mp3Files.each { mp3File ->
+            def tag = new ID3v24Tag()
+            tag.setField(TRACK.key, '')
+            mp3File.setID3v2Tag(tag)
+        }
+        mp3Files.each { assert it.hasID3v2Tag() && it.getID3v2Tag().getFirst(TRACK.key).isEmpty() }
+
+        when:
+        checker.check(mp3Files, dir)
+
+        then:
+        0 * mockWarnings._
+
+    }
+
 }
