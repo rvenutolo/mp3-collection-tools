@@ -30,13 +30,13 @@ class Mp3CollectionChecker {
     }
 
     void checkCollection(@Nonnull final File baseDir) {
-        log.info("Checking collection at: {}", baseDir.canonicalPath)
+        log.debug("Checking collection at: {}", baseDir.canonicalPath)
         requireNonNull(baseDir, 'Collection base dir cannot be null')
         if (baseDir.isFile()) {
             throw new IllegalArgumentException('Collection base dir is not a directory')
         }
         processDir(baseDir)
-        log.info("Checked collection at: {}", baseDir.canonicalPath)
+        log.debug("Checked collection at: {}", baseDir.canonicalPath)
     }
 
     private void processDir(@Nonnull final File dir) {
