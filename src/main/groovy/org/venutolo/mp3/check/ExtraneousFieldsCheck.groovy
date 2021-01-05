@@ -17,12 +17,9 @@ class ExtraneousFieldsCheck extends AbstractMp3FileCheck {
     @Override
     protected void checkInternal(@Nonnull final MP3File mp3File) {
         def tag = mp3File.getID3v2TagAsv24()
-        EXTRANEOUS_FIELDS.each { field ->
-            def fieldValues = tag.getAll(field.key)
-            if (fieldValues) {
-                output.write(mp3File, "Extraneous field: ${field.desc}")
-            }
-        }
+        EXTRANEOUS_FIELDS
+            .findAll { field -> tag.getAll(field.key) }
+            .each { field -> output.write(mp3File, "Extraneous field: ${field.desc}") }
     }
 
 }

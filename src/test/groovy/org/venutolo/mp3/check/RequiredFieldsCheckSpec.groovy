@@ -51,7 +51,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
         setup:
         def tag = new ID3v1Tag()
-        ID3_FIELDS.each { tag.setField(it.key, '1') }
+        ID3_FIELDS.each { field -> tag.setField(field.key, '1') }
         mp3File.setID3v1Tag(tag)
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
@@ -64,24 +64,26 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Output when missing #field"() {
+    def "Output when missing #requiredField"() {
 
         setup:
         def tag = new ID3v24Tag()
-        REQUIRED_FIELDS.findAll { it != field }.each { tag.setField(it.key, '1') }
+        REQUIRED_FIELDS
+            .findAll { field -> field != requiredField }
+            .each { field -> tag.setField(field.key, '1') }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getAll(field.key).empty
+        assert mp3File.getID3v2Tag().getAll(requiredField.key).empty
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "Missing field: ${field.desc}")
+        1 * mockOutput.write(mp3File, "Missing field: ${requiredField.desc}")
         0 * mockOutput._
 
         where:
-        field << REQUIRED_FIELDS
+        requiredField << REQUIRED_FIELDS
 
     }
 
@@ -90,10 +92,10 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         setup:
         def tag = new ID3v24Tag()
         // use '1' as value for all fields to fit both string and numeric fields
-        REQUIRED_FIELDS.each { tag.setField(it.key, '1') }
+        REQUIRED_FIELDS.each { field -> tag.setField(field.key, '1') }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        REQUIRED_FIELDS.each { assert mp3File.getID3v2Tag().getFirst(it.key) }
+        REQUIRED_FIELDS.each { field -> assert mp3File.getID3v2Tag().getFirst(field.key) }
 
         when:
         checker.check(mp3File)
@@ -103,32 +105,34 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Output when multiple #field"() {
+    def "Output when multiple #requiredField"() {
 
         setup:
         def tag = new ID3v24Tag()
         tag.setField(TRACK.key, '1')
         tag.setField(TRACK_TOTAL.key, '1')
         // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
-        def fieldValue = field == GENRE ? 'genre1' : '1'
-        def extraFieldValue = field == GENRE ? 'genre2' : '2'
-        REQUIRED_FIELDS.each { tag.setField(it.key, fieldValue) }
-        tag.addField(field.key, extraFieldValue)
+        def fieldValue = requiredField == GENRE ? 'genre1' : '1'
+        def extraFieldValue = requiredField == GENRE ? 'genre2' : '2'
+        REQUIRED_FIELDS.each { field -> tag.setField(field.key, fieldValue) }
+        tag.addField(requiredField.key, extraFieldValue)
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        REQUIRED_FIELDS.every { assert mp3File.getID3v2Tag().getFirst(it.key) }
-        assert mp3File.getID3v2Tag().getAll(field.key).size() == 2
+        REQUIRED_FIELDS.every { field -> assert mp3File.getID3v2Tag().getFirst(field.key) }
+        assert mp3File.getID3v2Tag().getAll(requiredField.key).size() == 2
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "Multiple values for field: ${field.desc}", "${fieldValue}, ${extraFieldValue}")
+        1 * mockOutput.write(
+            mp3File, "Multiple values for field: ${requiredField.desc}", "${fieldValue}, ${extraFieldValue}"
+        )
         0 * mockOutput._
 
         where:
         // track and track total do not support multiple fields
-        field << REQUIRED_FIELDS.findAll { it != TRACK && it != TRACK_TOTAL }
+        requiredField << REQUIRED_FIELDS.findAll { field -> field != TRACK && field != TRACK_TOTAL }
 
     }
 

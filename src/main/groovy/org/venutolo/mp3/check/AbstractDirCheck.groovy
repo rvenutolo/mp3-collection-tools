@@ -16,9 +16,7 @@ abstract class AbstractDirCheck implements DirCheck {
 
     private final boolean requiresMp3Files
 
-    AbstractDirCheck(
-        @Nonnull final Logger log, @Nonnull final Output output, final boolean requiresMp3Files
-    ) {
+    AbstractDirCheck(@Nonnull final Logger log, @Nonnull final Output output, final boolean requiresMp3Files) {
         this.log = requireNonNull(log, 'Logger cannot be null')
         this.output = requireNonNull(output, 'Output cannot be null')
         this.requiresMp3Files = requiresMp3Files
@@ -31,7 +29,8 @@ abstract class AbstractDirCheck implements DirCheck {
         if (dir.isFile()) {
             throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
         }
-        if (!requiresMp3Files || (requiresMp3Files && dir.listFiles().any { it.name.toLowerCase().endsWith('.mp3') })) {
+        def hasMp3s = dir.listFiles().any { file -> file.name.toLowerCase().endsWith('.mp3') }
+        if (!requiresMp3Files || (requiresMp3Files && hasMp3s)) {
             checkInternal(dir)
         }
         log.debug('Checked MP3 files in: {}', dir.canonicalPath)

@@ -24,11 +24,9 @@ class SameFieldValueCheck extends AbstractMultipleMp3FilesCheck {
                 fieldValues[field] << tag.getFirst(field.key)
             }
         }
-        fieldValues.each { field, values ->
-            if (values.size() > 1) {
-                output.write(dir, "Non-uniform ${field.desc} values", values.sort().join(', '))
-            }
-        }
+        fieldValues
+            .findAll { field, values -> values.size() > 1 }
+            .each { field, values -> output.write(dir, "Non-uniform ${field.desc} values", values.sort().join(', ')) }
     }
 
 }

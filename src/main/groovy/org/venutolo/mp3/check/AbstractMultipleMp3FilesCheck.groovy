@@ -37,7 +37,7 @@ abstract class AbstractMultipleMp3FilesCheck implements MultipleMp3FilesCheck {
             throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
         }
         if (requiresId3v2Tags) {
-            checkInternal(mp3Files.findAll { it.hasID3v2Tag() }, dir)
+            checkInternal(mp3Files.findAll { mp3File -> mp3File.hasID3v2Tag() }, dir)
         } else {
             checkInternal(mp3Files, dir)
         }

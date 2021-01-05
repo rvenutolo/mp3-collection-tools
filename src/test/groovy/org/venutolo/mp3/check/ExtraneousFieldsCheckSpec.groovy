@@ -52,7 +52,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
         setup:
         def tag = new ID3v1Tag()
-        ID3_FIELDS.each { tag.setField(it.key, '1') }
+        ID3_FIELDS.each { field -> tag.setField(field.key, '1') }
         mp3File.setID3v1Tag(tag)
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
@@ -118,7 +118,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         0 * mockOutput._
 
         where:
-        field << EXTRANEOUS_FIELDS.findAll { it != COVER_ART }
+        field << EXTRANEOUS_FIELDS.findAll { field -> field != COVER_ART }
 
     }
 

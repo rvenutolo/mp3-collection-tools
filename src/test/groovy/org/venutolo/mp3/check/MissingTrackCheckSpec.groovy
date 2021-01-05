@@ -53,7 +53,10 @@ class MissingTrackCheckSpec extends CheckSpecification {
     def "No output when MP3 files don't have tags"() {
 
         setup:
-        mp3Files.each { assert !it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each { mp3FIle ->
+            assert !mp3FIle.hasID3v1Tag()
+            assert !mp3FIle.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -71,7 +74,10 @@ class MissingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, '9')
             mp3File.setID3v1Tag(tag)
         }
-        mp3Files.each { assert it.hasID3v1Tag() && !it.hasID3v2Tag() }
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v1Tag()
+            assert !mp3File.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -84,10 +90,8 @@ class MissingTrackCheckSpec extends CheckSpecification {
     def "No output when MP3 files have no track numbers"() {
 
         setup:
-        mp3Files.each { mp3File ->
-            mp3File.setID3v2Tag(new ID3v24Tag())
-        }
-        mp3Files.each { assert it.hasID3v2Tag() }
+        mp3Files.each { mp3File -> mp3File.setID3v2Tag(new ID3v24Tag()) }
+        mp3Files.each { mp3File -> assert mp3File.hasID3v2Tag() }
 
         when:
         checker.check(mp3Files, dir)
@@ -105,9 +109,9 @@ class MissingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, "${idx + 1}")
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each {
-            assert it.hasID3v2Tag()
-            assert it.getID3v2Tag().getFirst(TRACK.key)
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
         }
 
         when:
@@ -126,9 +130,9 @@ class MissingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, '3')
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each {
-            assert it.hasID3v2Tag()
-            assert it.getID3v2Tag().getFirst(TRACK.key)
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
         }
 
         when:
@@ -149,9 +153,9 @@ class MissingTrackCheckSpec extends CheckSpecification {
             tag.setField(TRACK.key, '')
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each {
-            assert it.hasID3v2Tag()
-            assert it.getID3v2Tag().getFirst(TRACK.key).isEmpty()
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key).isEmpty()
         }
 
         when:

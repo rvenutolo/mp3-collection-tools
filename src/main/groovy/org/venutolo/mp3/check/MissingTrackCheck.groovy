@@ -17,19 +17,17 @@ class MissingTrackCheck extends AbstractMultipleMp3FilesCheck {
     @Override
     protected void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
         def seenTrackNumbers = mp3Files
-            .collect { it.getID3v2TagAsv24().getFirst(TRACK.key) }
-            .findAll { it }
-            .collect { it as Integer }
+            .collect { mp3File -> mp3File.getID3v2TagAsv24().getFirst(TRACK.key) }
+            .findAll { s -> !s.isEmpty() }
+            .collect { trackNum -> trackNum as Integer }
             .toSet()
         if (!seenTrackNumbers) {
             return
         }
         def maxTrackNumber = seenTrackNumbers.max()
-        (1..maxTrackNumber).each { trackNumber ->
-            if (!seenTrackNumbers.contains(trackNumber)) {
-                output.write(dir, "Missing track #${trackNumber}")
-            }
-        }
+        (1..maxTrackNumber)
+            .findAll { trackNum -> !seenTrackNumbers.contains(trackNum) }
+            .each { trackNum -> output.write(dir, "Missing track #${trackNum}") }
     }
 
 }

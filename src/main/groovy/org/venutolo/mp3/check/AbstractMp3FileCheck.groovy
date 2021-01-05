@@ -17,9 +17,7 @@ abstract class AbstractMp3FileCheck implements Mp3FileCheck {
 
     private final boolean requiresId3v2Tags
 
-    AbstractMp3FileCheck(
-        @Nonnull final Logger log, @Nonnull final Output output, final boolean requiresId3v2Tags
-    ) {
+    AbstractMp3FileCheck(@Nonnull final Logger log, @Nonnull final Output output, final boolean requiresId3v2Tags) {
         this.log = requireNonNull(log, 'Logger cannot be null')
         this.output = requireNonNull(output, 'Output cannot be null')
         this.requiresId3v2Tags = requiresId3v2Tags

@@ -21,10 +21,8 @@ class RequiredFieldsCheck extends AbstractMp3FileCheck {
             def fieldValues = tag.getAll(field.key)
             if (!fieldValues) {
                 output.write(mp3File, "Missing field: ${field.desc}")
-            } else {
-                if (fieldValues.size() > 1) {
-                    output.write(mp3File, "Multiple values for field: ${field.desc}", fieldValues.join(', '))
-                }
+            } else if (fieldValues.size() > 1) {
+                output.write(mp3File, "Multiple values for field: ${field.desc}", fieldValues.join(', '))
             }
         }
     }
