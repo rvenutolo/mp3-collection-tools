@@ -8,7 +8,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class YearFieldCheckSpec extends CheckSpecification {
 
-    private def checker = new YearFieldCheck(mockWarnings)
+    private def checker = new YearFieldCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -40,7 +40,7 @@ class YearFieldCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -57,7 +57,7 @@ class YearFieldCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -72,7 +72,7 @@ class YearFieldCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -89,8 +89,8 @@ class YearFieldCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'Year not in #### format', yearVal)
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'Year not in #### format', yearVal)
+        0 * mockOutput._
 
         where:
         desc           | yearVal
@@ -113,7 +113,7 @@ class YearFieldCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 

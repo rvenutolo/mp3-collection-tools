@@ -12,7 +12,7 @@ class AlbumImageCheckSpec extends CheckSpecification {
     @TempDir
     private File tempDir
 
-    private def checker = new AlbumImageCheck(mockWarnings)
+    private def checker = new AlbumImageCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -50,7 +50,7 @@ class AlbumImageCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -63,8 +63,8 @@ class AlbumImageCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(tempDir, 'No album image')
-        0 * mockWarnings._
+        1 * mockOutput.write(tempDir, 'No album image')
+        0 * mockOutput._
 
     }
 
@@ -80,14 +80,12 @@ class AlbumImageCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        minDimensionWarn * mockWarnings.write(
-            imageFile, "Dimensions less than ${TARGET_IMAGE_DIMENSION}", "${width}x${height}"
-        )
-        largeWarn * mockWarnings.write(
-            imageFile, "Larger than ${TARGET_IMAGE_DIMENSION}x${TARGET_IMAGE_DIMENSION}", "${width}x${height}"
-        )
-        notSquareWarn * mockWarnings.write(imageFile, 'Not square', "${width}x${height}")
-        0 * mockWarnings._
+        minDimensionWarn *
+            mockOutput.write(imageFile, "Dimensions less than ${TARGET_IMAGE_DIMENSION}", "${width}x${height}")
+        largeWarn * mockOutput.
+            write(imageFile, "Larger than ${TARGET_IMAGE_DIMENSION}x${TARGET_IMAGE_DIMENSION}", "${width}x${height}")
+        notSquareWarn * mockOutput.write(imageFile, 'Not square', "${width}x${height}")
+        0 * mockOutput._
 
         where:
         width | height || minDimensionWarn | largeWarn | notSquareWarn

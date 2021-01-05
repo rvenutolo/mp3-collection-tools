@@ -11,7 +11,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
-    private def checker = new ExtraneousFieldsCheck(mockWarnings)
+    private def checker = new ExtraneousFieldsCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -44,7 +44,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -61,7 +61,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -75,7 +75,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -93,7 +93,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
         where:
         field << REQUIRED_FIELDS
@@ -114,8 +114,8 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, "Extraneous field: ${field.desc}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, "Extraneous field: ${field.desc}")
+        0 * mockOutput._
 
         where:
         field << EXTRANEOUS_FIELDS.findAll { it != COVER_ART }
@@ -126,7 +126,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
         setup:
         def tag = new ID3v24Tag()
-        tag.addField(createArtworkFromFile(artFile))
+        tag.addField(createArtworkFromFile(jpgFile))
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2TagAsv24().getFirstArtwork()
@@ -135,8 +135,8 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, "Extraneous field: ${COVER_ART.desc}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, "Extraneous field: ${COVER_ART.desc}")
+        0 * mockOutput._
 
     }
 

@@ -9,7 +9,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class GenreFieldsCheckSpec extends CheckSpecification {
 
-    private def checker = new GenreFieldsCheck(mockWarnings)
+    private def checker = new GenreFieldsCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -41,7 +41,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -58,7 +58,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -73,7 +73,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -90,8 +90,8 @@ class GenreFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'Unexpected genre: BAD_GENRE')
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'Unexpected genre: BAD_GENRE')
+        0 * mockOutput._
 
     }
 
@@ -108,7 +108,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
         where:
         genre << ALLOWED_GENRES

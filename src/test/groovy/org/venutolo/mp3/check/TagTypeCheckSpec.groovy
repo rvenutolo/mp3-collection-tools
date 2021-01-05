@@ -8,7 +8,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class TagTypeCheckSpec extends CheckSpecification {
 
-    private def checker = new TagTypeCheck(mockWarnings)
+    private def checker = new TagTypeCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -42,8 +42,8 @@ class TagTypeCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'Has ID3v1 tag')
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'Has ID3v1 tag')
+        0 * mockOutput._
 
     }
 
@@ -56,8 +56,8 @@ class TagTypeCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'Does not have ID3v2 tag')
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'Does not have ID3v2 tag')
+        0 * mockOutput._
 
     }
 
@@ -72,8 +72,8 @@ class TagTypeCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'ID3v2 tag is not v2.4', "v2.${version}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'ID3v2 tag is not v2.4', "v2.${version}")
+        0 * mockOutput._
 
         where:
         version | tag
@@ -93,7 +93,7 @@ class TagTypeCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 

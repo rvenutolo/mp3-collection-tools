@@ -55,7 +55,7 @@ class Mp3CollectionCheckerSpec extends CheckSpecification {
     def "IAE when dir is not a directory"() {
 
         when:
-        checker.checkCollection(artFile)
+        checker.checkCollection(jpgFile)
 
         then:
         thrown(IllegalArgumentException)

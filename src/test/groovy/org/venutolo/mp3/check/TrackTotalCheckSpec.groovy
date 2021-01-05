@@ -9,7 +9,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class TrackTotalCheckSpec extends CheckSpecification {
 
-    private def checker = new TrackTotalCheck(mockWarnings)
+    private def checker = new TrackTotalCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -63,7 +63,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -85,7 +85,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -103,7 +103,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -125,7 +125,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -147,8 +147,8 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockWarnings.write(dir, 'Wrong total tracks')
-        0 * mockWarnings._
+        1 * mockOutput.write(dir, 'Wrong total tracks')
+        0 * mockOutput._
 
     }
 
@@ -171,7 +171,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -194,7 +194,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 

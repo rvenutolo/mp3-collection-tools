@@ -9,7 +9,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class TrackFieldsCheckSpec extends CheckSpecification {
 
-    private def checker = new TrackFieldsCheck(mockWarnings)
+    private def checker = new TrackFieldsCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -41,7 +41,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -58,7 +58,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -74,7 +74,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -92,7 +92,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -110,7 +110,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -129,8 +129,8 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
+        0 * mockOutput._
 
         where:
         desc        | trackVal | totalVal
@@ -154,7 +154,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
         where:
         desc     | trackVal | totalVal
@@ -178,8 +178,8 @@ class TrackFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
+        0 * mockOutput._
 
         where:
         trackDesc | trackVal | totalDesc | totalVal

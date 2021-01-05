@@ -9,7 +9,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class SameFieldValueCheckSpec extends CheckSpecification {
 
-    private def checker = new SameFieldValueCheck(mockWarnings)
+    private def checker = new SameFieldValueCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -63,7 +63,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -84,7 +84,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -100,7 +100,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -121,7 +121,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
         where:
         field << SAME_VALUE_FIELDS
@@ -147,8 +147,8 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockWarnings.write(dir, "Non-uniform ${field.desc} values", field == GENRE ? 'genre1, genre2' : '1, 2')
-        0 * mockWarnings._
+        1 * mockOutput.write(dir, "Non-uniform ${field.desc} values", field == GENRE ? 'genre1, genre2' : '1, 2')
+        0 * mockOutput._
 
         where:
         field << SAME_VALUE_FIELDS

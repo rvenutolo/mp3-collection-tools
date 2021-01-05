@@ -9,7 +9,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
     @TempDir
     private File tempDir
 
-    private def checker = new GenericDirContentsCheck(mockWarnings)
+    private def checker = new GenericDirContentsCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -47,8 +47,8 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(tempDir, 'Empty directory')
-        0 * mockWarnings._
+        1 * mockOutput.write(tempDir, 'Empty directory')
+        0 * mockOutput._
 
     }
 
@@ -62,8 +62,8 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(tempDir, 'Contains both directories and files')
-        0 * mockWarnings._
+        1 * mockOutput.write(tempDir, 'Contains both directories and files')
+        0 * mockOutput._
 
     }
 
@@ -77,7 +77,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -91,20 +91,20 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
     def "No warning when dir contains files but no MP3 files"() {
 
         setup:
-        Files.copy(artFile.toPath(), new File("${tempDir}/file.jpg").toPath())
+        Files.copy(jpgFile.toPath(), new File("${tempDir}/file.jpg").toPath())
 
         when:
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(tempDir, 'Contains no MP3 files')
+        1 * mockOutput.write(tempDir, 'Contains no MP3 files')
 
     }
 

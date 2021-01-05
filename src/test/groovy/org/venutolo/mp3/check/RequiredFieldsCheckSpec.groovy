@@ -11,7 +11,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class RequiredFieldsCheckSpec extends CheckSpecification {
 
-    private def checker = new RequiredFieldsCheck(mockWarnings)
+    private def checker = new RequiredFieldsCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -43,7 +43,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -60,7 +60,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -77,8 +77,8 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, "Missing field: ${field.desc}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, "Missing field: ${field.desc}")
+        0 * mockOutput._
 
         where:
         field << REQUIRED_FIELDS
@@ -99,7 +99,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -123,8 +123,8 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
         checker.check(mp3File)
 
         then:
-        1 * mockWarnings.write(mp3File, "Multiple values for field: ${field.desc}", "${fieldValue}, ${extraFieldValue}")
-        0 * mockWarnings._
+        1 * mockOutput.write(mp3File, "Multiple values for field: ${field.desc}", "${fieldValue}, ${extraFieldValue}")
+        0 * mockOutput._
 
         where:
         // track and track total do not support multiple fields

@@ -11,7 +11,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
     @TempDir
     private File tempDir
 
-    private def checker = new Mp3DirContentsCheck(mockWarnings)
+    private def checker = new Mp3DirContentsCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -49,7 +49,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -64,7 +64,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -74,13 +74,13 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
         (1..3).each { idx ->
             Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
         }
-        Files.copy(artFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
+        Files.copy(jpgFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
 
         when:
         checker.check(tempDir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -98,9 +98,9 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(uppercaseFile1, 'Non-lowercase file extension')
-        1 * mockWarnings.write(uppercaseFile2, 'Non-lowercase file extension')
-        0 * mockWarnings._
+        1 * mockOutput.write(uppercaseFile1, 'Non-lowercase file extension')
+        1 * mockOutput.write(uppercaseFile2, 'Non-lowercase file extension')
+        0 * mockOutput._
 
     }
 
@@ -113,18 +113,18 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
         (1..3).each { idx ->
             Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
         }
-        Files.copy(artFile.toPath(), lowercaseFolderJpg.toPath())
-        Files.copy(artFile.toPath(), randomFile1.toPath())
-        Files.copy(artFile.toPath(), randomFile2.toPath())
+        Files.copy(jpgFile.toPath(), lowercaseFolderJpg.toPath())
+        Files.copy(jpgFile.toPath(), randomFile1.toPath())
+        Files.copy(jpgFile.toPath(), randomFile2.toPath())
 
         when:
         checker.check(tempDir)
 
         then:
-        1 * mockWarnings.write(lowercaseFolderJpg, 'Unexpected file')
-        1 * mockWarnings.write(randomFile1, 'Unexpected file')
-        1 * mockWarnings.write(randomFile2, 'Unexpected file')
-        0 * mockWarnings._
+        1 * mockOutput.write(lowercaseFolderJpg, 'Unexpected file')
+        1 * mockOutput.write(randomFile1, 'Unexpected file')
+        1 * mockOutput.write(randomFile2, 'Unexpected file')
+        0 * mockOutput._
 
     }
 

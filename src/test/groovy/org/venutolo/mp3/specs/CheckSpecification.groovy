@@ -22,10 +22,10 @@ class CheckSpecification extends Specification {
         new MP3File("${RESOURCE_DIR.path}/test.mp3")
     }
 
-    protected def mockWarnings = Mock(WarningOutput)
+    protected def mockOutput = Mock(WarningOutput)
     protected def mp3File = newMp3File()
     protected def mp3Files = [newMp3File(), newMp3File()]
     protected def dir = RESOURCE_DIR
-    protected def artFile = new File("${RESOURCE_DIR.path}/test_cover.jpg")
+    protected def jpgFile = new File("${RESOURCE_DIR.path}/test.jpg")
 
 }

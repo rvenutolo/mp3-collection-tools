@@ -8,7 +8,7 @@ import org.venutolo.mp3.specs.CheckSpecification
 
 class OverlappingTrackCheckSpec extends CheckSpecification {
 
-    private def checker = new OverlappingTrackCheck(mockWarnings)
+    private def checker = new OverlappingTrackCheck(mockOutput)
 
     def "NPE when WarningOutput is null"() {
 
@@ -62,7 +62,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -83,7 +83,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -99,7 +99,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -120,7 +120,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        0 * mockWarnings._
+        0 * mockOutput._
 
     }
 
@@ -141,8 +141,8 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockWarnings.write(dir, 'Multiple track #1')
-        0 * mockWarnings._
+        1 * mockOutput.write(dir, 'Multiple track #1')
+        0 * mockOutput._
 
     }
 
