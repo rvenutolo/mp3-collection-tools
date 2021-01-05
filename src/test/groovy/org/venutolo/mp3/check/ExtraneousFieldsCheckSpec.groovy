@@ -13,7 +13,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
     private def checker = new ExtraneousFieldsCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new ExtraneousFieldsCheck(null)
@@ -48,7 +48,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
+    def "No output when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
         def tag = new ID3v1Tag()
@@ -65,7 +65,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when there are no fields populated"() {
+    def "No output when there are no fields populated"() {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
@@ -79,7 +79,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when required field #field is populated"() {
+    def "No output when required field #field is populated"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -100,7 +100,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when extraneous field #field is populated"() {
+    def "Output when extraneous field #field is populated"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -122,7 +122,7 @@ class ExtraneousFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when cover art is populated"() {
+    def "Output when cover art is populated"() {
 
         setup:
         def tag = new ID3v24Tag()

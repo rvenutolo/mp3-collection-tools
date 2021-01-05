@@ -11,7 +11,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
 
     private def checker = new GenericDirContentsCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new GenericDirContentsCheck(null)
@@ -41,7 +41,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when directory is empty"() {
+    def "Output when directory is empty"() {
 
         when:
         checker.check(tempDir)
@@ -52,7 +52,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when dir contains both directories and files"() {
+    def "Output when dir contains both directories and files"() {
 
         setup:
         new File("${tempDir}/dir").mkdir()
@@ -67,7 +67,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when dir contains only directories"() {
+    def "No output when dir contains only directories"() {
 
         setup:
         new File("${tempDir}/dir1").mkdir()
@@ -81,7 +81,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when dir contains only MP3 files"() {
+    def "No output when dir contains only MP3 files"() {
 
         setup:
         Files.copy(mp3File.file.toPath(), new File("${tempDir}/file1.mp3").toPath())
@@ -95,7 +95,7 @@ class GenericDirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when dir contains files but no MP3 files"() {
+    def "No output when dir contains files but no MP3 files"() {
 
         setup:
         Files.copy(jpgFile.toPath(), new File("${tempDir}/file.jpg").toPath())

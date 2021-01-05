@@ -10,7 +10,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     private def checker = new MissingTrackCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new MissingTrackCheck(null)
@@ -50,7 +50,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files don't have tags"() {
+    def "No output when MP3 files don't have tags"() {
 
         setup:
         mp3Files.each { assert !it.hasID3v1Tag() && !it.hasID3v2Tag() }
@@ -63,7 +63,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
+    def "No output when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -81,7 +81,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have no track numbers"() {
+    def "No output when MP3 files have no track numbers"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -97,7 +97,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have no missing tracks"() {
+    def "No output when MP3 files have no missing tracks"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -118,7 +118,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when MP3 files have missing track"() {
+    def "Output when MP3 files have missing track"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -141,7 +141,7 @@ class MissingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have empty track values"() {
+    def "No output when MP3 files have empty track values"() {
 
         setup:
         mp3Files.each { mp3File ->

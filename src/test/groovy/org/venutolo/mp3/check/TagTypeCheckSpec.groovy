@@ -10,7 +10,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
     private def checker = new TagTypeCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new TagTypeCheck(null)
@@ -30,7 +30,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when file has ID3v1 tag"() {
+    def "Output when file has ID3v1 tag"() {
 
         setup:
         mp3File.setID3v1Tag(new ID3v1Tag())
@@ -47,7 +47,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when file does not have ID3v2 tag"() {
+    def "Output when file does not have ID3v2 tag"() {
 
         setup:
         assert !mp3File.hasID3v2Tag()
@@ -61,7 +61,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when file has ID3v#version tag"() {
+    def "Output when file has ID3v#version tag"() {
 
         setup:
         mp3File.setID3v2Tag(tag)
@@ -82,7 +82,7 @@ class TagTypeCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when file has only ID3v2.4 tag"() {
+    def "No output when file has only ID3v2.4 tag"() {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())

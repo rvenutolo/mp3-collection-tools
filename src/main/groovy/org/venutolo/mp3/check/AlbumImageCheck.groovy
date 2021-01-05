@@ -8,13 +8,13 @@ import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import javax.imageio.ImageIO
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class AlbumImageCheck extends AbstractDirCheck {
 
-    AlbumImageCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    AlbumImageCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -27,21 +27,21 @@ class AlbumImageCheck extends AbstractDirCheck {
                 def imageWidth = image.getWidth()
                 def imageHeight = image.getHeight()
                 if (imageWidth < TARGET_IMAGE_DIMENSION && imageHeight < TARGET_IMAGE_DIMENSION) {
-                    warningOutput.write(
+                    output.write(
                         albumArtFile,
                         "Dimensions less than ${TARGET_IMAGE_DIMENSION}",
                         "${imageWidth}x${imageHeight}"
                     )
                 }
                 if (imageWidth > TARGET_IMAGE_DIMENSION && imageHeight > TARGET_IMAGE_DIMENSION) {
-                    warningOutput.write(
+                    output.write(
                         albumArtFile,
                         "Larger than ${TARGET_IMAGE_DIMENSION}x${TARGET_IMAGE_DIMENSION}",
                         "${imageWidth}x${imageHeight}"
                     )
                 }
                 if (imageWidth != imageHeight) {
-                    warningOutput.write(
+                    output.write(
                         albumArtFile,
                         "Not square",
                         "${imageWidth}x${imageHeight}"
@@ -49,7 +49,7 @@ class AlbumImageCheck extends AbstractDirCheck {
                 }
             }
         } else {
-            warningOutput.write(dir, 'No album image')
+            output.write(dir, 'No album image')
         }
     }
 
@@ -58,7 +58,7 @@ class AlbumImageCheck extends AbstractDirCheck {
         try {
             return ImageIO.read(imageFile)
         } catch (final Exception e) {
-            warningOutput.write(imageFile, 'Exception on ImageIO::read', e.message)
+            output.write(imageFile, 'Exception on ImageIO::read', e.message)
             return null
         }
     }

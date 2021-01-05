@@ -6,13 +6,13 @@ import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
 import org.venutolo.mp3.fields.Field
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class SameFieldValueCheck extends AbstractMultipleMp3FilesCheck {
 
-    SameFieldValueCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    SameFieldValueCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -26,7 +26,7 @@ class SameFieldValueCheck extends AbstractMultipleMp3FilesCheck {
         }
         fieldValues.each { field, values ->
             if (values.size() > 1) {
-                warningOutput.write(dir, "Non-uniform ${field.desc} values", values.sort().join(', '))
+                output.write(dir, "Non-uniform ${field.desc} values", values.sort().join(', '))
             }
         }
     }

@@ -5,13 +5,13 @@ import static org.venutolo.mp3.Constants.EXTRANEOUS_FIELDS
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class ExtraneousFieldsCheck extends AbstractMp3FileCheck {
 
-    ExtraneousFieldsCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    ExtraneousFieldsCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -20,7 +20,7 @@ class ExtraneousFieldsCheck extends AbstractMp3FileCheck {
         EXTRANEOUS_FIELDS.each { field ->
             def fieldValues = tag.getAll(field.key)
             if (fieldValues) {
-                warningOutput.write(mp3File, "Extraneous field: ${field.desc}")
+                output.write(mp3File, "Extraneous field: ${field.desc}")
             }
         }
     }

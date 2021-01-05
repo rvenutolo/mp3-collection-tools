@@ -6,20 +6,20 @@ import static org.venutolo.mp3.fields.Field.GENRE
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class GenreFieldsCheck extends AbstractMp3FileCheck {
 
-    GenreFieldsCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    GenreFieldsCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
     protected void checkInternal(@Nonnull final MP3File mp3File) {
         def genre = mp3File.getID3v2TagAsv24().getFirst(GENRE.key)
         if (genre && !ALLOWED_GENRES.contains(genre)) {
-            warningOutput.write(mp3File, "Unexpected genre: ${genre}")
+            output.write(mp3File, "Unexpected genre: ${genre}")
         }
     }
 

@@ -11,7 +11,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
     private def checker = new GenreFieldsCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new GenreFieldsCheck(null)
@@ -31,7 +31,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file doesn't have tags"() {
+    def "No output when MP3 file doesn't have tags"() {
 
         setup:
         assert !mp3File.hasID3v1Tag()
@@ -45,7 +45,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
+    def "No output when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
         def tag = new ID3v1Tag()
@@ -62,7 +62,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when no genre"() {
+    def "No output when no genre"() {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
@@ -77,7 +77,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when unexpected genre"() {
+    def "Output when unexpected genre"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -95,7 +95,7 @@ class GenreFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when genre: #genre"() {
+    def "No output when genre: #genre"() {
 
         setup:
         def tag = new ID3v24Tag()

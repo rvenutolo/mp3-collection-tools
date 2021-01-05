@@ -10,7 +10,7 @@ import static org.venutolo.mp3.fields.Field.YEAR
 
 import org.jaudiotagger.audio.mp3.MP3File
 import org.venutolo.mp3.fields.Field
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 import spock.lang.Specification
 
 class CheckSpecification extends Specification {
@@ -22,7 +22,7 @@ class CheckSpecification extends Specification {
         new MP3File("${RESOURCE_DIR.path}/test.mp3")
     }
 
-    protected def mockOutput = Mock(WarningOutput)
+    protected def mockOutput = Mock(Output)
     protected def mp3File = newMp3File()
     protected def mp3Files = [newMp3File(), newMp3File()]
     protected def dir = RESOURCE_DIR

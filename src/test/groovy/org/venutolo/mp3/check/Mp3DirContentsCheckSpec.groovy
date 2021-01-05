@@ -13,7 +13,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     private def checker = new Mp3DirContentsCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new Mp3DirContentsCheck(null)
@@ -43,7 +43,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when directory is empty"() {
+    def "No output when directory is empty"() {
 
         when:
         checker.check(tempDir)
@@ -53,7 +53,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when all mp3 files with lowercase file extension"() {
+    def "No output when all mp3 files with lowercase file extension"() {
 
         setup:
         (1..3).each { idx ->
@@ -68,7 +68,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when all mp3 files with lowercase file extension and album image"() {
+    def "No output when all mp3 files with lowercase file extension and album image"() {
 
         setup:
         (1..3).each { idx ->
@@ -84,7 +84,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when some mp3 files have non-lowercase file extension"() {
+    def "Output when some mp3 files have non-lowercase file extension"() {
 
         setup:
         def lowercaseFile = new File("${tempDir}/lower.mp3")
@@ -104,7 +104,7 @@ class Mp3DirContentsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when there are unexpected files"() {
+    def "Output when there are unexpected files"() {
 
         setup:
         def lowercaseFolderJpg = new File("${tempDir}/folder.jpg")

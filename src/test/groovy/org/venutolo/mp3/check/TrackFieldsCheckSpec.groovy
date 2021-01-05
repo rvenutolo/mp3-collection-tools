@@ -11,7 +11,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     private def checker = new TrackFieldsCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new TrackFieldsCheck(null)
@@ -31,7 +31,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file doesn't have tags"() {
+    def "No output when MP3 file doesn't have tags"() {
 
         setup:
         assert !mp3File.hasID3v1Tag()
@@ -45,7 +45,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
+    def "No output when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
         def tag = new ID3v1Tag()
@@ -62,7 +62,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when has neither track or track total"() {
+    def "No output when has neither track or track total"() {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
@@ -78,7 +78,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when has track but not track total"() {
+    def "No output when has track but not track total"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -96,7 +96,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when has track total but not track"() {
+    def "No output when has track total but not track"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -114,7 +114,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when #desc digit track and track total"() {
+    def "Output when #desc digit track and track total"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -139,7 +139,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when #desc digit track and track total"() {
+    def "No output when #desc digit track and track total"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -163,7 +163,7 @@ class TrackFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when #trackDesc digit track and #totalDesc digit track total"() {
+    def "Output when #trackDesc digit track and #totalDesc digit track total"() {
 
         setup:
         def tag = new ID3v24Tag()

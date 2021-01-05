@@ -5,13 +5,13 @@ import static org.venutolo.mp3.fields.Field.TRACK
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class OverlappingTrackCheck extends AbstractMultipleMp3FilesCheck {
 
-    OverlappingTrackCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    OverlappingTrackCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -24,7 +24,7 @@ class OverlappingTrackCheck extends AbstractMultipleMp3FilesCheck {
             }
         }
         seenTrackNumbers.findAll { it.value > 1 }.keySet().sort().each { key ->
-            warningOutput.write(dir, "Multiple track #${key}")
+            output.write(dir, "Multiple track #${key}")
         }
     }
 

@@ -11,7 +11,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     private def checker = new TrackTotalCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new TrackTotalCheck(null)
@@ -51,7 +51,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files don't have tags"() {
+    def "No output when MP3 files don't have tags"() {
 
         setup:
         mp3Files.each {
@@ -67,7 +67,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
+    def "No output when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -89,7 +89,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have no track total numbers"() {
+    def "No output when MP3 files have no track total numbers"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -107,7 +107,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have correct track track values"() {
+    def "No output when MP3 files have correct track track values"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -129,7 +129,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when MP3 files have incorrect track total value"() {
+    def "Output when MP3 files have incorrect track total value"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -152,7 +152,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have empty track values"() {
+    def "No output when MP3 files have empty track values"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -175,7 +175,7 @@ class TrackTotalCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have empty track total values"() {
+    def "No output when MP3 files have empty track total values"() {
 
         setup:
         mp3Files.each { mp3File ->

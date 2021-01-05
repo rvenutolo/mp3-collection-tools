@@ -5,13 +5,13 @@ import static org.venutolo.mp3.Constants.REQUIRED_FIELDS
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class RequiredFieldsCheck extends AbstractMp3FileCheck {
 
-    RequiredFieldsCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    RequiredFieldsCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -20,10 +20,10 @@ class RequiredFieldsCheck extends AbstractMp3FileCheck {
         REQUIRED_FIELDS.each { field ->
             def fieldValues = tag.getAll(field.key)
             if (!fieldValues) {
-                warningOutput.write(mp3File, "Missing field: ${field.desc}")
+                output.write(mp3File, "Missing field: ${field.desc}")
             } else {
                 if (fieldValues.size() > 1) {
-                    warningOutput.write(mp3File, "Multiple values for field: ${field.desc}", fieldValues.join(', '))
+                    output.write(mp3File, "Multiple values for field: ${field.desc}", fieldValues.join(', '))
                 }
             }
         }

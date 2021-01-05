@@ -10,7 +10,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     private def checker = new OverlappingTrackCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new OverlappingTrackCheck(null)
@@ -50,7 +50,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files don't have tags"() {
+    def "No output when MP3 files don't have tags"() {
 
         setup:
         mp3Files.each {
@@ -66,7 +66,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
+    def "No output when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -87,7 +87,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have no track numbers"() {
+    def "No output when MP3 files have no track numbers"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -103,7 +103,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have distinct track values"() {
+    def "No output when MP3 files have distinct track values"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -124,7 +124,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when MP3 files have same track values"() {
+    def "Output when MP3 files have same track values"() {
 
         setup:
         mp3Files.each { mp3File ->

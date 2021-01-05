@@ -5,13 +5,13 @@ import static org.venutolo.mp3.fields.Field.TRACK
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class MissingTrackCheck extends AbstractMultipleMp3FilesCheck {
 
-    MissingTrackCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    MissingTrackCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -27,7 +27,7 @@ class MissingTrackCheck extends AbstractMultipleMp3FilesCheck {
         def maxTrackNumber = seenTrackNumbers.max()
         (1..maxTrackNumber).each { trackNumber ->
             if (!seenTrackNumbers.contains(trackNumber)) {
-                warningOutput.write(dir, "Missing track #${trackNumber}")
+                output.write(dir, "Missing track #${trackNumber}")
             }
         }
     }

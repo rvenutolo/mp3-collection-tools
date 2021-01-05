@@ -14,9 +14,9 @@ import org.venutolo.mp3.check.TagTypeCheck
 import org.venutolo.mp3.check.TrackFieldsCheck
 import org.venutolo.mp3.check.TrackTotalCheck
 import org.venutolo.mp3.check.YearFieldCheck
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
-class Main {
+class CheckMain {
 
     static void main(@Nonnull final String... args) {
         if (args.size() != 1) {
@@ -26,25 +26,25 @@ class Main {
     }
 
     static void runCollectionCheck(@Nonnull final File baseDir) {
-        def warningsOutput = new WarningOutput()
+        def output = new Output()
         def dirChecks = [
-            new GenericDirContentsCheck(warningsOutput),
-            new Mp3DirContentsCheck(warningsOutput),
-            new AlbumImageCheck(warningsOutput)
+            new GenericDirContentsCheck(output),
+            new Mp3DirContentsCheck(output),
+            new AlbumImageCheck(output)
         ]
         def filesChecks = [
-            new SameFieldValueCheck(warningsOutput),
-            new MissingTrackCheck(warningsOutput),
-            new OverlappingTrackCheck(warningsOutput),
-            new TrackTotalCheck(warningsOutput)
+            new SameFieldValueCheck(output),
+            new MissingTrackCheck(output),
+            new OverlappingTrackCheck(output),
+            new TrackTotalCheck(output)
         ]
         def fileChecks = [
-            new TagTypeCheck(warningsOutput),
-            new RequiredFieldsCheck(warningsOutput),
-            new ExtraneousFieldsCheck(warningsOutput),
-            new GenreFieldsCheck(warningsOutput),
-            new TrackFieldsCheck(warningsOutput),
-            new YearFieldCheck(warningsOutput)
+            new TagTypeCheck(output),
+            new RequiredFieldsCheck(output),
+            new ExtraneousFieldsCheck(output),
+            new GenreFieldsCheck(output),
+            new TrackFieldsCheck(output),
+            new YearFieldCheck(output)
         ]
         def collectionChecker = new Mp3CollectionChecker(dirChecks, filesChecks, fileChecks)
         collectionChecker.checkCollection(baseDir)

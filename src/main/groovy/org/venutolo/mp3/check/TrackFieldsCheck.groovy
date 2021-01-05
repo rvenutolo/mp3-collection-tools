@@ -8,13 +8,13 @@ import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 @Slf4j
 class TrackFieldsCheck extends AbstractMp3FileCheck {
 
-    TrackFieldsCheck(@Nonnull final WarningOutput warningOutput) {
-        super(log, warningOutput, true)
+    TrackFieldsCheck(@Nonnull final Output output) {
+        super(log, output, true)
     }
 
     @Override
@@ -24,7 +24,7 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
         def trackTotal = tag.getFirst(TRACK_TOTAL.key)
         if (track && trackTotal) {
             if (!bothMatchTwoDigitPattern(track, trackTotal) && !bothMatchThreeDigitPattern(track, trackTotal)) {
-                warningOutput.write(mp3File, 'Track and track total are not in ##/## format', "${track}/${trackTotal}")
+                output.write(mp3File, 'Track and track total are not in ##/## format', "${track}/${trackTotal}")
             }
         }
     }

@@ -11,7 +11,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     private def checker = new SameFieldValueCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new SameFieldValueCheck(null)
@@ -51,7 +51,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files don't have tags"() {
+    def "No output when MP3 files don't have tags"() {
 
         setup:
         mp3Files.each {
@@ -67,7 +67,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
+    def "No output when MP3 files have ID3v1 tags and don't have ID3v2 tags"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -88,7 +88,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have empty ID3v2 tags"() {
+    def "No output when MP3 files have empty ID3v2 tags"() {
 
         setup:
         mp3Files.each { mp3File ->
@@ -104,7 +104,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 files have same #field values"() {
+    def "No output when MP3 files have same #field values"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -128,7 +128,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when MP3 files have multiple #field values"() {
+    def "Output when MP3 files have multiple #field values"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->

@@ -13,7 +13,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     private def checker = new RequiredFieldsCheck(mockOutput)
 
-    def "NPE when WarningOutput is null"() {
+    def "NPE when output is null"() {
 
         when:
         new RequiredFieldsCheck(null)
@@ -33,7 +33,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file doesn't have tags"() {
+    def "No output when MP3 file doesn't have tags"() {
 
         setup:
         assert !mp3File.hasID3v1Tag()
@@ -47,7 +47,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
+    def "No output when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
         def tag = new ID3v1Tag()
@@ -64,7 +64,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when missing #field"() {
+    def "Output when missing #field"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -85,7 +85,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "No warning when all required fields are populated"() {
+    def "No output when all required fields are populated"() {
 
         setup:
         def tag = new ID3v24Tag()
@@ -103,7 +103,7 @@ class RequiredFieldsCheckSpec extends CheckSpecification {
 
     }
 
-    def "Warning when multiple #field"() {
+    def "Output when multiple #field"() {
 
         setup:
         def tag = new ID3v24Tag()

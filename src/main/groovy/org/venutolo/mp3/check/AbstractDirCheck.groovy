@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull
 
 import javax.annotation.Nonnull
 import org.slf4j.Logger
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 abstract class AbstractDirCheck implements DirCheck {
 
@@ -12,15 +12,15 @@ abstract class AbstractDirCheck implements DirCheck {
     private final Logger log
 
     @Nonnull
-    protected final WarningOutput warningOutput
+    protected final Output output
 
     private final boolean requiresMp3Files
 
     AbstractDirCheck(
-        @Nonnull final Logger log, @Nonnull final WarningOutput warningOutput, final boolean requiresMp3Files
+        @Nonnull final Logger log, @Nonnull final Output output, final boolean requiresMp3Files
     ) {
         this.log = requireNonNull(log, 'Logger cannot be null')
-        this.warningOutput = requireNonNull(warningOutput, 'Warning output cannot be null')
+        this.output = requireNonNull(output, 'Output cannot be null')
         this.requiresMp3Files = requiresMp3Files
     }
 

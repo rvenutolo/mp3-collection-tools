@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
 import org.slf4j.Logger
-import org.venutolo.mp3.output.WarningOutput
+import org.venutolo.mp3.output.Output
 
 abstract class AbstractMultipleMp3FilesCheck implements MultipleMp3FilesCheck {
 
@@ -13,15 +13,15 @@ abstract class AbstractMultipleMp3FilesCheck implements MultipleMp3FilesCheck {
     private final Logger log
 
     @Nonnull
-    protected final WarningOutput warningOutput
+    protected final Output output
 
     private final boolean requiresId3v2Tags
 
     AbstractMultipleMp3FilesCheck(
-        @Nonnull final Logger log, @Nonnull final WarningOutput warningOutput, final boolean requiresId3v2Tags
+        @Nonnull final Logger log, @Nonnull final Output output, final boolean requiresId3v2Tags
     ) {
         this.log = requireNonNull(log, 'Logger cannot be null')
-        this.warningOutput = requireNonNull(warningOutput, 'Warning output cannot be null')
+        this.output = requireNonNull(output, 'Output cannot be null')
         this.requiresId3v2Tags = requiresId3v2Tags
     }
 
