@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.fields.Field.TRACK
 import static org.venutolo.mp3.fields.Field.TRACK_TOTAL

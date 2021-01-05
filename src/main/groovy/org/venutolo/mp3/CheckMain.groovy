@@ -1,19 +1,19 @@
 package org.venutolo.mp3
 
 import javax.annotation.Nonnull
-import org.venutolo.mp3.check.AlbumImageCheck
-import org.venutolo.mp3.check.ExtraneousFieldsCheck
-import org.venutolo.mp3.check.GenericDirContentsCheck
-import org.venutolo.mp3.check.GenreFieldsCheck
-import org.venutolo.mp3.check.MissingTrackCheck
-import org.venutolo.mp3.check.Mp3DirContentsCheck
-import org.venutolo.mp3.check.OverlappingTrackCheck
-import org.venutolo.mp3.check.RequiredFieldsCheck
-import org.venutolo.mp3.check.SameFieldValueCheck
-import org.venutolo.mp3.check.TagTypeCheck
-import org.venutolo.mp3.check.TrackFieldsCheck
-import org.venutolo.mp3.check.TrackTotalCheck
-import org.venutolo.mp3.check.YearFieldCheck
+import org.venutolo.mp3.check.impl.AlbumImageCheck
+import org.venutolo.mp3.check.impl.ExtraneousFieldsCheck
+import org.venutolo.mp3.check.impl.GenericDirContentsCheck
+import org.venutolo.mp3.check.impl.GenreFieldsCheck
+import org.venutolo.mp3.check.impl.MissingTrackCheck
+import org.venutolo.mp3.check.impl.Mp3DirContentsCheck
+import org.venutolo.mp3.check.impl.OverlappingTrackCheck
+import org.venutolo.mp3.check.impl.RequiredFieldsCheck
+import org.venutolo.mp3.check.impl.SameFieldValueCheck
+import org.venutolo.mp3.check.impl.TagTypeCheck
+import org.venutolo.mp3.check.impl.TrackFieldsCheck
+import org.venutolo.mp3.check.impl.TrackTotalCheck
+import org.venutolo.mp3.check.impl.YearFieldCheck
 import org.venutolo.mp3.output.Output
 
 class CheckMain {

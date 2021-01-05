@@ -1,7 +1,8 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
+import org.venutolo.mp3.check.AbstractDirCheck
 import org.venutolo.mp3.output.Output
 
 @Slf4j

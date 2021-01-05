@@ -1,10 +1,11 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.Constants.FOUR_DIGITS
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
+import org.venutolo.mp3.check.AbstractMp3FileCheck
 import org.venutolo.mp3.fields.Field
 import org.venutolo.mp3.output.Output
 

@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.Constants.TARGET_PIXELS

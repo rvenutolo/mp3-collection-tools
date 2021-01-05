@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.jaudiotagger.tag.images.ArtworkFactory.createArtworkFromFile
 import static org.venutolo.mp3.Constants.EXTRANEOUS_FIELDS

@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import java.nio.file.Files
 import org.venutolo.mp3.specs.CheckSpecification

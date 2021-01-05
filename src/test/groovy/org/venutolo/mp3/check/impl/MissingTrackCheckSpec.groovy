@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.fields.Field.TRACK
 
@@ -6,14 +6,14 @@ import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
 import org.venutolo.mp3.specs.CheckSpecification
 
-class OverlappingTrackCheckSpec extends CheckSpecification {
+class MissingTrackCheckSpec extends CheckSpecification {
 
-    private def checker = new OverlappingTrackCheck(mockOutput)
+    private def checker = new MissingTrackCheck(mockOutput)
 
     def "NPE when output is null"() {
 
         when:
-        new OverlappingTrackCheck(null)
+        new MissingTrackCheck(null)
 
         then:
         thrown(NullPointerException)
@@ -53,9 +53,9 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
     def "No output when MP3 files don't have tags"() {
 
         setup:
-        mp3Files.each { mp3File ->
-            assert !mp3File.hasID3v1Tag()
-            assert !mp3File.hasID3v2Tag()
+        mp3Files.each { mp3FIle ->
+            assert !mp3FIle.hasID3v1Tag()
+            assert !mp3FIle.hasID3v2Tag()
         }
 
         when:
@@ -71,7 +71,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         setup:
         mp3Files.each { mp3File ->
             def tag = new ID3v1Tag()
-            tag.setField(TRACK.key, '1')
+            tag.setField(TRACK.key, '9')
             mp3File.setID3v1Tag(tag)
         }
         mp3Files.each { mp3File ->
@@ -101,7 +101,7 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "No output when MP3 files have distinct track values"() {
+    def "No output when MP3 files have no missing tracks"() {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
@@ -122,12 +122,12 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
 
     }
 
-    def "Output when MP3 files have same track values"() {
+    def "Output when MP3 files have missing track"() {
 
         setup:
         mp3Files.each { mp3File ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, '1')
+            tag.setField(TRACK.key, '3')
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.each { mp3File ->
@@ -139,7 +139,29 @@ class OverlappingTrackCheckSpec extends CheckSpecification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, 'Multiple track #1')
+        1 * mockOutput.write(dir, 'Missing track #1')
+        1 * mockOutput.write(dir, 'Missing track #2')
+        0 * mockOutput._
+
+    }
+
+    def "No output when MP3 files have empty track values"() {
+
+        setup:
+        mp3Files.each { mp3File ->
+            def tag = new ID3v24Tag()
+            tag.setField(TRACK.key, '')
+            mp3File.setID3v2Tag(tag)
+        }
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key).isEmpty()
+        }
+
+        when:
+        checker.check(mp3Files, dir)
+
+        then:
         0 * mockOutput._
 
     }

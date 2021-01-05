@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.Constants.ALLOWED_GENRES
 import static org.venutolo.mp3.fields.Field.GENRE

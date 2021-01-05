@@ -1,4 +1,4 @@
-package org.venutolo.mp3.check
+package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.Constants.TARGET_PIXELS
@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import javax.imageio.ImageIO
+import org.venutolo.mp3.check.AbstractDirCheck
 import org.venutolo.mp3.output.Output
 
 @Slf4j
