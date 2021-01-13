@@ -4,9 +4,9 @@ import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v22Tag
 import org.jaudiotagger.tag.id3.ID3v23Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
-import org.venutolo.mp3.specs.CheckSpecification
+import org.venutolo.mp3.specs.Mp3Specification
 
-class TagTypeCheckSpec extends CheckSpecification {
+class TagTypeCheckSpec extends Mp3Specification {
 
     private def checker = new TagTypeCheck(mockOutput)
 

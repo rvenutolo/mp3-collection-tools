@@ -13,7 +13,7 @@ import org.venutolo.mp3.fields.Field
 import org.venutolo.mp3.output.Output
 import spock.lang.Specification
 
-class CheckSpecification extends Specification {
+class Mp3Specification extends Specification {
 
     protected static final Collection<Field> ID3_FIELDS = [ARTIST, ALBUM, TITLE, TRACK, YEAR, GENRE, COMMENT]
     protected static final File RESOURCE_DIR = new File('src/test/resources')

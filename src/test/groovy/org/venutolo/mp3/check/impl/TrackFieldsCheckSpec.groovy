@@ -5,9 +5,9 @@ import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
-import org.venutolo.mp3.specs.CheckSpecification
+import org.venutolo.mp3.specs.Mp3Specification
 
-class TrackFieldsCheckSpec extends CheckSpecification {
+class TrackFieldsCheckSpec extends Mp3Specification {
 
     private def checker = new TrackFieldsCheck(mockOutput)
 

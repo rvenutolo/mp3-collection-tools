@@ -5,10 +5,10 @@ import org.jaudiotagger.audio.mp3.MP3File
 import org.venutolo.mp3.check.DirCheck
 import org.venutolo.mp3.check.Mp3FileCheck
 import org.venutolo.mp3.check.MultipleMp3FilesCheck
-import org.venutolo.mp3.specs.CheckSpecification
+import org.venutolo.mp3.specs.Mp3Specification
 import spock.lang.TempDir
 
-class Mp3CollectionCheckerSpec extends CheckSpecification {
+class Mp3CollectionCheckerSpec extends Mp3Specification {
 
     private DirCheck mockDirCheck1 = Mock(DirCheck)
     private DirCheck mockDirCheck2 = Mock(DirCheck)

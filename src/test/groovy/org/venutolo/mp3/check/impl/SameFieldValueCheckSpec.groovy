@@ -5,9 +5,9 @@ import static org.venutolo.mp3.fields.Field.GENRE
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
-import org.venutolo.mp3.specs.CheckSpecification
+import org.venutolo.mp3.specs.Mp3Specification
 
-class SameFieldValueCheckSpec extends CheckSpecification {
+class SameFieldValueCheckSpec extends Mp3Specification {
 
     private def checker = new SameFieldValueCheck(mockOutput)
 
@@ -21,7 +21,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
 
     }
 
-    def "NPE when #field is null"() {
+    def "NPE when #param is null"() {
 
         when:
         checker.check(mp3s, dir)
@@ -30,7 +30,7 @@ class SameFieldValueCheckSpec extends CheckSpecification {
         thrown(NullPointerException)
 
         where:
-        field            | mp3s           | dir
+        param            | mp3s           | dir
         'MP3 collection' | null           | RESOURCE_DIR
         'dir'            | [newMp3File()] | null
 

@@ -1,10 +1,10 @@
 package org.venutolo.mp3.check.impl
 
 import java.nio.file.Files
-import org.venutolo.mp3.specs.CheckSpecification
+import org.venutolo.mp3.specs.Mp3Specification
 import spock.lang.TempDir
 
-class GenericDirContentsCheckSpec extends CheckSpecification {
+class GenericDirContentsCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir

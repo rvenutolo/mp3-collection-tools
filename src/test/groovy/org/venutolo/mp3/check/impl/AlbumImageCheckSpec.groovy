@@ -4,10 +4,10 @@ import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.Constants.TARGET_PIXELS
 
 import java.nio.file.Files
-import org.venutolo.mp3.specs.CheckSpecification
+import org.venutolo.mp3.specs.Mp3Specification
 import spock.lang.TempDir
 
-class AlbumImageCheckSpec extends CheckSpecification {
+class AlbumImageCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
