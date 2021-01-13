@@ -139,8 +139,8 @@ class MissingTrackCheckSpec extends Mp3Specification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, 'Missing track #1')
-        1 * mockOutput.write(dir, 'Missing track #2')
+        1 * mockOutput.write(dir, "Missing ${TRACK.desc} #1")
+        1 * mockOutput.write(dir, "Missing ${TRACK.desc} #2")
         0 * mockOutput._
 
     }

@@ -147,7 +147,7 @@ class TrackTotalCheckSpec extends Mp3Specification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, 'Wrong total tracks')
+        1 * mockOutput.write(dir, "Wrong ${TRACK_TOTAL.desc}")
         0 * mockOutput._
 
     }

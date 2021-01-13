@@ -129,7 +129,11 @@ class TrackFieldsCheckSpec extends Mp3Specification {
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
+        1 * mockOutput.write(
+            mp3File,
+            "${TRACK.desc.capitalize()} and ${TRACK_TOTAL.desc} are not in ##/## format",
+            "${trackVal}/${totalVal}"
+        )
         0 * mockOutput._
 
         where:
@@ -178,7 +182,11 @@ class TrackFieldsCheckSpec extends Mp3Specification {
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, 'Track and track total are not in ##/## format', "${trackVal}/${totalVal}")
+        1 * mockOutput.write(
+            mp3File,
+            "${TRACK.desc.capitalize()} and ${TRACK_TOTAL.desc} are not in ##/## format",
+            "${trackVal}/${totalVal}"
+        )
         0 * mockOutput._
 
         where:

@@ -25,7 +25,11 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
         def trackTotal = tag.getFirst(TRACK_TOTAL.key)
         if (track && trackTotal) {
             if (!bothMatchTwoDigitPattern(track, trackTotal) && !bothMatchThreeDigitPattern(track, trackTotal)) {
-                output.write(mp3File, 'Track and track total are not in ##/## format', "${track}/${trackTotal}")
+                output.write(
+                    mp3File,
+                    "${TRACK.desc.capitalize()} and ${TRACK_TOTAL.desc} are not in ##/## format",
+                    "${track}/${trackTotal}"
+                )
             }
         }
     }

@@ -139,7 +139,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, 'Multiple track #1')
+        1 * mockOutput.write(dir, "Multiple ${TRACK.desc} #1")
         0 * mockOutput._
 
     }

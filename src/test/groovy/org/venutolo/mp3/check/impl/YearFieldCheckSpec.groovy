@@ -89,7 +89,7 @@ class YearFieldCheckSpec extends Mp3Specification {
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, 'Year not in #### format', yearVal)
+        1 * mockOutput.write(mp3File, "${YEAR.desc.capitalize()} not in #### format", yearVal)
         0 * mockOutput._
 
         where:

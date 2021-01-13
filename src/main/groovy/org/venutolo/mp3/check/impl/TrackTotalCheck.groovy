@@ -32,7 +32,7 @@ class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
             .collect { s -> s as Integer }
             .any { trackTotal -> trackTotal != maxTrackNumber }
         if (anyTrackTotalWrong) {
-            output.write(dir, 'Wrong total tracks')
+            output.write(dir, "Wrong ${TRACK_TOTAL.desc}")
         }
     }
 

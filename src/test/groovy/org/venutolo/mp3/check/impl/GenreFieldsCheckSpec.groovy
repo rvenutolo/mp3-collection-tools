@@ -90,7 +90,7 @@ class GenreFieldsCheckSpec extends Mp3Specification {
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, 'Unexpected genre: BAD_GENRE')
+        1 * mockOutput.write(mp3File, "Unexpected ${GENRE.desc}: BAD_GENRE")
         0 * mockOutput._
 
     }

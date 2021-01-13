@@ -28,7 +28,7 @@ class MissingTrackCheck extends AbstractMultipleMp3FilesCheck {
         def maxTrackNumber = seenTrackNumbers.max()
         (1..maxTrackNumber)
             .findAll { trackNum -> !seenTrackNumbers.contains(trackNum) }
-            .each { trackNum -> output.write(dir, "Missing track #${trackNum}") }
+            .each { trackNum -> output.write(dir, "Missing ${TRACK.desc} #${trackNum}") }
     }
 
 }
