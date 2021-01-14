@@ -24,7 +24,7 @@ class Mp3Specification extends Specification {
 
     protected def mockOutput = Mock(Output)
     protected def mp3File = newMp3File()
-    protected def mp3Files = [newMp3File(), newMp3File()]
+    protected def mp3Files = (1..3).collect {newMp3File() }
     protected def dir = RESOURCE_DIR
     protected def jpgFile = new File("${RESOURCE_DIR.path}/test.jpg")
 

@@ -129,10 +129,12 @@ class SameFieldValueCheckSpec extends Mp3Specification {
     def "Output when MP3 files have multiple #field values"() {
 
         setup:
+        def fieldValues = []
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
             // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
             def fieldValue = field == GENRE ? "genre${idx + 1}" : "${idx + 1}"
+            fieldValues << fieldValue
             tag.setField(field.key, fieldValue)
             mp3File.setID3v2Tag(tag)
         }
@@ -145,7 +147,7 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, "Non-uniform ${field.desc} values", field == GENRE ? 'genre1, genre2' : '1, 2')
+        1 * mockOutput.write(dir, "Non-uniform ${field.desc} values", fieldValues.join(', '))
         0 * mockOutput._
 
         where:

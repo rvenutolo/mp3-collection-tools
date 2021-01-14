@@ -113,7 +113,7 @@ class TrackTotalCheckSpec extends Mp3Specification {
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
             tag.setField(TRACK.key, "${idx + 1}")
-            tag.setField(TRACK_TOTAL.key, '2')
+            tag.setField(TRACK_TOTAL.key, mp3Files.size() as String)
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.each { mp3File ->
