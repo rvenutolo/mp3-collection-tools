@@ -33,7 +33,7 @@ abstract class AbstractDirCheck implements DirCheck {
         if (!requiresMp3Files || (requiresMp3Files && hasMp3s)) {
             checkInternal(dir)
         }
-        log.debug('Checked MP3 files in: {}', dir.canonicalPath)
+        log.debug('Checked dir: {}', dir.canonicalPath)
     }
 
     protected abstract void checkInternal(@Nonnull final File dir)
