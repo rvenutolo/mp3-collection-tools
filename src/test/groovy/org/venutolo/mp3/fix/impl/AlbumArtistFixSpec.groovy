@@ -26,7 +26,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
     // a single field are the same or not. 'Same' and 'different' refer to if the
     // artist and album artist field values are the same or not.
 
-    private static enum ArtistCondition {
+    static enum ArtistCondition {
 
         ARTIST_EMPTY('empty artists'),
         ARTIST_UNIFORM('uniform artists'),
@@ -45,7 +45,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
 
     }
 
-    private static enum AlbumArtistCondition {
+    static enum AlbumArtistCondition {
 
         ALBUM_ARTIST_EMPTY('empty album artists'),
         ALBUM_ARTIST_SAME('uniform same album artist'),
