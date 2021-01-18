@@ -35,11 +35,11 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
     }
 
     private static boolean bothMatchTwoDigitPattern(@Nonnull final String s1, @Nonnull final String s2) {
-        return TWO_DIGITS.matcher(s1).matches() && TWO_DIGITS.matcher(s2).matches()
+        s1 ==~ TWO_DIGITS && s2 ==~ TWO_DIGITS
     }
 
     private static boolean bothMatchThreeDigitPattern(@Nonnull final String s1, @Nonnull final String s2) {
-        return THREE_DIGITS.matcher(s1).matches() && THREE_DIGITS.matcher(s2).matches()
+        s1 ==~ THREE_DIGITS && s2 ==~ THREE_DIGITS
     }
 
 }
