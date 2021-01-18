@@ -24,7 +24,7 @@ class Mp3Specification extends Specification {
 
     protected def mockOutput = Mock(Output)
     protected def mp3File = newMp3File()
-    protected def mp3Files = (1..4).collect { idx ->
+    protected def mp3Files = (0..3).collect { idx ->
         def mp3File = newMp3File()
         // give each file a distinct file name
         // file has to exist at call to constructor, so set file after construction
