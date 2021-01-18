@@ -17,7 +17,7 @@ class RequiredFieldsCheck extends AbstractMp3FileCheck {
 
     @Override
     protected void checkInternal(@Nonnull final MP3File mp3File) {
-        def tag = mp3File.getID3v2TagAsv24()
+        def tag = mp3File.getID3v2Tag()
         REQUIRED_FIELDS.each { field ->
             def fieldValues = tag.getAll(field.key)
             if (!fieldValues) {

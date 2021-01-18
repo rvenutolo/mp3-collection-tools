@@ -18,7 +18,7 @@ class OverlappingTrackCheck extends AbstractMultipleMp3FilesCheck {
     @Override
     protected void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
         mp3Files
-            .countBy { mp3File -> mp3File.getID3v2TagAsv24().getFirst(TRACK.key) }
+            .countBy { mp3File -> mp3File.getID3v2Tag().getFirst(TRACK.key) }
             .findAll { trackNum, count -> trackNum && count > 1 }
             .sort()
             .each { trackNum, count -> output.write(dir, "Multiple ${TRACK.desc} #${trackNum}") }

@@ -18,7 +18,7 @@ class GenreFieldsCheck extends AbstractMp3FileCheck {
 
     @Override
     protected void checkInternal(@Nonnull final MP3File mp3File) {
-        def genre = mp3File.getID3v2TagAsv24().getFirst(GENRE.key)
+        def genre = mp3File.getID3v2Tag().getFirst(GENRE.key)
         if (genre && !ALLOWED_GENRES.contains(genre)) {
             output.write(mp3File, "Unexpected ${GENRE.desc}: ${genre}")
         }

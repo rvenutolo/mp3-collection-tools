@@ -87,7 +87,7 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         tag.setField(field.key, '1')
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2TagAsv24().getFirst(field.key)
+        assert mp3File.getID3v2Tag().getFirst(field.key)
 
         when:
         checker.check(mp3File)
@@ -108,7 +108,7 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         tag.setField(field.key, '1')
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2TagAsv24().getFirst(field.key)
+        assert mp3File.getID3v2Tag().getFirst(field.key)
 
         when:
         checker.check(mp3File)
@@ -129,7 +129,7 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         tag.addField(createArtworkFromFile(jpgFile))
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2TagAsv24().getFirstArtwork()
+        assert mp3File.getID3v2Tag().getFirstArtwork()
 
         when:
         checker.check(mp3File)

@@ -20,7 +20,7 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
 
     @Override
     protected void checkInternal(@Nonnull final MP3File mp3File) {
-        def tag = mp3File.getID3v2TagAsv24()
+        def tag = mp3File.getID3v2Tag()
         def track = tag.getFirst(TRACK.key)
         def trackTotal = tag.getFirst(TRACK_TOTAL.key)
         if (track && trackTotal) {

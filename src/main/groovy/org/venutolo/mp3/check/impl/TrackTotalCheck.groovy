@@ -19,7 +19,7 @@ class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
     @Override
     protected void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
         def maxTrackNumber = mp3Files
-            .collect { mp3File -> mp3File.getID3v2TagAsv24().getFirst(TRACK.key) }
+            .collect { mp3File -> mp3File.getID3v2Tag().getFirst(TRACK.key) }
             .findAll { s -> !s.isEmpty() }
             .collect { s -> s as Integer }
             .max()
@@ -27,7 +27,7 @@ class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
             return
         }
         def anyTrackTotalWrong = mp3Files
-            .collect { mp3File -> mp3File.getID3v2TagAsv24().getFirst(TRACK_TOTAL.key) }
+            .collect { mp3File -> mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) }
             .findAll { s -> !s.isEmpty() }
             .collect { s -> s as Integer }
             .any { trackTotal -> trackTotal != maxTrackNumber }
