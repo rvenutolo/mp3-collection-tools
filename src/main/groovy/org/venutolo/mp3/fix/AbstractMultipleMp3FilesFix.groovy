@@ -36,9 +36,8 @@ abstract class AbstractMultipleMp3FilesFix implements MultipleMp3FilesFix {
         if (dir.isFile()) {
             throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
         }
-        def fixed = requiresId3v2Tags ?
-            fixInternal(mp3Files.findAll { it.hasID3v2Tag() }, dir) :
-            fixInternal(mp3Files, dir)
+        def fixed = (!requiresId3v2Tags || mp3Files.every { mp3File -> mp3File.hasID3v2Tag() })
+            ? fixInternal(mp3Files, dir) : false
         if (fixed) {
             log.debug('Fixed MP3 files in: {}', dir.canonicalPath)
         } else {
