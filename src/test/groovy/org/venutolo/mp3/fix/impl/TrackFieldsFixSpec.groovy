@@ -7,14 +7,14 @@ import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
-class TrackFieldFixSpec extends Mp3Specification {
+class TrackFieldsFixSpec extends Mp3Specification {
 
-    private def fixer = new TrackFieldFix(mockOutput)
+    private def fixer = new TrackFieldsFix(mockOutput)
 
     def "NPE when output is null"() {
 
         when:
-        new TrackFieldFix(null)
+        new TrackFieldsFix(null)
 
         then:
         thrown(NullPointerException)
@@ -72,17 +72,21 @@ class TrackFieldFixSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v24Tag()
-        tag.setField(TRACK.key, trackVal)
-        tag.setField(TRACK_TOTAL.key, totalVal)
+        if (trackVal) {
+            tag.setField(TRACK.key, trackVal)
+        }
+        if (totalVal) {
+            tag.setField(TRACK_TOTAL.key, totalVal)
+        }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
         if (trackVal) {
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
         } else {
             assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
         }
         if (totalVal) {
-            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
         } else {
             assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
         }
@@ -98,53 +102,64 @@ class TrackFieldFixSpec extends Mp3Specification {
 
         and:
         mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
+        mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
 
         where:
-        // NOTE: track values, if non-empty, cannot be non-numeric
-        trackDesc      | totalDesc      | trackVal | totalVal
-        'empty'        | 'empty'        | ''       | ''
-        'empty'        | 'single digit' | ''       | '1'
-        'empty'        | 'double digit' | ''       | '11'
-        'single digit' | 'empty'        | '1'      | ''
-        'single digit' | 'single digit' | '1'      | '1'
-        'double digit' | 'empty'        | '11'     | ''
-        'double digit' | 'single digit' | '11'     | '1'
-        'double digit' | 'double digit' | '11'     | '11'
-        'triple digit' | 'empty'        | '111'    | ''
-        'triple digit' | 'single digit' | '111'    | '1'
-        'triple digit' | 'double digit' | '111'    | '11'
-        'triple digit' | 'triple digit' | '111'    | '111'
-
+        trackDesc    | totalDesc    | trackVal | totalVal
+        'empty'      | 'empty'      | ''       | ''
+        'empty'      | 'non-padded' | ''       | '2'
+        'non-padded' | 'empty'      | '1'      | ''
+        'non-padded' | 'non-padded' | '1'      | '2'
     }
 
     def "Output, returns true, and sets track when track is #trackDesc and track total is #totalDesc"() {
 
         setup:
         def tag = new ID3v24Tag()
-        tag.setField(TRACK.key, trackVal)
-        tag.setField(TRACK_TOTAL.key, totalVal)
+        if (trackVal) {
+            tag.setField(TRACK.key, trackVal)
+        }
+        if (totalVal) {
+            tag.setField(TRACK_TOTAL.key, totalVal)
+        }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(TRACK.key)
-        assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
+        if (trackVal) {
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
+        } else {
+            assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
+        }
+        if (totalVal) {
+            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
+        } else {
+            assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
+        }
 
         when:
         def fixed = fixer.fix(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, 'Formatted track', newTrackVal)
+        if (newTrackVal) {
+            mockOutput.write(mp3File, "Removed ${TRACK.desc} 0-padding")
+        }
+        if (newTotalVal) {
+            mockOutput.write(mp3File, "Removed ${TRACK_TOTAL.desc} 0-padding")
+        }
 
         and:
         fixed
 
         and:
-        mp3File.getID3v2Tag().getFirst(TRACK.key) == newTrackVal
+        mp3File.getID3v2Tag().getFirst(TRACK.key) == (newTrackVal ?: trackVal)
+        mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == (newTotalVal ?: totalVal)
 
         where:
-        trackDesc      | totalDesc      | trackVal | totalVal | newTrackVal
-        'single digit' | 'double digit' | '1'      | '11'     | '01'
-        'single digit' | 'triple digit' | '1'      | '111'    | '001'
-        'double digit' | 'triple digit' | '11'     | '111'    | '011'
+        trackDesc    | totalDesc    | trackVal | totalVal | newTrackVal | newTotalVal
+        'empty'      | 'padded'     | ''       | '02'     | null        | '2'
+        'non-padded' | 'padded'     | '1'      | '02'     | null        | '2'
+        'padded'     | 'empty'      | '01'     | ''       | '1'         | null
+        'padded'     | 'non-padded' | '01'     | '2'      | '1'         | null
+        'padded'     | 'padded'     | '01'     | '02'     | '1'         | '2'
 
     }
 
