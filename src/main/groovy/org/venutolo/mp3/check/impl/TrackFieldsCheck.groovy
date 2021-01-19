@@ -1,7 +1,5 @@
 package org.venutolo.mp3.check.impl
 
-import static org.venutolo.mp3.Constants.THREE_DIGITS
-import static org.venutolo.mp3.Constants.TWO_DIGITS
 import static org.venutolo.mp3.fields.Field.TRACK
 import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
 
@@ -23,23 +21,12 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
         def tag = mp3File.getID3v2Tag()
         def track = tag.getFirst(TRACK.key)
         def trackTotal = tag.getFirst(TRACK_TOTAL.key)
-        if (track && trackTotal) {
-            if (!bothMatchTwoDigitPattern(track, trackTotal) && !bothMatchThreeDigitPattern(track, trackTotal)) {
-                output.write(
-                    mp3File,
-                    "${TRACK.desc.capitalize()} and ${TRACK_TOTAL.desc} are not in ##/## format",
-                    "${track}/${trackTotal}"
-                )
+        [TRACK, TRACK_TOTAL].each { field ->
+            def val = tag.getFirst(field.key)
+            if (val.startsWith('0')) {
+                output.write(mp3File, "${field.desc} has 0-padding", val)
             }
         }
-    }
-
-    private static boolean bothMatchTwoDigitPattern(@Nonnull final String s1, @Nonnull final String s2) {
-        s1 ==~ TWO_DIGITS && s2 ==~ TWO_DIGITS
-    }
-
-    private static boolean bothMatchThreeDigitPattern(@Nonnull final String s1, @Nonnull final String s2) {
-        s1 ==~ THREE_DIGITS && s2 ==~ THREE_DIGITS
     }
 
 }

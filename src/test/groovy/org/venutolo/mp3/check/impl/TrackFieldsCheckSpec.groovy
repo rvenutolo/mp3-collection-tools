@@ -62,7 +62,7 @@ class TrackFieldsCheckSpec extends Mp3Specification {
 
     }
 
-    def "No output when has neither track or track total"() {
+    def "No output when has empty track and track total"() {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
@@ -78,32 +78,15 @@ class TrackFieldsCheckSpec extends Mp3Specification {
 
     }
 
-    def "No output when has track but not track total"() {
+    def "No output when has non-padded track and track total"() {
 
         setup:
         def tag = new ID3v24Tag()
         tag.setField(TRACK.key, '1')
-        mp3File.setID3v2Tag(tag)
-        assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(TRACK.key) == '1'
-        assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
-
-        when:
-        checker.check(mp3File)
-
-        then:
-        0 * mockOutput._
-
-    }
-
-    def "No output when has track total but not track"() {
-
-        setup:
-        def tag = new ID3v24Tag()
         tag.setField(TRACK_TOTAL.key, '1')
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
+        assert mp3File.getID3v2Tag().getFirst(TRACK.key) == '1'
         assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == '1'
 
         when:
@@ -114,90 +97,86 @@ class TrackFieldsCheckSpec extends Mp3Specification {
 
     }
 
-    def "Output when #desc digit track and track total"() {
+    def "No output when has #trackDesc track and #totalDesc track total"() {
 
         setup:
         def tag = new ID3v24Tag()
-        tag.setField(TRACK.key, trackVal)
-        tag.setField(TRACK_TOTAL.key, totalVal)
+        if (trackVal) {
+            tag.setField(TRACK.key, trackVal)
+        }
+        if (totalVal) {
+            tag.setField(TRACK_TOTAL.key, totalVal)
+        }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
-        assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
+        if (trackVal) {
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
+        } else {
+            assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
+        }
+        if (totalVal) {
+            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
+        } else {
+            assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
+        }
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(
-            mp3File,
-            "${TRACK.desc.capitalize()} and ${TRACK_TOTAL.desc} are not in ##/## format",
-            "${trackVal}/${totalVal}"
-        )
         0 * mockOutput._
 
         where:
-        desc        | trackVal | totalVal
-        'single'    | '1'      | '2'
-        'quadruple' | '0001'   | '0002'
+        trackDesc    | totalDesc    | trackVal | totalVal
+        'empty'      | 'empty'      | ''       | ''
+        'empty'      | 'non-padded' | ''       | '1'
+        'non-padded' | 'empty'      | '1'      | ''
+        'non-padded' | 'non-padded' | '1'      | '1'
 
     }
 
-    def "No output when #desc digit track and track total"() {
+    def "Output when has #trackDesc track and #totalDesc track total"() {
 
         setup:
         def tag = new ID3v24Tag()
-        tag.setField(TRACK.key, trackVal)
-        tag.setField(TRACK_TOTAL.key, totalVal)
+        if (trackVal) {
+            tag.setField(TRACK.key, trackVal)
+        }
+        if (totalVal) {
+            tag.setField(TRACK_TOTAL.key, totalVal)
+        }
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
-        assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
+        if (trackVal) {
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
+        } else {
+            assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
+        }
+        if (totalVal) {
+            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
+        } else {
+            assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
+        }
 
         when:
         checker.check(mp3File)
 
         then:
+        if (trackVal.startsWith('0')) {
+            1 * mockOutput.write(mp3File, "${TRACK.desc} has 0-padding", trackVal)
+        }
+        if (totalVal.startsWith('0')) {
+            1 * mockOutput.write(mp3File, "${TRACK_TOTAL.desc} has 0-padding", totalVal)
+        }
         0 * mockOutput._
 
         where:
-        desc     | trackVal | totalVal
-        'double' | '01'     | '02'
-        'triple' | '001'    | '002'
-
-    }
-
-    def "Output when #trackDesc digit track and #totalDesc digit track total"() {
-
-        setup:
-        def tag = new ID3v24Tag()
-        tag.setField(TRACK.key, trackVal)
-        tag.setField(TRACK_TOTAL.key, totalVal)
-        mp3File.setID3v2Tag(tag)
-        assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
-        assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == totalVal
-
-        when:
-        checker.check(mp3File)
-
-        then:
-        1 * mockOutput.write(
-            mp3File,
-            "${TRACK.desc.capitalize()} and ${TRACK_TOTAL.desc} are not in ##/## format",
-            "${trackVal}/${totalVal}"
-        )
-        0 * mockOutput._
-
-        where:
-        trackDesc | trackVal | totalDesc | totalVal
-        'single'  | '1'      | 'double'  | '02'
-        'single'  | '1'      | 'triple'  | '002'
-        'double'  | '01'     | 'single'  | '2'
-        'double'  | '01'     | 'triple'  | '002'
-        'triple'  | '001'    | 'single'  | '2'
-        'triple'  | '001'    | 'double'  | '02'
-
+        trackDesc    | totalDesc    | trackVal | totalVal
+        'empty'      | 'padded'     | ''       | '01'
+        'non-padded' | 'padded'     | '1'      | '01'
+        'padded'     | 'empty'      | '01'     | ''
+        'padded'     | 'non-padded' | '01'     | '1'
+        'padded'     | 'padded'     | '01'     | '01'
     }
 
 }
