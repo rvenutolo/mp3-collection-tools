@@ -15,6 +15,8 @@ import spock.lang.Specification
 
 class Mp3Specification extends Specification {
 
+    protected static final int NUM_MP3_FILES = 4
+
     protected static final Collection<Field> ID3_FIELDS = [ARTIST, ALBUM, TITLE, TRACK, YEAR, GENRE, COMMENT]
     protected static final File RESOURCE_DIR = new File('src/test/resources')
 
@@ -24,7 +26,7 @@ class Mp3Specification extends Specification {
 
     protected def mockOutput = Mock(Output)
     protected def mp3File = newMp3File()
-    protected def mp3Files = (0..3).collect { idx ->
+    protected def mp3Files = (0..(NUM_MP3_FILES - 1)).collect { idx ->
         def mp3File = newMp3File()
         // give each file a distinct file name
         // file has to exist at call to constructor, so set file after construction
