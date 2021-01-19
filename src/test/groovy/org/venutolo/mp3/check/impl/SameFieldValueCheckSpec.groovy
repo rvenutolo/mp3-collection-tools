@@ -140,7 +140,8 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         }
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(field.key) == (field == GENRE ? "genre${idx + 1}" : "${idx + 1}")
+            def fieldValue = (field == GENRE ? "genre${idx + 1}" : "${idx + 1}")
+            assert mp3File.getID3v2Tag().getFirst(field.key) == fieldValue
         }
 
         when:
