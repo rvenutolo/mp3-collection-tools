@@ -129,9 +129,9 @@ class TrackFieldsCheckSpec extends Mp3Specification {
         where:
         trackDesc    | totalDesc    | trackVal | totalVal
         'empty'      | 'empty'      | ''       | ''
-        'empty'      | 'non-padded' | ''       | '1'
+        'empty'      | 'non-padded' | ''       | '2'
         'non-padded' | 'empty'      | '1'      | ''
-        'non-padded' | 'non-padded' | '1'      | '1'
+        'non-padded' | 'non-padded' | '1'      | '2'
 
     }
 
@@ -172,11 +172,12 @@ class TrackFieldsCheckSpec extends Mp3Specification {
 
         where:
         trackDesc    | totalDesc    | trackVal | totalVal
-        'empty'      | 'padded'     | ''       | '01'
-        'non-padded' | 'padded'     | '1'      | '01'
+        'empty'      | 'padded'     | ''       | '02'
+        'non-padded' | 'padded'     | '1'      | '02'
         'padded'     | 'empty'      | '01'     | ''
-        'padded'     | 'non-padded' | '01'     | '1'
-        'padded'     | 'padded'     | '01'     | '01'
+        'padded'     | 'non-padded' | '01'     | '2'
+        'padded'     | 'padded'     | '01'     | '02'
+
     }
 
 }
