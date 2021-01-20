@@ -155,6 +155,8 @@ class AlbumArtistFixSpec extends Mp3Specification {
             tag.setField(ARTIST.key, 'artist')
             mp3File.setID3v1Tag(tag)
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v1Tag()
             assert mp3File.getID3v1Tag().getFirst(ARTIST.key) == 'artist'
@@ -226,9 +228,9 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_SAME:
                     if (idx % 2) {
-                        !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
                     } else {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
                     }
                     break
                 default:
@@ -378,47 +380,47 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     // do nothing
                     break
                 case ALBUM_ARTIST_SAME:
-                    mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                    assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
                     break
                 case ALBUM_ARTIST_DIFFERENT_UNIFORM:
-                    mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
+                    assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
                     break
                 case ALBUM_ARTIST_DIFFERENT_NON_UNIFORM:
-                    mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
+                    assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_SAME:
                     if (idx % 2) {
-                        !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
                     } else {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
                     }
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_DIFFERENT_UNIFORM:
                     if (idx % 2) {
-                        !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
                     } else {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
                     }
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_DIFFERENT_NON_UNIFORM:
                     if (idx % 2) {
-                        !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
                     } else {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
                     }
                     break
                 case ALBUM_ARTIST_MIX_SAME_DIFFERENT_UNIFORM:
                     if (idx % 2) {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
                     } else {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
                     }
                     break
                 case ALBUM_ARTIST_MIX_SAME_DIFFERENT_NON_UNIFORM:
                     if (idx % 2) {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
                     } else {
-                        mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
+                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
                     }
                     break
                 default:
