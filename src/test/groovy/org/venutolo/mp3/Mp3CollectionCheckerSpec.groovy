@@ -2,9 +2,9 @@ package org.venutolo.mp3
 
 import java.nio.file.Files
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.check.DirCheck
-import org.venutolo.mp3.check.Mp3FileCheck
-import org.venutolo.mp3.check.MultipleMp3FilesCheck
+import org.venutolo.mp3.process.check.DirCheck
+import org.venutolo.mp3.process.check.Mp3FileCheck
+import org.venutolo.mp3.process.check.MultipleMp3FilesCheck
 import org.venutolo.mp3.specs.Mp3Specification
 import spock.lang.TempDir
 

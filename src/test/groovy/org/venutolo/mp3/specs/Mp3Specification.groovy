@@ -1,27 +1,21 @@
 package org.venutolo.mp3.specs
 
-import static org.venutolo.mp3.fields.Field.ALBUM
-import static org.venutolo.mp3.fields.Field.ARTIST
-import static org.venutolo.mp3.fields.Field.COMMENT
-import static org.venutolo.mp3.fields.Field.DISC_NO
-import static org.venutolo.mp3.fields.Field.DISC_TOTAL
-import static org.venutolo.mp3.fields.Field.GENRE
-import static org.venutolo.mp3.fields.Field.RATING
-import static org.venutolo.mp3.fields.Field.TITLE
-import static org.venutolo.mp3.fields.Field.TRACK
-import static org.venutolo.mp3.fields.Field.TRACK_TOTAL
-import static org.venutolo.mp3.fields.Field.YEAR
+import static org.venutolo.mp3.Field.DISC_NO
+import static org.venutolo.mp3.Field.DISC_TOTAL
+import static org.venutolo.mp3.Field.RATING
+import static org.venutolo.mp3.Field.TRACK
+import static org.venutolo.mp3.Field.TRACK_TOTAL
 
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.fields.Field
-import org.venutolo.mp3.output.Output
+import org.venutolo.mp3.Field
+import org.venutolo.mp3.Output
 import spock.lang.Specification
 
 class Mp3Specification extends Specification {
 
     // these are the fields which won't accept non-numeric values
-    private static final Set<Field> NUMERIC_FIELDS = [TRACK, TRACK_TOTAL, DISC_NO, DISC_TOTAL, RATING]
+    protected static final Set<Field> NUMERIC_FIELDS = [TRACK, TRACK_TOTAL, DISC_NO, DISC_TOTAL, RATING]
 
     protected static final int NUM_MP3_FILES = 4
 
