@@ -1,7 +1,7 @@
 package org.venutolo.mp3.check.impl
 
 import static org.venutolo.mp3.Constants.SAME_VALUE_FIELDS
-import static org.venutolo.mp3.fields.Field.GENRE
+import static org.venutolo.mp3.fields.Field.ALBUM
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
 import org.jaudiotagger.tag.id3.ID3v24Tag
@@ -72,11 +72,12 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v1Tag()
-            tag.setAlbum("album${idx}")
+            tag.setAlbum(fieldVal(ALBUM, idx))
             mp3File.setID3v1Tag(tag)
         }
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v1Tag()
+            assert mp3File.getID3v1Tag().getFirst(ALBUM.key) == fieldVal(ALBUM, idx)
             assert !mp3File.hasID3v2Tag()
         }
 
@@ -91,8 +92,12 @@ class SameFieldValueCheckSpec extends Mp3Specification {
     def "No output when MP3 files have empty ID3v2 tags"() {
 
         setup:
-        mp3Files.each { mp3File -> mp3File.setID3v2Tag(new ID3v24Tag()) }
-        mp3Files.each { mp3File -> assert mp3File.hasID3v2Tag() }
+        mp3Files.each { mp3File ->
+            mp3File.setID3v2Tag(new ID3v24Tag())
+        }
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -106,49 +111,19 @@ class SameFieldValueCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v24Tag()
-        // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
-        def fieldValue = field == GENRE ? 'genre1' : '1'
-        tag.setField(field.key, fieldValue)
-        mp3Files.each { mp3File -> mp3File.setID3v2Tag(tag) }
+        tag.setField(field.key, fieldVal(field))
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(field.key) == fieldValue
-        }
-
-        when:
-        checker.check(mp3Files, dir)
-
-        then:
-        0 * mockOutput._
-
-        where:
-        field << SAME_VALUE_FIELDS
-
-    }
-
-    def "Output when MP3 files have multiple #field values"() {
-
-        setup:
-        def fieldValues = []
-        mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v24Tag()
-            // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
-            def fieldValue = field == GENRE ? "genre${idx + 1}" : "${idx + 1}"
-            fieldValues << fieldValue
-            tag.setField(field.key, fieldValue)
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.eachWithIndex { mp3File, idx ->
+        mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
-            def fieldValue = (field == GENRE ? "genre${idx + 1}" : "${idx + 1}")
-            assert mp3File.getID3v2Tag().getFirst(field.key) == fieldValue
+            assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
         }
 
         when:
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, "Non-uniform ${field.desc} values", fieldValues.join(', '))
         0 * mockOutput._
 
         where:

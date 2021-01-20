@@ -90,8 +90,12 @@ class MissingTrackCheckSpec extends Mp3Specification {
     def "No output when MP3 files have no track numbers"() {
 
         setup:
-        mp3Files.each { mp3File -> mp3File.setID3v2Tag(new ID3v24Tag()) }
-        mp3Files.each { mp3File -> assert mp3File.hasID3v2Tag() }
+        mp3Files.each { mp3File ->
+            mp3File.setID3v2Tag(new ID3v24Tag())
+        }
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -106,12 +110,12 @@ class MissingTrackCheckSpec extends Mp3Specification {
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, "${idx + 1}")
+            tag.setField(TRACK.key, fieldVal(TRACK, idx))
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
         }
 
         when:
@@ -127,41 +131,21 @@ class MissingTrackCheckSpec extends Mp3Specification {
         setup:
         mp3Files.each { mp3File ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, '3')
+            tag.setField(TRACK.key, NUM_MP3_FILES as String)
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == NUM_MP3_FILES as String
         }
 
         when:
         checker.check(mp3Files, dir)
 
         then:
-        1 * mockOutput.write(dir, "Missing ${TRACK.desc} #1")
-        1 * mockOutput.write(dir, "Missing ${TRACK.desc} #2")
-        0 * mockOutput._
-
-    }
-
-    def "No output when MP3 files have empty track values"() {
-
-        setup:
-        mp3Files.each { mp3File ->
-            def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, '')
-            mp3File.setID3v2Tag(tag)
+        (1..(NUM_MP3_FILES - 1)).each { idx ->
+            1 * mockOutput.write(dir, "Missing ${TRACK.desc} #${idx}")
         }
-        mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key).isEmpty()
-        }
-
-        when:
-        checker.check(mp3Files, dir)
-
-        then:
         0 * mockOutput._
 
     }

@@ -49,9 +49,11 @@ class GenreFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v1Tag()
-        tag.setGenre('BAD_GENRE')
+        // must use a defined genre, ex: Polka
+        tag.setGenre('Polka')
         mp3File.setID3v1Tag(tag)
         assert mp3File.hasID3v1Tag()
+        assert mp3File.getID3v1Tag().getFirstGenre() == 'Polka'
         assert !mp3File.hasID3v2Tag()
 
         when:
@@ -90,7 +92,7 @@ class GenreFieldsCheckSpec extends Mp3Specification {
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "Unexpected ${GENRE.desc}: BAD_GENRE")
+        1 * mockOutput.write(mp3File, "Unexpected ${GENRE.desc}", 'BAD_GENRE')
         0 * mockOutput._
 
     }

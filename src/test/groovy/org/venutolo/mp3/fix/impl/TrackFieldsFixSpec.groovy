@@ -52,7 +52,7 @@ class TrackFieldsFixSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v1Tag()
-        ID3_FIELDS.each { field -> tag.setField(field.key, '1') }
+        // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
         mp3File.setID3v1Tag(tag)
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()

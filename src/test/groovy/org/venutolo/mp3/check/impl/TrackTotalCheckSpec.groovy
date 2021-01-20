@@ -30,7 +30,7 @@ class TrackTotalCheckSpec extends Mp3Specification {
         thrown(NullPointerException)
 
         where:
-        param | mp3s | dir
+        param            | mp3s           | dir
         'MP3 collection' | null           | RESOURCE_DIR
         'dir'            | [newMp3File()] | null
 
@@ -71,10 +71,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v1Tag()
-            tag.setField(TRACK.key, "${idx + 1}")
             // id3v1 doesn't support total tracks
-            mp3File.setID3v1Tag(tag)
+            mp3File.setID3v1Tag(new ID3v1Tag())
         }
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v1Tag()
@@ -89,6 +87,37 @@ class TrackTotalCheckSpec extends Mp3Specification {
 
     }
 
+    def "No output when MP3 files don't all have ID3v2 tags (#numWithoutId3v2Tags without ID3v2 tag)"() {
+
+        setup:
+        mp3Files.eachWithIndex { mp3File, idx ->
+            if (idx >= numWithoutId3v2Tags) {
+                def tag = new ID3v24Tag()
+                tag.setField(TRACK.key, "${idx + 1}")
+                tag.setField(TRACK_TOTAL.key, "${idx + 1}")
+                mp3File.setID3v2Tag(tag)
+            }
+        }
+        mp3Files.eachWithIndex { mp3File, idx ->
+            if (idx < numWithoutId3v2Tags) {
+                assert !mp3File.hasID3v2Tag()
+            } else {
+                assert mp3File.getID3v2Tag().getFirst(TRACK.key) == "${idx + 1}"
+                assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == "${idx + 1}"
+            }
+        }
+
+        when:
+        checker.check(mp3Files, dir)
+
+        then:
+        0 * mockOutput._
+
+        where:
+        numWithoutId3v2Tags << (1..NUM_MP3_FILES)
+
+    }
+
     def "No output when MP3 files have no track total numbers"() {
 
         setup:
@@ -97,7 +126,10 @@ class TrackTotalCheckSpec extends Mp3Specification {
             tag.setField(TRACK.key, "${idx + 1}")
             mp3File.setID3v2Tag(new ID3v24Tag())
         }
-        mp3Files.each { mp3File -> assert mp3File.hasID3v2Tag() }
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+            assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -112,13 +144,14 @@ class TrackTotalCheckSpec extends Mp3Specification {
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, "${idx + 1}")
-            tag.setField(TRACK_TOTAL.key, mp3Files.size() as String)
+            tag.setField(TRACK.key, fieldVal(TRACK, idx))
+            tag.setField(TRACK_TOTAL.key, NUM_MP3_FILES as String)
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
+            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == NUM_MP3_FILES as String
         }
 
         when:
@@ -134,13 +167,14 @@ class TrackTotalCheckSpec extends Mp3Specification {
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, "${idx + 1}")
-            tag.setField(TRACK_TOTAL.key, "${idx + 1}")
+            tag.setField(TRACK.key, fieldVal(TRACK, idx))
+            tag.setField(TRACK_TOTAL.key, fieldVal(TRACK_TOTAL, idx))
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
+            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == fieldVal(TRACK_TOTAL, idx)
         }
 
         when:
@@ -157,13 +191,12 @@ class TrackTotalCheckSpec extends Mp3Specification {
         setup:
         mp3Files.each { mp3File ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, '')
             tag.setField(TRACK_TOTAL.key, '99')
             mp3File.setID3v2Tag(tag)
         }
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key).isEmpty()
+            assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
             assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == '99'
         }
 
@@ -178,16 +211,16 @@ class TrackTotalCheckSpec extends Mp3Specification {
     def "No output when MP3 files have empty track total values"() {
 
         setup:
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, '1')
+            tag.setField(TRACK.key, fieldVal(TRACK, idx))
             tag.setField(TRACK_TOTAL.key, '')
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == '1'
-            assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key).isEmpty()
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
+            assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
         }
 
         when:

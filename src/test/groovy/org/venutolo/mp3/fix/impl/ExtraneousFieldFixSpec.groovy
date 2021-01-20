@@ -53,9 +53,7 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
     def "No output and returns false when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
-        def tag = new ID3v1Tag()
-        ID3_FIELDS.each { field -> tag.setField(field.key, '1') }
-        mp3File.setID3v1Tag(tag)
+        mp3File.setID3v1Tag(new ID3v1Tag())
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
 

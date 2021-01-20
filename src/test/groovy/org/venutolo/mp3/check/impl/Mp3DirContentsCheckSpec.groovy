@@ -56,7 +56,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
     def "No output when all mp3 files with lowercase file extension"() {
 
         setup:
-        (1..3).each { idx -> Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath()) }
+        (1..3).each { idx ->
+            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+        }
 
         when:
         checker.check(tempDir)
@@ -69,7 +71,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
     def "No output when all mp3 files with lowercase file extension and album image"() {
 
         setup:
-        (1..3).each { idx -> Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath()) }
+        (1..3).each { idx ->
+            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+        }
         Files.copy(jpgFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
 
         when:
@@ -106,7 +110,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
         def lowercaseFolderJpg = new File("${tempDir}/folder.jpg")
         def randomFile1 = new File("${tempDir}/foo.jpg")
         def randomFile2 = new File("${tempDir}/bar.txt")
-        (1..3).each { idx -> Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath()) }
+        (1..3).each { idx ->
+            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+        }
         Files.copy(jpgFile.toPath(), lowercaseFolderJpg.toPath())
         Files.copy(jpgFile.toPath(), randomFile1.toPath())
         Files.copy(jpgFile.toPath(), randomFile2.toPath())

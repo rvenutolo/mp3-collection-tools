@@ -71,7 +71,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         setup:
         mp3Files.each { mp3File ->
             def tag = new ID3v1Tag()
-            tag.setField(TRACK.key, '1')
+            // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
             mp3File.setID3v1Tag(tag)
         }
         mp3Files.each { mp3File ->
@@ -90,8 +90,12 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
     def "No output when MP3 files have no track numbers"() {
 
         setup:
-        mp3Files.each { mp3File -> mp3File.setID3v2Tag(new ID3v24Tag()) }
-        mp3Files.each { mp3File -> assert mp3File.hasID3v2Tag() }
+        mp3Files.each { mp3File ->
+            mp3File.setID3v2Tag(new ID3v24Tag())
+        }
+        mp3Files.each { mp3File ->
+            assert mp3File.hasID3v2Tag()
+        }
 
         when:
         checker.check(mp3Files, dir)
@@ -106,12 +110,12 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
             def tag = new ID3v24Tag()
-            tag.setField(TRACK.key, "${idx + 1}")
+            tag.setField(TRACK.key, fieldVal(TRACK, idx))
             mp3File.setID3v2Tag(tag)
         }
-        mp3Files.each { mp3File ->
+        mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
         }
 
         when:
@@ -132,7 +136,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         }
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(TRACK.key)
+            assert mp3File.getID3v2Tag().getFirst(TRACK.key) == '1'
         }
 
         when:

@@ -3,6 +3,7 @@ package org.venutolo.mp3.check.impl
 import static org.jaudiotagger.tag.images.ArtworkFactory.createArtworkFromFile
 import static org.venutolo.mp3.Constants.EXTRANEOUS_FIELDS
 import static org.venutolo.mp3.Constants.REQUIRED_FIELDS
+import static org.venutolo.mp3.fields.Field.COMMENT
 import static org.venutolo.mp3.fields.Field.COVER_ART
 
 import org.jaudiotagger.tag.id3.ID3v1Tag
@@ -52,9 +53,11 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v1Tag()
-        ID3_FIELDS.each { field -> tag.setField(field.key, '1') }
+        tag.setComment('comment')
         mp3File.setID3v1Tag(tag)
+        assert COMMENT in EXTRANEOUS_FIELDS
         assert mp3File.hasID3v1Tag()
+        assert mp3File.getID3v1Tag().getFirst(COMMENT.key) == 'comment'
         assert !mp3File.hasID3v2Tag()
 
         when:
@@ -83,11 +86,10 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v24Tag()
-        // use '1' as value for all fields to fit both string and numeric fields
-        tag.setField(field.key, '1')
+        tag.setField(field.key, fieldVal(field))
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(field.key)
+        assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
 
         when:
         checker.check(mp3File)
@@ -104,11 +106,10 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v24Tag()
-        // use '1' as value for all fields to fit both string and numeric fields
-        tag.setField(field.key, '1')
+        tag.setField(field.key, fieldVal(field))
         mp3File.setID3v2Tag(tag)
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(field.key)
+        assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
 
         when:
         checker.check(mp3File)

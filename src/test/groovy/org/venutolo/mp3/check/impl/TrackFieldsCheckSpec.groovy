@@ -49,7 +49,7 @@ class TrackFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v1Tag()
-        tag.setField(TRACK.key, '1')
+        // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
         mp3File.setID3v1Tag(tag)
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
