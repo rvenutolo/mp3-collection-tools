@@ -1,13 +1,13 @@
 package org.venutolo.mp3.fix
 
-import static java.util.Objects.requireNonNull
-
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
 import org.slf4j.Logger
 import org.venutolo.mp3.output.Output
+import org.venutolo.mp3.traits.LogAndOutputValidation
+import org.venutolo.mp3.traits.Mp3FileProcess
 
-abstract class AbstractMp3FileFix implements Mp3FileFix {
+abstract class AbstractMp3FileFix implements Mp3FileFix, Mp3FileProcess, LogAndOutputValidation {
 
     @Nonnull
     private final Logger log
@@ -18,20 +18,26 @@ abstract class AbstractMp3FileFix implements Mp3FileFix {
     private final boolean requiresId3v2Tags
 
     AbstractMp3FileFix(@Nonnull final Logger log, @Nonnull final Output output, final boolean requiresId3v2Tags) {
-        this.log = requireNonNull(log, 'Logger cannot be null')
-        this.output = requireNonNull(output, 'Output cannot be null')
+        validateLogAndOutput(log, output)
+        this.log = log
+        this.output = output
         this.requiresId3v2Tags = requiresId3v2Tags
     }
 
     @Override
     boolean fix(@Nonnull final MP3File mp3File) {
-        log.debug('Fixing: {}', mp3File.file.canonicalPath)
-        requireNonNull(mp3File, 'MP3 file cannot be null')
-        def fixed = (!requiresId3v2Tags || (requiresId3v2Tags && mp3File.hasID3v2Tag())) ? fixInternal(mp3File) : false
-        if (fixed) {
-            log.debug('Fixed: {}', mp3File.file.canonicalPath)
+        validateMp3File(mp3File)
+        def fixed = false
+        if (shouldRunProcess(mp3File, requiresId3v2Tags)) {
+            log.debug('Fixing MP3 file: {}', mp3File.file.canonicalPath)
+            fixed = fixInternal(mp3File)
+            if (fixed) {
+                log.debug('Fixed MP3 file: {}', mp3File.file.canonicalPath)
+            } else {
+                log.debug('No fix applied to MP3 file: {}', mp3File.file.canonicalPath)
+            }
         } else {
-            log.debug('No fix applied: {}', mp3File.file.canonicalPath)
+            log.debug('Skipping MP3 file: {}', mp3File.file.canonicalPath)
         }
         fixed
     }

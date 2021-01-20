@@ -1,12 +1,12 @@
 package org.venutolo.mp3.fix
 
-import static java.util.Objects.requireNonNull
-
 import javax.annotation.Nonnull
 import org.slf4j.Logger
 import org.venutolo.mp3.output.Output
+import org.venutolo.mp3.traits.DirProcess
+import org.venutolo.mp3.traits.LogAndOutputValidation
 
-abstract class AbstractDirFix implements DirFix {
+abstract class AbstractDirFix implements DirFix, DirProcess, LogAndOutputValidation {
 
     @Nonnull
     private final Logger log
@@ -17,23 +17,28 @@ abstract class AbstractDirFix implements DirFix {
     private final boolean requiresMp3Files
 
     AbstractDirFix(@Nonnull final Logger log, @Nonnull final Output output, final boolean requiresMp3Files) {
-        this.log = requireNonNull(log, 'Logger cannot be null')
-        this.output = requireNonNull(output, 'Output cannot be null')
+        validateLogAndOutput(log, output)
+        this.log = log
+        this.output = output
         this.requiresMp3Files = requiresMp3Files
     }
 
     @Override
     boolean fix(@Nonnull final File dir) {
-        log.debug('Fixing dir: {}', dir.canonicalPath)
-        requireNonNull(dir, 'Directory cannot be null')
-        if (dir.isFile()) {
-            throw new IllegalArgumentException("${dir.canonicalPath} is not a directory")
+        validateDir(dir)
+        def fixed = false
+        if (shouldRunProcess(dir, requiresMp3Files)) {
+            log.debug('Fixing dir: {}', dir.canonicalPath)
+            fixed = fixInternal(dir)
+            if (fixed) {
+                log.debug('Fixed dir: {}', dir.canonicalPath)
+            } else {
+                log.debug('No fix applied to dir: {}', dir.canonicalPath)
+            }
+        } else {
+            log.debug('Skipping dir: {}', dir.canonicalPath)
         }
-        def hasMp3s = dir.listFiles().any { file -> file.name.toLowerCase().endsWith('.mp3') }
-        if (!requiresMp3Files || (requiresMp3Files && hasMp3s)) {
-            fixInternal(dir)
-        }
-        log.debug('Fixed dir: {}', dir.canonicalPath)
+        fixed
     }
 
     protected abstract boolean fixInternal(@Nonnull final File dir)

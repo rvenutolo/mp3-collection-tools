@@ -1,13 +1,13 @@
 package org.venutolo.mp3.check
 
-import static java.util.Objects.requireNonNull
-
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
 import org.slf4j.Logger
 import org.venutolo.mp3.output.Output
+import org.venutolo.mp3.traits.LogAndOutputValidation
+import org.venutolo.mp3.traits.Mp3FileProcess
 
-abstract class AbstractMp3FileCheck implements Mp3FileCheck {
+abstract class AbstractMp3FileCheck implements Mp3FileCheck, Mp3FileProcess, LogAndOutputValidation {
 
     @Nonnull
     private final Logger log
@@ -18,19 +18,22 @@ abstract class AbstractMp3FileCheck implements Mp3FileCheck {
     private final boolean requiresId3v2Tags
 
     AbstractMp3FileCheck(@Nonnull final Logger log, @Nonnull final Output output, final boolean requiresId3v2Tags) {
-        this.log = requireNonNull(log, 'Logger cannot be null')
-        this.output = requireNonNull(output, 'Output cannot be null')
+        validateLogAndOutput(log, output)
+        this.log = log
+        this.output = output
         this.requiresId3v2Tags = requiresId3v2Tags
     }
 
     @Override
     void check(@Nonnull final MP3File mp3File) {
-        log.debug('Checking: {}', mp3File.file.canonicalPath)
-        requireNonNull(mp3File, 'MP3 file cannot be null')
-        if (!requiresId3v2Tags || (requiresId3v2Tags && mp3File.hasID3v2Tag())) {
+        validateMp3File(mp3File)
+        if (shouldRunProcess(mp3File, requiresId3v2Tags)) {
+            log.debug('Checking MP3 file: {}', mp3File.file.canonicalPath)
             checkInternal(mp3File)
+            log.debug('Checked MP3 file: {}', mp3File.file.canonicalPath)
+        } else {
+            log.debug('Skipping MP3 file: {}', mp3File.file.canonicalPath)
         }
-        log.debug('Checked: {}', mp3File.file.canonicalPath)
     }
 
     protected abstract void checkInternal(@Nonnull final MP3File mp3File)
