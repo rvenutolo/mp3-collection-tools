@@ -74,6 +74,8 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
             // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
             mp3File.setID3v1Tag(tag)
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v1Tag()
             assert !mp3File.hasID3v2Tag()
@@ -93,6 +95,8 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         mp3Files.each { mp3File ->
             mp3File.setID3v2Tag(new ID3v24Tag())
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
         }
@@ -113,6 +117,8 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
             tag.setField(TRACK.key, fieldVal(TRACK, idx))
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
@@ -134,6 +140,8 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
             tag.setField(TRACK.key, '1')
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == '1'

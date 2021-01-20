@@ -50,6 +50,8 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v1Tag(new ID3v1Tag())
+
+        and:
         assert mp3File.hasID3v1Tag()
         REQUIRED_FIELDS.each { field ->
             assert !mp3File.getID3v1Tag().getFirst(field.key)
@@ -76,6 +78,8 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
                 tag.setField(field.key, fieldVal(field))
             }
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert !mp3File.getID3v2Tag().getFirst(missingField.key)
         REQUIRED_FIELDS
@@ -106,6 +110,8 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
             tag.setField(field.key, fieldVal(field))
         }
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         REQUIRED_FIELDS.each { field ->
             assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
@@ -116,41 +122,6 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
 
         then:
         0 * mockOutput._
-
-    }
-
-    def "Output when multiple #multipleField"() {
-
-        setup:
-        def tag = new ID3v24Tag()
-        tag.setField(TRACK.key, fieldVal(TRACK, 1))
-        tag.setField(TRACK_TOTAL.key, fieldVal(TRACK_TOTAL, 1))
-        // when setting genre to a numeric string, it will be converted to a desc string (ex: '1' -> 'Classic Rock')
-        def fieldValue = fieldVal(multipleField, 1)
-        def extraFieldValue = fieldVal(multipleField, 2)
-        REQUIRED_FIELDS.each { field ->
-            tag.setField(field.key, fieldValue)
-        }
-        tag.addField(multipleField.key, extraFieldValue)
-        mp3File.setID3v2Tag(tag)
-        assert mp3File.hasID3v2Tag()
-        REQUIRED_FIELDS.every { field ->
-            assert mp3File.getID3v2Tag().getFirst(field.key) == fieldValue
-        }
-        assert mp3File.getID3v2Tag().getAll(multipleField.key).toSet() == [fieldValue, extraFieldValue] as Set
-
-        when:
-        checker.check(mp3File)
-
-        then:
-        1 * mockOutput.write(
-            mp3File, "Multiple values for field: ${multipleField.desc}", "${fieldValue}, ${extraFieldValue}"
-        )
-        0 * mockOutput._
-
-        where:
-        // track and track total do not support multiple fields
-        multipleField << REQUIRED_FIELDS.findAll { field -> field != TRACK && field != TRACK_TOTAL }
 
     }
 

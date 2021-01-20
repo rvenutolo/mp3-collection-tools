@@ -54,6 +54,8 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v1Tag(new ID3v1Tag())
+
+        and:
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
 
@@ -72,6 +74,8 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
         assert mp3File.hasID3v2Tag()
 
         when:
@@ -92,6 +96,8 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
         // use '1' as value for all fields to fit both string and numeric fields
         tag.setField(field.key, '1')
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(field.key)
 
@@ -116,6 +122,8 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
         // use '1' as value for all fields to fit both string and numeric fields
         tag.setField(field.key, '1')
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(field.key)
 
@@ -143,6 +151,8 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
         def tag = new ID3v24Tag()
         tag.addField(createArtworkFromFile(jpgFile))
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirstArtwork()
 

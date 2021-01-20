@@ -55,6 +55,8 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         def tag = new ID3v1Tag()
         tag.setComment('comment')
         mp3File.setID3v1Tag(tag)
+
+        and:
         assert COMMENT in EXTRANEOUS_FIELDS
         assert mp3File.hasID3v1Tag()
         assert mp3File.getID3v1Tag().getFirst(COMMENT.key) == 'comment'
@@ -72,6 +74,8 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
         assert mp3File.hasID3v2Tag()
 
         when:
@@ -88,6 +92,8 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         def tag = new ID3v24Tag()
         tag.setField(field.key, fieldVal(field))
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
 
@@ -108,6 +114,8 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         def tag = new ID3v24Tag()
         tag.setField(field.key, fieldVal(field))
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
 
@@ -129,6 +137,8 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         def tag = new ID3v24Tag()
         tag.addField(createArtworkFromFile(jpgFile))
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirstArtwork()
 

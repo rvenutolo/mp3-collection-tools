@@ -74,6 +74,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
             // id3v1 doesn't support total tracks
             mp3File.setID3v1Tag(new ID3v1Tag())
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v1Tag()
             assert !mp3File.hasID3v2Tag()
@@ -98,6 +100,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
                 mp3File.setID3v2Tag(tag)
             }
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             if (idx < numWithoutId3v2Tags) {
                 assert !mp3File.hasID3v2Tag()
@@ -126,6 +130,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
             tag.setField(TRACK.key, "${idx + 1}")
             mp3File.setID3v2Tag(new ID3v24Tag())
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
             assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
@@ -148,6 +154,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
             tag.setField(TRACK_TOTAL.key, NUM_MP3_FILES as String)
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
@@ -171,6 +179,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
             tag.setField(TRACK_TOTAL.key, fieldVal(TRACK_TOTAL, idx))
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
@@ -194,6 +204,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
             tag.setField(TRACK_TOTAL.key, '99')
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
             assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
@@ -217,6 +229,8 @@ class TrackTotalCheckSpec extends Mp3Specification {
             tag.setField(TRACK_TOTAL.key, '')
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)

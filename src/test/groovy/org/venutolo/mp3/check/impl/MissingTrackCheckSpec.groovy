@@ -113,6 +113,8 @@ class MissingTrackCheckSpec extends Mp3Specification {
             tag.setField(TRACK.key, fieldVal(TRACK, idx))
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == fieldVal(TRACK, idx)
@@ -134,6 +136,8 @@ class MissingTrackCheckSpec extends Mp3Specification {
             tag.setField(TRACK.key, NUM_MP3_FILES as String)
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == NUM_MP3_FILES as String

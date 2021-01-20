@@ -51,6 +51,8 @@ class TrackFieldsCheckSpec extends Mp3Specification {
         def tag = new ID3v1Tag()
         // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
         mp3File.setID3v1Tag(tag)
+
+        and:
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
 
@@ -66,6 +68,8 @@ class TrackFieldsCheckSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert !mp3File.getID3v2Tag().getFirst(TRACK.key)
         assert !mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key)
@@ -85,6 +89,8 @@ class TrackFieldsCheckSpec extends Mp3Specification {
         tag.setField(TRACK.key, '1')
         tag.setField(TRACK_TOTAL.key, '1')
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(TRACK.key) == '1'
         assert mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) == '1'
@@ -108,6 +114,8 @@ class TrackFieldsCheckSpec extends Mp3Specification {
             tag.setField(TRACK_TOTAL.key, totalVal)
         }
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         if (trackVal) {
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal
@@ -146,6 +154,8 @@ class TrackFieldsCheckSpec extends Mp3Specification {
             tag.setField(TRACK_TOTAL.key, totalVal)
         }
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         if (trackVal) {
             assert mp3File.getID3v2Tag().getFirst(TRACK.key) == trackVal

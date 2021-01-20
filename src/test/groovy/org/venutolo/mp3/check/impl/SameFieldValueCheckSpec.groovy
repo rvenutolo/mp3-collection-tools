@@ -75,6 +75,8 @@ class SameFieldValueCheckSpec extends Mp3Specification {
             tag.setAlbum(fieldVal(ALBUM, idx))
             mp3File.setID3v1Tag(tag)
         }
+
+        and:
         mp3Files.eachWithIndex { mp3File, idx ->
             assert mp3File.hasID3v1Tag()
             assert mp3File.getID3v1Tag().getFirst(ALBUM.key) == fieldVal(ALBUM, idx)
@@ -95,6 +97,8 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         mp3Files.each { mp3File ->
             mp3File.setID3v2Tag(new ID3v24Tag())
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
         }
@@ -115,6 +119,8 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         mp3Files.each { mp3File ->
             mp3File.setID3v2Tag(tag)
         }
+
+        and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v2Tag()
             assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)

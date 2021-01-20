@@ -50,6 +50,8 @@ class YearFieldCheckSpec extends Mp3Specification {
         def tag = new ID3v1Tag()
         tag.setYear('2020-01-01')
         mp3File.setID3v1Tag(tag)
+
+        and:
         assert mp3File.hasID3v1Tag()
         assert !mp3File.hasID3v2Tag()
 
@@ -65,6 +67,8 @@ class YearFieldCheckSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert !mp3File.getID3v2Tag().getFirst(YEAR.key)
 
@@ -82,6 +86,8 @@ class YearFieldCheckSpec extends Mp3Specification {
         def tag = new ID3v24Tag()
         tag.setField(YEAR.key, yearVal)
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(YEAR.key) == yearVal
 
@@ -106,6 +112,8 @@ class YearFieldCheckSpec extends Mp3Specification {
         def tag = new ID3v24Tag()
         tag.setField(YEAR.key, '2020')
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getFirst(YEAR.key) == '2020'
 

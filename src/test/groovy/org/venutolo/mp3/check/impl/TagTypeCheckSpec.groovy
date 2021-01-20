@@ -35,6 +35,8 @@ class TagTypeCheckSpec extends Mp3Specification {
         setup:
         mp3File.setID3v1Tag(new ID3v1Tag())
         mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
         assert mp3File.hasID3v1Tag()
         assert mp3File.hasID3v2Tag()
 
@@ -65,6 +67,8 @@ class TagTypeCheckSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v2Tag(tag)
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getMajorVersion() == version
 
@@ -86,6 +90,8 @@ class TagTypeCheckSpec extends Mp3Specification {
 
         setup:
         mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
         assert mp3File.hasID3v2Tag()
         assert mp3File.getID3v2Tag().getMajorVersion() == 4
 
