@@ -24,16 +24,17 @@ class AlbumArtistFix extends AbstractMultipleMp3FilesFix {
             return false
         }
         def trackArtists = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().getAll(ARTIST.key) as List<String> }
-            .flatten()
+            .collect { mp3File -> mp3File.getID3v2Tag().getFirst(ARTIST.key) }
+            .findAll { artist -> !artist.isEmpty() }
             .unique() as List<String>
         if (!trackArtists || trackArtists.size() > 1) {
             return false
         }
         def trackArtist = trackArtists.first()
         def anyAlbumArtistDifferentThanTrackArtist = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().getAll(ALBUM_ARTIST.key) }
-            .any { albumArtists -> !albumArtists.isEmpty() && albumArtists != [trackArtist] }
+            .collect { mp3File -> mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) }
+            .findAll { albumArtist -> !albumArtist.isEmpty() }
+            .any { albumArtist -> albumArtist && albumArtist != trackArtist }
         if (anyAlbumArtistDifferentThanTrackArtist) {
             return false
         }
