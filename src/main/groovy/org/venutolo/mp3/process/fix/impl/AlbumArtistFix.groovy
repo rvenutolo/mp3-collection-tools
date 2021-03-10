@@ -45,8 +45,7 @@ class AlbumArtistFix extends AbstractMultipleMp3FilesFix {
                 mp3File.getID3v2Tag().setField(ALBUM_ARTIST.key, trackArtist)
                 output.write(mp3File, "Wrote: ${ALBUM_ARTIST.desc}", trackArtist)
             }
-        return true
+        true
     }
-
 
 }
