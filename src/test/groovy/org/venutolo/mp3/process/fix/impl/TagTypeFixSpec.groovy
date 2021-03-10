@@ -47,7 +47,7 @@ class TagTypeFixSpec extends Mp3Specification {
 
     }
 
-    def "Output, returns true, and removes ID3v1 tag when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
+    def "No output and returns false when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
         mp3File.setID3v1Tag(new ID3v1Tag())
@@ -60,15 +60,36 @@ class TagTypeFixSpec extends Mp3Specification {
         def fixed = fixer.fix(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, 'Removed ID3v1 tag')
         0 * mockOutput._
 
         and:
-        fixed
+        !fixed
+
+    }
+
+    def "No output and returns false when MP3 file doesn't have ID3v1 tag and has ID3v2.4 tag"() {
+
+        setup:
+        mp3File.setID3v2Tag(new ID3v24Tag())
+
+        and:
+        assert !mp3File.hasID3v1Tag()
+        assert mp3File.hasID3v2Tag()
+        assert mp3File.getID3v2Tag().getMajorVersion() == 4
+
+        when:
+        def fixed = fixer.fix(mp3File)
+
+        then:
+        0 * mockOutput._
+
+        and:
+        !fixed
 
         and:
         !mp3File.hasID3v1Tag()
-        !mp3File.hasID3v2Tag()
+        mp3File.hasID3v2Tag()
+        mp3File.getID3v2Tag().getMajorVersion() == 4
 
     }
 
@@ -163,32 +184,6 @@ class TagTypeFixSpec extends Mp3Specification {
         version | tag             | majorVersion
         '2.2'   | new ID3v22Tag() | 2
         '2.3'   | new ID3v23Tag() | 3
-
-    }
-
-    def "Output and returns false when MP3 file doesn't have ID3v1 tag and has ID3v2.4 tag"() {
-
-        setup:
-        mp3File.setID3v2Tag(new ID3v24Tag())
-
-        and:
-        assert !mp3File.hasID3v1Tag()
-        assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getMajorVersion() == 4
-
-        when:
-        def fixed = fixer.fix(mp3File)
-
-        then:
-        0 * mockOutput._
-
-        and:
-        !fixed
-
-        and:
-        !mp3File.hasID3v1Tag()
-        mp3File.hasID3v2Tag()
-        mp3File.getID3v2Tag().getMajorVersion() == 4
 
     }
 

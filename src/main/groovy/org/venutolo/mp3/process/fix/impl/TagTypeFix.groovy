@@ -18,7 +18,7 @@ class TagTypeFix extends AbstractMp3FileFix {
     @Override
     boolean fixInternal(@Nonnull final MP3File mp3File) {
         def fixed = false
-        if (mp3File.hasID3v1Tag()) {
+        if (mp3File.hasID3v1Tag() && mp3File.hasID3v2Tag()) {
             log.debug("Removing ID3v1 tag: {}", mp3File.file.canonicalPath)
             mp3File.setID3v1Tag(null)
             output.write(mp3File, 'Removed ID3v1 tag')
@@ -36,4 +36,5 @@ class TagTypeFix extends AbstractMp3FileFix {
         }
         fixed
     }
+
 }
