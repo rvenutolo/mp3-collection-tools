@@ -68,7 +68,7 @@ class AlbumImageCheckSpec extends Mp3Specification {
 
     }
 
-    def "Produces expected output for #width x #height album image"() {
+    def "Output for #width x #height album JPG image"() {
 
         setup:
         Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
@@ -96,6 +96,23 @@ class AlbumImageCheckSpec extends Mp3Specification {
         1500  | 500    || 0                | 0         | 1
         1500  | 1000   || 0                | 0         | 1
         1500  | 1500   || 0                | 1         | 0
+
+    }
+
+    def "Output when album image is a misnamed JPG"() {
+
+        setup:
+        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
+        def origImageFile = new File("${RESOURCE_DIR}/images/${TARGET_PIXELS}x${TARGET_PIXELS}.png")
+        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
+        Files.copy(origImageFile.toPath(), imageFile.toPath())
+
+        when:
+        checker.check(tempDir)
+
+        then:
+        1 * mockOutput.write(imageFile, 'Not expected image format', 'PNG')
+        0 * mockOutput._
 
     }
 

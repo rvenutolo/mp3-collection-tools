@@ -12,6 +12,7 @@ class Constants {
 
     public static final int ID3V2_TARGET_MAJOR_VERSION = 4
     public static final String ALBUM_IMAGE_FILENAME = 'Folder.jpg'
+    public static final String ALBUM_IMAGE_FORMAT = 'JPEG'
     public static final int TARGET_PIXELS = 1000
     public static final Pattern FOUR_DIGITS = ~$/\d{4}/$
     public static final Pattern FULL_DATE = ~$/\d{4}-\d{2}-\d{2}/$
