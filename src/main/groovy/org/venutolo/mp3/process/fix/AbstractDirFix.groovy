@@ -41,6 +41,7 @@ abstract class AbstractDirFix implements DirFix, DirProcess, LogAndOutputValidat
         fixed
     }
 
+    // Return true when mp3 tags should be written
     protected abstract boolean fixInternal(@Nonnull final File dir)
 
 }
