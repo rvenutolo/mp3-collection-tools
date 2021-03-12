@@ -30,17 +30,17 @@ class AlbumImageFilenameFix extends AbstractDirFix {
         output.write(fileToRename, "Renamed to: ${ALBUM_IMAGE_FILENAME}")
         // This fix doesn't require writing mp3 tags, so return false, even if
         // a fix was made
-        return false
+        false
     }
 
     private static boolean badFileNameCase(@Nonnull final File file) {
         // catch 'folder.jpg', 'FOLDER.JPG', etc
-        return file.name.toLowerCase() == ALBUM_IMAGE_FILENAME.toLowerCase()
+        file.name.toLowerCase() == ALBUM_IMAGE_FILENAME.toLowerCase()
     }
 
     private static boolean badFileExtension(@Nonnull final File file) {
         // catch 'Folder.jpeg', 'folder.jpeg', etc
-        return file.name.toLowerCase() == ALBUM_IMAGE_FILENAME.toLowerCase().replace('.jpg', '.jpeg')
+        file.name.toLowerCase() == ALBUM_IMAGE_FILENAME.toLowerCase().replace('.jpg', '.jpeg')
     }
 
 }
