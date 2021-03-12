@@ -6,6 +6,9 @@ import static org.venutolo.mp3.Field.RATING
 import static org.venutolo.mp3.Field.TRACK
 import static org.venutolo.mp3.Field.TRACK_TOTAL
 
+import com.mortennobel.imagescaling.ResampleFilters
+import com.mortennobel.imagescaling.ResampleOp
+import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
 import org.jaudiotagger.audio.mp3.MP3File
 import org.venutolo.mp3.Field
@@ -23,6 +26,14 @@ class Mp3Specification extends Specification {
 
     protected static MP3File newMp3File() {
         new MP3File("${RESOURCE_DIR.path}/test.mp3")
+    }
+
+    // This uses a faster filter than the similar resize method in ImageUtil
+    // as I don't care about quality during tests
+    protected BufferedImage fastResizeImage(@Nonnull final BufferedImage image, final int width, final int height) {
+        new ResampleOp(width, height)
+            .tap { setFilter(ResampleFilters.boxFilter) }
+            .filter(image, null)
     }
 
     protected static String fieldVal(@Nonnull final Field field) {
