@@ -93,63 +93,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
     }
 
-    def "No output and returns false when dir contains too small square #dimension x #dimension Folder.jpg"() {
-
-        setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origSizeImage = ImageUtil.readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg"))
-        def resizedImage = fastResizeImage(origSizeImage, dimension, dimension)
-        def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        ImageUtil.writeImage(resizedImage, albumImageFile)
-
-        when:
-        def fixed = fixer.fix(tempDir)
-
-        then:
-        0 * mockOutput._
-
-        and:
-        !fixed
-
-        and:
-        def readImage = ImageUtil.readImage(albumImageFile)
-        readImage.width == dimension
-        readImage.height == dimension
-
-        where:
-        dimension << [900, 999, 1000]
-
-    }
-
-    def "Output, returns false, and resizes image when dir contains large enough square #dimension x #dimension Folder.jpg"() {
-
-        setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origSizeImage = ImageUtil.readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg"))
-        def resizedImage = fastResizeImage(origSizeImage, dimension, dimension)
-        def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        ImageUtil.writeImage(resizedImage, albumImageFile)
-
-        when:
-        def fixed = fixer.fix(tempDir)
-
-        then:
-        1 * mockOutput.write(albumImageFile, 'Resized image', "${TARGET_PIXELS}x${TARGET_PIXELS}")
-
-        and:
-        !fixed
-
-        and:
-        def readImage = ImageUtil.readImage(albumImageFile)
-        readImage.width == TARGET_PIXELS
-        readImage.height == TARGET_PIXELS
-
-        where:
-        dimension << [1001, 1002, 1500]
-
-    }
-
-    def "No output and returns false when dir contains too small roughly-square #width x #height Folder.jpg"() {
+    def "No output, returns false, and does not resize image when image is #width x #height (#desc)"() {
 
         setup:
         Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
@@ -173,17 +117,30 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
         readImage.height == height
 
         where:
-        width | height
-        500   | 501
-        501   | 500
-        900   | 901
-        901   | 900
-        999   | 1000
-        1000  | 999
+        width | height | desc
+        900   | 900    | 'too small square'
+        999   | 999    | 'too small square'
+        1000  | 1000   | 'too small square'
+        500   | 501    | 'too small roughly-square'
+        501   | 500    | 'too small roughly-square'
+        900   | 901    | 'too small roughly-square'
+        901   | 900    | 'too small roughly-square'
+        999   | 1000   | 'too small roughly-square'
+        1000  | 999    | 'too small roughly-square'
+        500   | 550    | 'too small non-square'
+        550   | 500    | 'too small non-square'
+        900   | 950    | 'too small non-square'
+        950   | 900    | 'too small non-square'
+        979   | 1000   | 'too small non-square'
+        1000  | 979    | 'too small non-square'
+        1000  | 1021   | 'large enough non-square'
+        1021  | 1000   | 'large enough non-square'
+        2000  | 2041   | 'large enough non-square'
+        2041  | 2000   | 'large enough non-square'
 
     }
 
-    def "No output, returns false, and resizes image when dir contains large enough roughly-square #width x #height Folder.jpg"() {
+    def "No output, returns false, and resizes image when image is #width x #height (#desc)"() {
 
         setup:
         Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
@@ -197,6 +154,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
         then:
         1 * mockOutput.write(albumImageFile, 'Resized image', "${TARGET_PIXELS}x${TARGET_PIXELS}")
+        0 * mockOutput._
 
         and:
         !fixed
@@ -207,81 +165,18 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
         readImage.height == TARGET_PIXELS
 
         where:
-        width | height
-        1000  | 1001
-        1001  | 1000
-        1000  | 1020
-        1020  | 1000
-        2000  | 2001
-        2001  | 2000
-        2000  | 2040
-        2040  | 2000
-
-    }
-
-    def "No output and returns false when dir contains too small non-square #width x #height Folder.jpg"() {
-
-        setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origSizeImage = ImageUtil.readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg"))
-        def resizedImage = fastResizeImage(origSizeImage, width, height)
-        def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        ImageUtil.writeImage(resizedImage, albumImageFile)
-
-        when:
-        def fixed = fixer.fix(tempDir)
-
-        then:
-        0 * mockOutput._
-
-        and:
-        !fixed
-
-        and:
-        def readImage = ImageUtil.readImage(albumImageFile)
-        readImage.width == width
-        readImage.height == height
-
-        where:
-        width | height
-        500   | 550
-        550   | 500
-        900   | 950
-        950   | 900
-        979   | 1000
-        1000  | 979
-
-    }
-
-    def "No output, returns false, and resizes image when dir contains large enough non-square #width x #height Folder.jpg"() {
-
-        setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origSizeImage = ImageUtil.readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg"))
-        def resizedImage = fastResizeImage(origSizeImage, width, height)
-        def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        ImageUtil.writeImage(resizedImage, albumImageFile)
-
-        when:
-        def fixed = fixer.fix(tempDir)
-
-        then:
-        0 * mockOutput._
-
-        and:
-        !fixed
-
-        and:
-        def readImage = ImageUtil.readImage(albumImageFile)
-        readImage.width == width
-        readImage.height == height
-
-        where:
-        width | height
-        1000  | 1021
-        1021  | 1000
-        2000  | 2041
-        2041  | 2000
+        width | height | desc
+        1001  | 1001   | 'large enough square'
+        1002  | 1002   | 'large enough square'
+        1500  | 1500   | 'large enough square'
+        1000  | 1001   | 'large enough roughly-square'
+        1001  | 1000   | 'large enough roughly-square'
+        1000  | 1020   | 'large enough roughly-square'
+        1020  | 1000   | 'large enough roughly-square'
+        2000  | 2001   | 'large enough roughly-square'
+        2001  | 2000   | 'large enough roughly-square'
+        2000  | 2040   | 'large enough roughly-square'
+        2040  | 2000   | 'large enough roughly-square'
 
     }
 
