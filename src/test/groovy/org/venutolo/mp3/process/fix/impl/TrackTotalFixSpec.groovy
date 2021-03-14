@@ -14,7 +14,7 @@ class TrackTotalFixSpec extends Mp3Specification {
     def "NPE when output is null"() {
 
         when:
-        new AlbumArtistFix(null)
+        new TrackTotalFix(null)
 
         then:
         thrown(NullPointerException)

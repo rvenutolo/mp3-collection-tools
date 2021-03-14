@@ -13,7 +13,7 @@ class TagTypeFixSpec extends Mp3Specification {
     def "NPE when output is null"() {
 
         when:
-        new ExtraneousFieldFix(null)
+        new TagTypeFix(null)
 
         then:
         thrown(NullPointerException)

@@ -6,7 +6,6 @@ import static org.venutolo.mp3.process.util.ImageUtil.readImage
 import static org.venutolo.mp3.process.util.ImageUtil.writeImage
 
 import java.nio.file.Files
-import org.venutolo.mp3.process.util.ImageUtil
 import org.venutolo.mp3.specs.Mp3Specification
 import spock.lang.TempDir
 
@@ -20,7 +19,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
     def "NPE when output is null"() {
 
         when:
-        new AlbumImageFilenameFix(null)
+        new AlbumImageResizeFix(null)
 
         then:
         thrown(NullPointerException)
