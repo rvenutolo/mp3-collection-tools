@@ -3,11 +3,11 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FORMAT
 import static org.venutolo.mp3.Constants.TARGET_PIXELS
+import static org.venutolo.mp3.process.util.ImageUtil.getImageFormat
+import static org.venutolo.mp3.process.util.ImageUtil.readImage
 
 import groovy.util.logging.Slf4j
-import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
-import javax.annotation.Nullable
 import org.venutolo.mp3.Output
 import org.venutolo.mp3.process.check.AbstractDirCheck
 import org.venutolo.mp3.process.util.ImageUtil
@@ -27,10 +27,11 @@ class AlbumImageCheck extends AbstractDirCheck {
             output.write(dir, 'No album image')
             return
         }
-        def image = readImage(albumArtFile)
-        if (!image) {
+        def imageOptional = readImage(albumArtFile, output)
+        if (!imageOptional.isPresent()) {
             return
         }
+        def image = imageOptional.get()
         def imageWidth = image.getWidth()
         def imageHeight = image.getHeight()
         if (imageWidth < TARGET_PIXELS && imageHeight < TARGET_PIXELS) {
@@ -42,29 +43,13 @@ class AlbumImageCheck extends AbstractDirCheck {
         if (imageWidth != imageHeight) {
             output.write(albumArtFile, 'Not square', "${imageWidth}x${imageHeight}")
         }
-        def imageFormat = getImageFormat(albumArtFile)
+        def imageFormatOptional = getImageFormat(albumArtFile, output)
+        if (!imageFormatOptional.isPresent()) {
+            return
+        }
+        def imageFormat = imageFormatOptional.get()
         if (imageFormat && imageFormat != ALBUM_IMAGE_FORMAT) {
             output.write(albumArtFile, 'Not expected image format', imageFormat)
-        }
-    }
-
-    @Nullable
-    private BufferedImage readImage(@Nonnull final File imageFile) {
-        try {
-            ImageUtil.readImage(imageFile)
-        } catch (final Exception e) {
-            output.write(imageFile, 'Exception when reading image', e.message)
-            null
-        }
-    }
-
-    @Nullable
-    private String getImageFormat(@Nonnull final File imageFile) {
-        try {
-            ImageUtil.getImageFormat(imageFile)
-        } catch (final Exception e) {
-            output.write(imageFile, 'Exception when getting image format', e.message)
-            null
         }
     }
 

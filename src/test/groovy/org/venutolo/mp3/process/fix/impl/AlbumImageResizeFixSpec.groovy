@@ -2,6 +2,8 @@ package org.venutolo.mp3.process.fix.impl
 
 import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.Constants.TARGET_PIXELS
+import static org.venutolo.mp3.process.util.ImageUtil.readImage
+import static org.venutolo.mp3.process.util.ImageUtil.writeImage
 
 import java.nio.file.Files
 import org.venutolo.mp3.process.util.ImageUtil
@@ -97,10 +99,10 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
         setup:
         Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origSizeImage = ImageUtil.readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg"))
+        def origSizeImage = readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg")).get()
         def resizedImage = fastResizeImage(origSizeImage, width, height)
         def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        ImageUtil.writeImage(resizedImage, albumImageFile)
+        writeImage(resizedImage, albumImageFile)
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -112,7 +114,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
         !fixed
 
         and:
-        def readImage = ImageUtil.readImage(albumImageFile)
+        def readImage = readImage(albumImageFile).get()
         readImage.width == width
         readImage.height == height
 
@@ -144,10 +146,10 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
         setup:
         Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origSizeImage = ImageUtil.readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg"))
+        def origSizeImage = readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg")).get()
         def resizedImage = fastResizeImage(origSizeImage, width, height)
         def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        ImageUtil.writeImage(resizedImage, albumImageFile)
+        writeImage(resizedImage, albumImageFile)
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -160,7 +162,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
         !fixed
 
         and:
-        def readImage = ImageUtil.readImage(albumImageFile)
+        def readImage = readImage(albumImageFile).get()
         readImage.width == TARGET_PIXELS
         readImage.height == TARGET_PIXELS
 
