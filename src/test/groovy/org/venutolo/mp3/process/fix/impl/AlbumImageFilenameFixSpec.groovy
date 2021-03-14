@@ -108,7 +108,7 @@ class AlbumImageFilenameFixSpec extends Mp3Specification {
         def fixed = fixer.fix(tempDir)
 
         then:
-        1 * mockOutput.write(badFile, "Renamed to: ${ALBUM_IMAGE_FILENAME}")
+        1 * mockOutput.write(badFile, 'Renamed', ALBUM_IMAGE_FILENAME)
 
         and:
         !fixed

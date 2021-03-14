@@ -27,7 +27,7 @@ class AlbumImageFilenameFix extends AbstractDirFix {
         }
         def fileToRename = misnamedFiles.first()
         Files.move(fileToRename.toPath(), albumImageFile.toPath())
-        output.write(fileToRename, "Renamed to: ${ALBUM_IMAGE_FILENAME}")
+        output.write(fileToRename, 'Renamed', ALBUM_IMAGE_FILENAME)
         // This fix doesn't require writing mp3 tags, so return false, even if
         // a fix was made
         false
