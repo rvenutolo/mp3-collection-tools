@@ -17,8 +17,8 @@ class AlbumImageFilenameFix extends AbstractDirFix {
 
     @Override
     protected boolean fixInternal(@Nonnull final File dir) {
-        def hasAlbumImageFile = dir.listFiles().any { file -> file.name == ALBUM_IMAGE_FILENAME }
-        if (hasAlbumImageFile) {
+        def albumImageFile = new File(dir, ALBUM_IMAGE_FILENAME)
+        if (albumImageFile.exists()) {
             return false
         }
         def misnamedFiles = dir.listFiles().findAll { file -> badFileNameCase(file) || badFileExtension(file) }
@@ -26,7 +26,7 @@ class AlbumImageFilenameFix extends AbstractDirFix {
             return false
         }
         def fileToRename = misnamedFiles.first()
-        Files.move(fileToRename.toPath(), fileToRename.toPath().resolveSibling(ALBUM_IMAGE_FILENAME))
+        Files.move(fileToRename.toPath(), albumImageFile.toPath())
         output.write(fileToRename, "Renamed to: ${ALBUM_IMAGE_FILENAME}")
         // This fix doesn't require writing mp3 tags, so return false, even if
         // a fix was made
