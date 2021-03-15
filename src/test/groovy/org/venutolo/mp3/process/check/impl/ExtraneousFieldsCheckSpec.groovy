@@ -4,7 +4,6 @@ import static org.venutolo.mp3.core.Constants.EXTRANEOUS_FIELDS
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
 import static org.venutolo.mp3.core.Field.COMMENT
 import static org.venutolo.mp3.core.Field.COVER_ART
-import static org.venutolo.mp3.core.Field.RATING
 
 import org.venutolo.mp3.core.ID3v1Tag
 import org.venutolo.mp3.core.ID3v2Tag
