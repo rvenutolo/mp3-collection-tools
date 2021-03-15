@@ -1,7 +1,7 @@
 package org.venutolo.mp3.process.fix.impl
 
-import static org.venutolo.mp3.Field.ALBUM_ARTIST
-import static org.venutolo.mp3.Field.ARTIST
+import static org.venutolo.mp3.core.Field.ALBUM_ARTIST
+import static org.venutolo.mp3.core.Field.ARTIST
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.AlbumArtistCondition.ALBUM_ARTIST_DIFFERENT_NON_UNIFORM
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.AlbumArtistCondition.ALBUM_ARTIST_DIFFERENT_UNIFORM
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.AlbumArtistCondition.ALBUM_ARTIST_EMPTY
@@ -15,8 +15,8 @@ import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.ArtistConditi
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.ArtistCondition.ARTIST_NON_UNIFORM
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.ArtistCondition.ARTIST_UNIFORM
 
-import org.jaudiotagger.tag.id3.ID3v1Tag
-import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.core.ID3v1Tag
+import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class AlbumArtistFixSpec extends Mp3Specification {
@@ -152,14 +152,14 @@ class AlbumArtistFixSpec extends Mp3Specification {
         setup:
         mp3Files.each { mp3File ->
             def tag = new ID3v1Tag()
-            tag.setField(ARTIST.key, 'artist')
+            tag.set(ARTIST, 'artist')
             mp3File.setID3v1Tag(tag)
         }
 
         and:
         mp3Files.each { mp3File ->
             assert mp3File.hasID3v1Tag()
-            assert mp3File.getID3v1Tag().getFirst(ARTIST.key) == 'artist'
+            assert mp3File.getID3v1Tag().get(ARTIST) == 'artist'
             assert !mp3File.hasID3v2Tag()
         }
 
@@ -187,10 +187,10 @@ class AlbumArtistFixSpec extends Mp3Specification {
 
         and:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v24Tag()
+            def tag = new ID3v2Tag()
             switch (artistCondition) {
                 case ARTIST_UNIFORM:
-                    tag.setField(ARTIST.key, 'artist')
+                    tag.set(ARTIST, 'artist')
                     break
                 default:
                     throw new IllegalArgumentException("Unexpected artist case: ${artistCondition}")
@@ -203,7 +203,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     if (idx % 2) {
                         // do nothing
                     } else {
-                        tag.setField(ALBUM_ARTIST.key, 'artist')
+                        tag.set(ALBUM_ARTIST, 'artist')
                     }
                     break
                 default:
@@ -217,7 +217,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
             assert mp3File.hasID3v2Tag()
             switch (artistCondition) {
                 case ARTIST_UNIFORM:
-                    assert mp3File.getID3v2Tag().getFirst(ARTIST.key) == 'artist'
+                    assert mp3File.getID3v2Tag().get(ARTIST) == 'artist'
                     break
                 default:
                     throw new IllegalArgumentException("Unexpected artist case: ${artistCondition}")
@@ -228,9 +228,9 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_SAME:
                     if (idx % 2) {
-                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().has(ALBUM_ARTIST)
                     } else {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'artist'
                     }
                     break
                 default:
@@ -259,13 +259,13 @@ class AlbumArtistFixSpec extends Mp3Specification {
 
         then:
         mp3FilesThatShouldBeFixed.each { mp3File ->
-            1 * mockOutput.write(mp3File, "Wrote: ${ALBUM_ARTIST.desc}", 'artist')
+            1 * mockOutput.write(mp3File, "Wrote: ${ALBUM_ARTIST}", 'artist')
         }
         0 * mockOutput._
 
         and:
         mp3FilesThatShouldBeFixed.every { mp3File ->
-            mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+            mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'artist'
         }
 
         and:
@@ -291,16 +291,16 @@ class AlbumArtistFixSpec extends Mp3Specification {
 
         and:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v24Tag()
+            def tag = new ID3v2Tag()
             switch (artistCondition) {
                 case ARTIST_EMPTY:
                     // do nothing
                     break
                 case ARTIST_UNIFORM:
-                    tag.setField(ARTIST.key, 'artist')
+                    tag.set(ARTIST, 'artist')
                     break
                 case ARTIST_NON_UNIFORM:
-                    tag.setField(ARTIST.key, fieldVal(ARTIST, idx))
+                    tag.set(ARTIST, fieldVal(ARTIST, idx))
                     break
                 default:
                     throw new IllegalArgumentException("Unexpected artist case: ${artistCondition}")
@@ -310,47 +310,47 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     // do nothing
                     break
                 case ALBUM_ARTIST_SAME:
-                    tag.setField(ALBUM_ARTIST.key, 'artist')
+                    tag.set(ALBUM_ARTIST, 'artist')
                     break
                 case ALBUM_ARTIST_DIFFERENT_UNIFORM:
-                    tag.setField(ALBUM_ARTIST.key, 'album_artist')
+                    tag.set(ALBUM_ARTIST, 'album_artist')
                     break
                 case ALBUM_ARTIST_DIFFERENT_NON_UNIFORM:
-                    tag.setField(ALBUM_ARTIST.key, fieldVal(ALBUM_ARTIST, idx))
+                    tag.set(ALBUM_ARTIST, fieldVal(ALBUM_ARTIST, idx))
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_SAME:
                     if (idx % 2) {
                         // do nothing
                     } else {
-                        tag.setField(ALBUM_ARTIST.key, 'artist')
+                        tag.set(ALBUM_ARTIST, 'artist')
                     }
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_DIFFERENT_UNIFORM:
                     if (idx % 2) {
                         // do nothing
                     } else {
-                        tag.setField(ALBUM_ARTIST.key, 'album_artist')
+                        tag.set(ALBUM_ARTIST, 'album_artist')
                     }
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_DIFFERENT_NON_UNIFORM:
                     if (idx % 2) {
                         // do nothing
                     } else {
-                        tag.setField(ALBUM_ARTIST.key, fieldVal(ALBUM_ARTIST, idx))
+                        tag.set(ALBUM_ARTIST, fieldVal(ALBUM_ARTIST, idx))
                     }
                     break
                 case ALBUM_ARTIST_MIX_SAME_DIFFERENT_UNIFORM:
                     if (idx % 2) {
-                        tag.setField(ALBUM_ARTIST.key, 'artist')
+                        tag.set(ALBUM_ARTIST, 'artist')
                     } else {
-                        tag.setField(ALBUM_ARTIST.key, 'album_artist')
+                        tag.set(ALBUM_ARTIST, 'album_artist')
                     }
                     break
                 case ALBUM_ARTIST_MIX_SAME_DIFFERENT_NON_UNIFORM:
                     if (idx % 2) {
-                        tag.setField(ALBUM_ARTIST.key, 'artist')
+                        tag.set(ALBUM_ARTIST, 'artist')
                     } else {
-                        tag.setField(ALBUM_ARTIST.key, fieldVal(ALBUM_ARTIST, idx))
+                        tag.set(ALBUM_ARTIST, fieldVal(ALBUM_ARTIST, idx))
                     }
                     break
                 default:
@@ -367,10 +367,10 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     // do nothing
                     break
                 case ARTIST_UNIFORM:
-                    assert mp3File.getID3v2Tag().getFirst(ARTIST.key) == 'artist'
+                    assert mp3File.getID3v2Tag().get(ARTIST) == 'artist'
                     break
                 case ARTIST_NON_UNIFORM:
-                    assert mp3File.getID3v2Tag().getFirst(ARTIST.key) == fieldVal(ARTIST, idx)
+                    assert mp3File.getID3v2Tag().get(ARTIST) == fieldVal(ARTIST, idx)
                     break
                 default:
                     throw new IllegalArgumentException("Unexpected artist case: ${artistCondition}")
@@ -380,47 +380,47 @@ class AlbumArtistFixSpec extends Mp3Specification {
                     // do nothing
                     break
                 case ALBUM_ARTIST_SAME:
-                    assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                    assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'artist'
                     break
                 case ALBUM_ARTIST_DIFFERENT_UNIFORM:
-                    assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
+                    assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'album_artist'
                     break
                 case ALBUM_ARTIST_DIFFERENT_NON_UNIFORM:
-                    assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
+                    assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == fieldVal(ALBUM_ARTIST, idx)
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_SAME:
                     if (idx % 2) {
-                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().get(ALBUM_ARTIST)
                     } else {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'artist'
                     }
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_DIFFERENT_UNIFORM:
                     if (idx % 2) {
-                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().get(ALBUM_ARTIST)
                     } else {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'album_artist'
                     }
                     break
                 case ALBUM_ARTIST_MIX_EMPTY_DIFFERENT_NON_UNIFORM:
                     if (idx % 2) {
-                        assert !mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key)
+                        assert !mp3File.getID3v2Tag().get(ALBUM_ARTIST)
                     } else {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == fieldVal(ALBUM_ARTIST, idx)
                     }
                     break
                 case ALBUM_ARTIST_MIX_SAME_DIFFERENT_UNIFORM:
                     if (idx % 2) {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'artist'
                     } else {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'album_artist'
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'album_artist'
                     }
                     break
                 case ALBUM_ARTIST_MIX_SAME_DIFFERENT_NON_UNIFORM:
                     if (idx % 2) {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == 'artist'
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == 'artist'
                     } else {
-                        assert mp3File.getID3v2Tag().getFirst(ALBUM_ARTIST.key) == fieldVal(ALBUM_ARTIST, idx)
+                        assert mp3File.getID3v2Tag().get(ALBUM_ARTIST) == fieldVal(ALBUM_ARTIST, idx)
                     }
                     break
                 default:

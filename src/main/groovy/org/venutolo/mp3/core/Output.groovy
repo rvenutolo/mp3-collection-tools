@@ -1,15 +1,14 @@
-package org.venutolo.mp3
+package org.venutolo.mp3.core
 
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
 
 class Output {
 
-    void write(@Nonnull final MP3File mp3File, @Nonnull final String message) {
+    void write(@Nonnull final Mp3File mp3File, @Nonnull final String message) {
         write(mp3File.file, message)
     }
 
-    void write(@Nonnull final MP3File mp3File, @Nonnull final String message, @Nonnull final String details) {
+    void write(@Nonnull final Mp3File mp3File, @Nonnull final String message, @Nonnull final String details) {
         write(mp3File.file, message, details)
     }
 

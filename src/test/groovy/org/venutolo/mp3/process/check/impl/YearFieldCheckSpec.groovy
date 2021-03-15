@@ -1,9 +1,9 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Field.YEAR
+import static org.venutolo.mp3.core.Field.YEAR
 
-import org.jaudiotagger.tag.id3.ID3v1Tag
-import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.core.ID3v1Tag
+import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class YearFieldCheckSpec extends Mp3Specification {
@@ -48,7 +48,7 @@ class YearFieldCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v1Tag()
-        tag.setYear('2020-01-01')
+        tag.set(YEAR, '2020-01-01')
         mp3File.setID3v1Tag(tag)
 
         and:
@@ -66,11 +66,11 @@ class YearFieldCheckSpec extends Mp3Specification {
     def "No output when no year"() {
 
         setup:
-        mp3File.setID3v2Tag(new ID3v24Tag())
+        mp3File.setID3v2Tag(new ID3v2Tag())
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert !mp3File.getID3v2Tag().getFirst(YEAR.key)
+        assert !mp3File.getID3v2Tag().has(YEAR)
 
         when:
         checker.check(mp3File)
@@ -83,19 +83,19 @@ class YearFieldCheckSpec extends Mp3Specification {
     def "Output when year is #desc"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(YEAR.key, yearVal)
+        def tag = new ID3v2Tag()
+        tag.set(YEAR, yearVal)
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(YEAR.key) == yearVal
+        assert mp3File.getID3v2Tag().get(YEAR) == yearVal
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "${YEAR.desc.capitalize()} not in #### format", yearVal)
+        1 * mockOutput.write(mp3File, "${YEAR.toString().capitalize()} not in #### format", yearVal)
         0 * mockOutput._
 
         where:
@@ -109,13 +109,13 @@ class YearFieldCheckSpec extends Mp3Specification {
     def "No output when year is expected format"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(YEAR.key, '2020')
+        def tag = new ID3v2Tag()
+        tag.set(YEAR, '2020')
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(YEAR.key) == '2020'
+        assert mp3File.getID3v2Tag().get(YEAR) == '2020'
 
         when:
         checker.check(mp3File)

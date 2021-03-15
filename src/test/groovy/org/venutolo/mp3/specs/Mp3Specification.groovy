@@ -1,18 +1,18 @@
 package org.venutolo.mp3.specs
 
-import static org.venutolo.mp3.Field.DISC_NO
-import static org.venutolo.mp3.Field.DISC_TOTAL
-import static org.venutolo.mp3.Field.RATING
-import static org.venutolo.mp3.Field.TRACK
-import static org.venutolo.mp3.Field.TRACK_TOTAL
+import static org.venutolo.mp3.core.Field.DISC_NO
+import static org.venutolo.mp3.core.Field.DISC_TOTAL
+import static org.venutolo.mp3.core.Field.RATING
+import static org.venutolo.mp3.core.Field.TRACK
+import static org.venutolo.mp3.core.Field.TRACK_TOTAL
 
 import com.mortennobel.imagescaling.ResampleFilters
 import com.mortennobel.imagescaling.ResampleOp
 import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.Field
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Field
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import spock.lang.Specification
 
 class Mp3Specification extends Specification {
@@ -24,8 +24,8 @@ class Mp3Specification extends Specification {
 
     protected static final File RESOURCE_DIR = new File('src/test/resources')
 
-    protected static MP3File newMp3File() {
-        new MP3File("${RESOURCE_DIR.path}/test.mp3")
+    protected static Mp3File newMp3File() {
+        new Mp3File("${RESOURCE_DIR.path}/test.mp3")
     }
 
     // This uses a faster filter than the similar resize method in ImageUtil

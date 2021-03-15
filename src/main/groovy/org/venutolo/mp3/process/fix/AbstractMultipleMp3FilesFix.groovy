@@ -1,9 +1,9 @@
 package org.venutolo.mp3.process.fix
 
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
 import org.slf4j.Logger
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.traits.LogAndOutputValidation
 import org.venutolo.mp3.process.traits.MultipleMp3FileProcess
 
@@ -28,7 +28,7 @@ abstract class AbstractMultipleMp3FilesFix
     }
 
     @Override
-    boolean fix(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
+    boolean fix(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir) {
         validateMp3FilesAndDir(mp3Files, dir)
         def fixed = false
         if (shouldRunProcess(mp3Files, requiresId3v2Tags)) {
@@ -45,6 +45,6 @@ abstract class AbstractMultipleMp3FilesFix
         fixed
     }
 
-    protected abstract boolean fixInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir)
+    protected abstract boolean fixInternal(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir)
 
 }

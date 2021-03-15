@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull
 
 import javax.annotation.Nonnull
 import org.slf4j.Logger
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Output
 
 trait LogAndOutputValidation {
 

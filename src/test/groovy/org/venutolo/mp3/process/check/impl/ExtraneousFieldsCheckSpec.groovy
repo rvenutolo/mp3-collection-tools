@@ -1,13 +1,13 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.jaudiotagger.tag.images.ArtworkFactory.createArtworkFromFile
-import static org.venutolo.mp3.Constants.EXTRANEOUS_FIELDS
-import static org.venutolo.mp3.Constants.REQUIRED_FIELDS
-import static org.venutolo.mp3.Field.COMMENT
-import static org.venutolo.mp3.Field.COVER_ART
+import static org.venutolo.mp3.core.Constants.EXTRANEOUS_FIELDS
+import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
+import static org.venutolo.mp3.core.Field.COMMENT
+import static org.venutolo.mp3.core.Field.COVER_ART
+import static org.venutolo.mp3.core.Field.RATING
 
-import org.jaudiotagger.tag.id3.ID3v1Tag
-import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.core.ID3v1Tag
+import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class ExtraneousFieldsCheckSpec extends Mp3Specification {
@@ -53,13 +53,11 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = new ID3v1Tag()
-        tag.setComment('comment')
         mp3File.setID3v1Tag(tag)
 
         and:
         assert COMMENT in EXTRANEOUS_FIELDS
         assert mp3File.hasID3v1Tag()
-        assert mp3File.getID3v1Tag().getFirst(COMMENT.key) == 'comment'
         assert !mp3File.hasID3v2Tag()
 
         when:
@@ -73,7 +71,7 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
     def "No output when there are no fields populated"() {
 
         setup:
-        mp3File.setID3v2Tag(new ID3v24Tag())
+        mp3File.setID3v2Tag(new ID3v2Tag())
 
         and:
         assert mp3File.hasID3v2Tag()
@@ -89,13 +87,13 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
     def "No output when required field #field is populated"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(field.key, fieldVal(field))
+        def tag = new ID3v2Tag()
+        tag.set(field, fieldVal(field))
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
+        assert mp3File.getID3v2Tag().get(field) == fieldVal(field)
 
         when:
         checker.check(mp3File)
@@ -111,19 +109,19 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
     def "Output when extraneous field #field is populated"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(field.key, fieldVal(field))
+        def tag = new ID3v2Tag()
+        tag.set(field, fieldVal(field))
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
+        assert mp3File.getID3v2Tag().get(field) == fieldVal(field)
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "Extraneous field: ${field.desc}")
+        1 * mockOutput.write(mp3File, "Extraneous field: ${field}")
         0 * mockOutput._
 
         where:
@@ -134,19 +132,19 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
     def "Output when cover art is populated"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.addField(createArtworkFromFile(jpgFile))
+        def tag = new ID3v2Tag()
+        tag.setArtwork(jpgFile)
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirstArtwork()
+        assert mp3File.getID3v2Tag().hasArtwork()
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "Extraneous field: ${COVER_ART.desc}")
+        1 * mockOutput.write(mp3File, "Extraneous field: ${COVER_ART}")
         0 * mockOutput._
 
     }

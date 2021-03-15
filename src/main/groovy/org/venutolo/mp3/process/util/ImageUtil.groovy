@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import javax.imageio.ImageIO
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Output
 
 @Slf4j
 class ImageUtil {

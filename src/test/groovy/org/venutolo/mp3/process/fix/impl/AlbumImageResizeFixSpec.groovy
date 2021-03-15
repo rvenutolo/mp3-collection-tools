@@ -1,7 +1,7 @@
 package org.venutolo.mp3.process.fix.impl
 
-import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
-import static org.venutolo.mp3.Constants.TARGET_PIXELS
+import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
+import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 import static org.venutolo.mp3.process.util.ImageUtil.readImage
 import static org.venutolo.mp3.process.util.ImageUtil.writeImage
 

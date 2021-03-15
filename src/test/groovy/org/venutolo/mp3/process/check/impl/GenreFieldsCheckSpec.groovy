@@ -1,10 +1,10 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Constants.ALLOWED_GENRES
-import static org.venutolo.mp3.Field.GENRE
+import static org.venutolo.mp3.core.Constants.ALLOWED_GENRES
+import static org.venutolo.mp3.core.Field.GENRE
 
-import org.jaudiotagger.tag.id3.ID3v1Tag
-import org.jaudiotagger.tag.id3.ID3v24Tag
+import org.venutolo.mp3.core.ID3v1Tag
+import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class GenreFieldsCheckSpec extends Mp3Specification {
@@ -50,12 +50,12 @@ class GenreFieldsCheckSpec extends Mp3Specification {
         setup:
         def tag = new ID3v1Tag()
         // must use a defined genre, ex: Polka
-        tag.setGenre('Polka')
+        tag.set(GENRE, 'Polka')
         mp3File.setID3v1Tag(tag)
 
         and:
         assert mp3File.hasID3v1Tag()
-        assert mp3File.getID3v1Tag().getFirstGenre() == 'Polka'
+        assert mp3File.getID3v1Tag().get(GENRE) == 'Polka'
         assert !mp3File.hasID3v2Tag()
 
         when:
@@ -69,11 +69,11 @@ class GenreFieldsCheckSpec extends Mp3Specification {
     def "No output when no genre"() {
 
         setup:
-        mp3File.setID3v2Tag(new ID3v24Tag())
+        mp3File.setID3v2Tag(new ID3v2Tag())
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert !mp3File.getID3v2Tag().getFirst(GENRE.key)
+        assert !mp3File.getID3v2Tag().has(GENRE)
 
         when:
         checker.check(mp3File)
@@ -86,19 +86,19 @@ class GenreFieldsCheckSpec extends Mp3Specification {
     def "Output when unexpected genre"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(GENRE.key, 'BAD_GENRE')
+        def tag = new ID3v2Tag()
+        tag.set(GENRE, 'BAD_GENRE')
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(GENRE.key) == 'BAD_GENRE'
+        assert mp3File.getID3v2Tag().get(GENRE) == 'BAD_GENRE'
 
         when:
         checker.check(mp3File)
 
         then:
-        1 * mockOutput.write(mp3File, "Unexpected ${GENRE.desc}", 'BAD_GENRE')
+        1 * mockOutput.write(mp3File, "Unexpected ${GENRE}", 'BAD_GENRE')
         0 * mockOutput._
 
     }
@@ -106,13 +106,13 @@ class GenreFieldsCheckSpec extends Mp3Specification {
     def "No output when genre: #genre"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(GENRE.key, genre)
+        def tag = new ID3v2Tag()
+        tag.set(GENRE, genre)
         mp3File.setID3v2Tag(tag)
 
         and:
         assert mp3File.hasID3v2Tag()
-        assert mp3File.getID3v2Tag().getFirst(GENRE.key) == genre
+        assert mp3File.getID3v2Tag().get(GENRE) == genre
 
         when:
         checker.check(mp3File)

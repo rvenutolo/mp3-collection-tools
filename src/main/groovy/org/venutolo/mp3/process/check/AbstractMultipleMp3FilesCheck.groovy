@@ -1,9 +1,9 @@
 package org.venutolo.mp3.process.check
 
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
 import org.slf4j.Logger
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.traits.LogAndOutputValidation
 import org.venutolo.mp3.process.traits.MultipleMp3FileProcess
 
@@ -28,7 +28,7 @@ abstract class AbstractMultipleMp3FilesCheck
     }
 
     @Override
-    void check(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
+    void check(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir) {
         validateMp3FilesAndDir(mp3Files, dir)
         if (shouldRunProcess(mp3Files, requiresId3v2Tags)) {
             log.debug('Checking MP3 files in: {}', dir.canonicalPath)
@@ -39,6 +39,6 @@ abstract class AbstractMultipleMp3FilesCheck
         }
     }
 
-    protected abstract void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir)
+    protected abstract void checkInternal(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir)
 
 }
