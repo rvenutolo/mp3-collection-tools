@@ -2,11 +2,14 @@ package org.venutolo.mp3.core
 
 import static java.util.Objects.requireNonNull
 
+import java.util.regex.Pattern
 import javax.annotation.Nonnull
 import org.jaudiotagger.tag.FieldKey as WrappedField
 import org.jaudiotagger.tag.Tag as WrappedTag
 
 abstract class AbstractID3Tag<T extends WrappedTag> {
+
+    private static final Pattern INTEGER_REGEX = ~/\d+/
 
     @Nonnull
     protected abstract T getWrappedTag()
@@ -19,20 +22,23 @@ abstract class AbstractID3Tag<T extends WrappedTag> {
     String get(@Nonnull final Field field) {
         requireNonNull(field, "Field cannot be null")
         def wrappedField = toWrappedField(field)
-        // getAll(field) returns an unexpected value for RATING
-        def allValues = field == Field.RATING
-            ? [getWrappedTag().getFirst(wrappedField)]
-            : getWrappedTag().getAll(wrappedField)
+        // This "all" values is just a check for a situation I don't think will
+        // happen, but I'd like to know if it does.
+        def allValues = getWrappedTag().getAll(wrappedField)
         if (allValues.size() > 1) {
-            // I think and hope this won't happen, but I'd like to know if it does.
             throw new IllegalStateException("${field} has multiple values: ${allValues.join(', ')}")
         }
-        allValues.size() == 1 ? allValues[0] : ''
+        // Return the result of getFirst as in at least one case (RATING), the
+        // result from the first element of "all" values isn't what I want.
+        getWrappedTag().getFirst(wrappedField)
     }
 
     void set(@Nonnull final Field field, @Nonnull final String value) {
         requireNonNull(field, "Field cannot be null")
         requireNonNull(value, "Value cannot be null")
+        if (field.isNumeric && !(value ==~ INTEGER_REGEX)) {
+            throw new IllegalArgumentException("Cannot set ${field} to non-numeric value: ${value}")
+        }
         def wrappedField = toWrappedField(field)
         getWrappedTag().setField(wrappedField, value)
     }
@@ -49,6 +55,14 @@ abstract class AbstractID3Tag<T extends WrappedTag> {
             throw new IllegalStateException("No mapping for: ${field}")
         }
         FIELD_TO_FIELD_KEY_MAP[field]
+    }
+
+    String toString() {
+        def fieldInfo = Field.values()
+            .findAll { field -> has(field)        }
+            .collect { field -> "${field}: ${get(field)}"        }
+            .join(', ')
+        "${this.class.simpleName} [${fieldInfo}]"
     }
 
     private static final Map<Field, WrappedField> FIELD_TO_FIELD_KEY_MAP = [

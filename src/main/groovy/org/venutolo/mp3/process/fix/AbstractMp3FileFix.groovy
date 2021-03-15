@@ -29,15 +29,15 @@ abstract class AbstractMp3FileFix implements Mp3FileFix, Mp3FileProcess, LogAndO
         validateMp3File(mp3File)
         def fixed = false
         if (shouldRunProcess(mp3File, requiresId3v2Tags)) {
-            log.debug('Fixing MP3 file: {}', mp3File.canonicalPath())
+            log.debug('Fixing MP3 file: {}', mp3File.getPath())
             fixed = fixInternal(mp3File)
             if (fixed) {
-                log.debug('Fixed MP3 file: {}', mp3File.canonicalPath())
+                log.debug('Fixed MP3 file: {}', mp3File.getPath())
             } else {
-                log.debug('No fix applied to MP3 file: {}', mp3File.canonicalPath())
+                log.debug('No fix applied to MP3 file: {}', mp3File.getPath())
             }
         } else {
-            log.debug('Skipping MP3 file: {}', mp3File.canonicalPath())
+            log.debug('Skipping MP3 file: {}', mp3File.getPath())
         }
         fixed
     }

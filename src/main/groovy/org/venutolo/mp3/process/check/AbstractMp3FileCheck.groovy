@@ -28,11 +28,11 @@ abstract class AbstractMp3FileCheck implements Mp3FileCheck, Mp3FileProcess, Log
     void check(@Nonnull final Mp3File mp3File) {
         validateMp3File(mp3File)
         if (shouldRunProcess(mp3File, requiresId3v2Tags)) {
-            log.debug('Checking MP3 file: {}', mp3File.canonicalPath())
+            log.debug('Checking MP3 file: {}', mp3File.getPath())
             checkInternal(mp3File)
-            log.debug('Checked MP3 file: {}', mp3File.canonicalPath())
+            log.debug('Checked MP3 file: {}', mp3File.getPath())
         } else {
-            log.debug('Skipping MP3 file: {}', mp3File.canonicalPath())
+            log.debug('Skipping MP3 file: {}', mp3File.getPath())
         }
     }
 

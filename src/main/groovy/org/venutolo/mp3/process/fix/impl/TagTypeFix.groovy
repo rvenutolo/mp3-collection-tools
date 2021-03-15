@@ -19,7 +19,7 @@ class TagTypeFix extends AbstractMp3FileFix {
     boolean fixInternal(@Nonnull final Mp3File mp3File) {
         def fixed = false
         if (mp3File.hasID3v1Tag() && mp3File.hasID3v2Tag()) {
-            log.debug("Removing ID3v1 tag: {}", mp3File.canonicalPath())
+            log.debug("Removing ID3v1 tag: {}", mp3File.getPath())
             mp3File.removeID3v1Tag()
             output.write(mp3File, 'Removed ID3v1 tag')
             fixed = true
@@ -27,7 +27,7 @@ class TagTypeFix extends AbstractMp3FileFix {
         if (mp3File.hasID3v2Tag()) {
             final def v2Version = mp3File.getID3v2Tag().getVersion()
             if (v2Version != ID3V2_TARGET_VERSION) {
-                log.debug("Converting tag to ID3v{}: {}", ID3V2_TARGET_VERSION, mp3File.canonicalPath())
+                log.debug("Converting tag to ID3v{}: {}", ID3V2_TARGET_VERSION, mp3File.getPath())
                 mp3File.convertID3v2VersionTo24()
                 output.write(mp3File, "Converted to ID3v${ID3V2_TARGET_VERSION} tag")
                 fixed = true

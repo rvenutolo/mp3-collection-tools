@@ -1,6 +1,7 @@
 package org.venutolo.mp3.core
 
 import static java.util.Objects.requireNonNull
+import static org.venutolo.mp3.core.ID3v2Tag.Version.V2_4
 
 import javax.annotation.Nonnull
 import static org.jaudiotagger.tag.images.ArtworkFactory.createArtworkFromFile
@@ -38,38 +39,38 @@ class ID3v2Tag extends AbstractID3Tag<WrappedAbstractID3v2Tag> {
         }
     }
 
-    @Nonnull private final WrappedAbstractID3v2Tag wrapped
+    @Nonnull private final WrappedAbstractID3v2Tag wrappedTag
     @Nonnull private final Version version
 
     ID3v2Tag() {
-        this(Version.V2_4)
+        this(V2_4)
     }
 
     ID3v2Tag(@Nonnull final Version version) {
         requireNonNull(version, 'Version cannot be null')
-        this.wrapped = version.clazz.newInstance()
+        this.wrappedTag = version.clazz.newInstance()
         this.version = version
     }
 
-    protected ID3v2Tag(@Nonnull private final WrappedAbstractID3v2Tag wrapped) {
-        requireNonNull(wrapped, 'Wrapped tag cannot be null')
-        this.wrapped = wrapped
-        this.version = Version.from(wrapped)
+    protected ID3v2Tag(@Nonnull private final WrappedAbstractID3v2Tag wrappedTag) {
+        requireNonNull(wrappedTag, 'Wrapped tag cannot be null')
+        this.wrappedTag = wrappedTag
+        this.version = Version.from(wrappedTag)
     }
 
     @Override
     @Nonnull
     protected WrappedAbstractID3v2Tag getWrappedTag() {
-        wrapped
+        wrappedTag
     }
 
     void setArtwork(@Nonnull final File file) {
         requireNonNull(file, 'Artwork file cannot be null')
-        wrapped.addField(createArtworkFromFile(file))
+        wrappedTag.addField(createArtworkFromFile(file))
     }
 
     boolean hasArtwork() {
-        wrapped.getFirstArtwork()
+        wrappedTag.getFirstArtwork()
     }
 
     Version getVersion() {

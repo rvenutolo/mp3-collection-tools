@@ -16,8 +16,9 @@ class Constants {
     public static final int TARGET_PIXELS = 1000
     public static final Pattern FOUR_DIGITS = ~$/\d{4}/$
     public static final Pattern FULL_DATE = ~$/\d{4}-\d{2}-\d{2}/$
-    public static final Collection<Field> REQUIRED_FIELDS = Field.values().findAll { Field field -> field.required }
-    public static final Collection<Field> EXTRANEOUS_FIELDS = Field.values().findAll { Field field -> !field.required }
+    public static final Collection<Field> REQUIRED_FIELDS = Field.values().findAll { field -> field.isRequired }
+    public static final Collection<Field> EXTRANEOUS_FIELDS = Field.values().findAll { field -> !field.isRequired }
+    public static final Collection<Field> NUMERIC_FIELDS = Field.values().findAll { field -> field.isNumeric }
     public static final Collection<Field> SAME_VALUE_FIELDS = [ALBUM_ARTIST, ALBUM, GENRE, YEAR, TRACK_TOTAL]
     public static final Set<String> ALLOWED_GENRES = [
         'Alternative Metal',

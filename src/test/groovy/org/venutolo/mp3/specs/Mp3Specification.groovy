@@ -1,11 +1,5 @@
 package org.venutolo.mp3.specs
 
-import static org.venutolo.mp3.core.Field.DISC_NO
-import static org.venutolo.mp3.core.Field.DISC_TOTAL
-import static org.venutolo.mp3.core.Field.RATING
-import static org.venutolo.mp3.core.Field.TRACK
-import static org.venutolo.mp3.core.Field.TRACK_TOTAL
-
 import com.mortennobel.imagescaling.ResampleFilters
 import com.mortennobel.imagescaling.ResampleOp
 import java.awt.image.BufferedImage
@@ -16,9 +10,6 @@ import org.venutolo.mp3.core.Output
 import spock.lang.Specification
 
 class Mp3Specification extends Specification {
-
-    // these are the fields which won't accept non-numeric values
-    protected static final Set<Field> NUMERIC_FIELDS = [TRACK, TRACK_TOTAL, DISC_NO, DISC_TOTAL, RATING]
 
     protected static final int NUM_MP3_FILES = 4
 
@@ -37,11 +28,11 @@ class Mp3Specification extends Specification {
     }
 
     protected static String fieldVal(@Nonnull final Field field) {
-        field in NUMERIC_FIELDS ? '1' : "${field.toString().toLowerCase()}"
+        field.isNumeric ? '1' : "${field.toString().toLowerCase()}"
     }
 
     protected static String fieldVal(@Nonnull final Field field, final int idx) {
-        field in NUMERIC_FIELDS ? (idx + 1) as String : "${field.toString().toLowerCase()}_${idx + 1}"
+        field.isNumeric ? (idx + 1) as String : "${field.toString().toLowerCase()}_${idx + 1}"
     }
 
     protected def mockOutput = Mock(Output)
