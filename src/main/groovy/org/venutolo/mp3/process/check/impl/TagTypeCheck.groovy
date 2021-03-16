@@ -17,11 +17,11 @@ class TagTypeCheck extends AbstractMp3FileCheck {
 
     @Override
     void checkInternal(@Nonnull final Mp3File mp3File) {
-        if (mp3File.hasID3v1Tag()) {
+        if (mp3File.hasId3v1Tag()) {
             output.write(mp3File, 'Has ID3v1 tag')
         }
-        if (mp3File.hasID3v2Tag()) {
-            final def v2Version = mp3File.getID3v2Tag().getVersion()
+        if (mp3File.hasId3v2Tag()) {
+            final def v2Version = mp3File.getId3v2Tag().getVersion()
             if (v2Version != ID3V2_TARGET_VERSION) {
                 output.write(mp3File, "ID3v2 tag is not v${ID3V2_TARGET_VERSION}", "v${v2Version}")
             }

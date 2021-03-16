@@ -2,8 +2,6 @@ package org.venutolo.mp3.process.check.impl
 
 import static org.venutolo.mp3.core.Field.TRACK
 
-import org.venutolo.mp3.core.ID3v1Tag
-import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class MissingTrackCheckSpec extends Mp3Specification {
@@ -54,8 +52,8 @@ class MissingTrackCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3FIle ->
-            assert !mp3FIle.hasID3v1Tag()
-            assert !mp3FIle.hasID3v2Tag()
+            assert !mp3FIle.hasId3v1Tag()
+            assert !mp3FIle.hasId3v2Tag()
         }
 
         when:
@@ -70,13 +68,13 @@ class MissingTrackCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            def tag = new ID3v1Tag()
+            def tag = newId3v1Tag()
             tag.set(TRACK, '9')
-            mp3File.setID3v1Tag(tag)
+            mp3File.setId3v1Tag(tag)
         }
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v1Tag()
-            assert !mp3File.hasID3v2Tag()
+            assert mp3File.hasId3v1Tag()
+            assert !mp3File.hasId3v2Tag()
         }
 
         when:
@@ -91,10 +89,10 @@ class MissingTrackCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            mp3File.setID3v2Tag(new ID3v2Tag())
+            mp3File.setId3v2Tag(newId3v2Tag())
         }
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
+            assert mp3File.hasId3v2Tag()
         }
 
         when:
@@ -109,15 +107,15 @@ class MissingTrackCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK, fieldVal(TRACK, idx))
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
 
         and:
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK) == fieldVal(TRACK, idx)
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK) == fieldVal(TRACK, idx)
         }
 
         when:
@@ -132,15 +130,15 @@ class MissingTrackCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK, NUM_MP3_FILES as String)
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
 
         and:
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK) == NUM_MP3_FILES as String
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK) == NUM_MP3_FILES as String
         }
 
         when:

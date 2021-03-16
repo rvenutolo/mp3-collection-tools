@@ -20,7 +20,7 @@ class SameFieldValueCheck extends AbstractMultipleMp3FilesCheck {
     protected void checkInternal(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir) {
         def fieldValues = [:].withDefault { [] as Set<String> } as Map<Field, Set<String>>
         mp3Files.each { mp3File ->
-            def tag = mp3File.getID3v2Tag()
+            def tag = mp3File.getId3v2Tag()
             SAME_VALUE_FIELDS.each { field ->
                 fieldValues[field] << tag.get(field)
             }

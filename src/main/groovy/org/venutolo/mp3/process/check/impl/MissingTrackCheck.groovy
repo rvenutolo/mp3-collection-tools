@@ -18,7 +18,7 @@ class MissingTrackCheck extends AbstractMultipleMp3FilesCheck {
     @Override
     protected void checkInternal(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir) {
         def seenTrackNumbers = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().get(TRACK) }
+            .collect { mp3File -> mp3File.getId3v2Tag().get(TRACK) }
             .findAll { s -> !s.isEmpty() }
             .collect { trackNum -> trackNum as Integer }
             .toSet()

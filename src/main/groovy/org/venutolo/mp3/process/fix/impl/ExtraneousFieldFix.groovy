@@ -18,7 +18,7 @@ class ExtraneousFieldFix extends AbstractMp3FileFix {
     @Override
     boolean fixInternal(@Nonnull final Mp3File mp3File) {
         def fixed = false
-        def tag = mp3File.getID3v2Tag()
+        def tag = mp3File.getId3v2Tag()
         EXTRANEOUS_FIELDS.each { field ->
             def fieldValue = tag.get(field)
             if (fieldValue) {

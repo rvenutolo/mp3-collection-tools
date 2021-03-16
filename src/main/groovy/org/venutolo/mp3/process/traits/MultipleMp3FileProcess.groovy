@@ -20,7 +20,7 @@ trait MultipleMp3FileProcess {
 
     boolean shouldRunProcess(@Nonnull final Collection<Mp3File> mp3Files, final boolean requiresId3v2Tags) {
         // TODO make sure this all-requires-id3v2 is tested everywhere
-        !requiresId3v2Tags || mp3Files.every { mp3File -> mp3File.hasID3v2Tag() }
+        !requiresId3v2Tags || mp3Files.every { mp3File -> mp3File.hasId3v2Tag() }
     }
 
 }

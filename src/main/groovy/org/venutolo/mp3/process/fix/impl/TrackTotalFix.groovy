@@ -18,12 +18,12 @@ class TrackTotalFix extends AbstractMultipleMp3FilesFix {
 
     @Override
     protected boolean fixInternal(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir) {
-        def allHaveTrackTotal = mp3Files.every { mp3File -> mp3File.getID3v2Tag().has(TRACK_TOTAL) }
+        def allHaveTrackTotal = mp3Files.every { mp3File -> mp3File.getId3v2Tag().has(TRACK_TOTAL) }
         if (allHaveTrackTotal) {
             return false
         }
         def seenTotalTrackNumbers = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().get(TRACK_TOTAL) }
+            .collect { mp3File -> mp3File.getId3v2Tag().get(TRACK_TOTAL) }
             .findAll { s -> !s.isEmpty() }
             .toSet()
         def hasMultipleTotalTrackNumbers = seenTotalTrackNumbers.size() > 1
@@ -31,7 +31,7 @@ class TrackTotalFix extends AbstractMultipleMp3FilesFix {
             return false
         }
         def seenTrackNumbers = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().get(TRACK) }
+            .collect { mp3File -> mp3File.getId3v2Tag().get(TRACK) }
             .findAll { s -> !s.isEmpty() }
             .collect { trackNum -> trackNum as Integer }
             .toSet()
@@ -42,9 +42,9 @@ class TrackTotalFix extends AbstractMultipleMp3FilesFix {
         def maxTrackNumber = seenTrackNumbers.max() as String
         log.debug('Writing {}: {} for MP3s in : {}', TRACK_TOTAL, maxTrackNumber, dir.canonicalPath)
         mp3Files
-            .findAll { mp3File -> !mp3File.getID3v2Tag().has(TRACK_TOTAL) }
+            .findAll { mp3File -> !mp3File.getId3v2Tag().has(TRACK_TOTAL) }
             .each { mp3File ->
-                mp3File.getID3v2Tag().set(TRACK_TOTAL, maxTrackNumber)
+                mp3File.getId3v2Tag().set(TRACK_TOTAL, maxTrackNumber)
                 output.write(mp3File, "Wrote: ${TRACK_TOTAL}", maxTrackNumber)
             }
         true

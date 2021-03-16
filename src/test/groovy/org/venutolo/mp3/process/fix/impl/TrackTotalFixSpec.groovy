@@ -3,8 +3,6 @@ package org.venutolo.mp3.process.fix.impl
 import static org.venutolo.mp3.core.Field.TRACK
 import static org.venutolo.mp3.core.Field.TRACK_TOTAL
 
-import org.venutolo.mp3.core.ID3v1Tag
-import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class TrackTotalFixSpec extends Mp3Specification {
@@ -55,8 +53,8 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            assert !mp3File.hasID3v1Tag()
-            assert !mp3File.hasID3v2Tag()
+            assert !mp3File.hasId3v1Tag()
+            assert !mp3File.hasId3v2Tag()
         }
 
         when:
@@ -74,11 +72,11 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            mp3File.setID3v1Tag(new ID3v1Tag())
+            mp3File.setId3v1Tag(newId3v1Tag())
         }
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v1Tag()
-            assert !mp3File.hasID3v2Tag()
+            assert mp3File.hasId3v1Tag()
+            assert !mp3File.hasId3v2Tag()
         }
 
         when:
@@ -96,13 +94,13 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK_TOTAL, mp3Files.size() as String)
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
         }
 
         when:
@@ -120,13 +118,13 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK_TOTAL, idx as String)
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK_TOTAL) == idx as String
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK_TOTAL) == idx as String
         }
 
         when:
@@ -144,13 +142,13 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK, '1')
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK) == '1'
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK) == '1'
         }
 
         when:
@@ -168,13 +166,13 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK, (idx + 10) as String)
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK) == (idx + 10) as String
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK) == (idx + 10) as String
         }
 
         when:
@@ -192,14 +190,14 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK, (idx + 1) as String)
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK) == (idx + 1) as String
-            assert !mp3File.getID3v2Tag().has(TRACK_TOTAL)
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK) == (idx + 1) as String
+            assert !mp3File.getId3v2Tag().has(TRACK_TOTAL)
         }
 
         when:
@@ -213,7 +211,7 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         and:
         mp3Files.every { mp3File ->
-            mp3File.getID3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
+            mp3File.getId3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
         }
 
         and:
@@ -225,20 +223,20 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v2Tag()
+            def tag = newId3v2Tag()
             tag.set(TRACK, (idx + 1) as String)
             if (idx % 2 == 1) {
                 tag.set(TRACK_TOTAL, mp3Files.size() as String)
             }
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().get(TRACK) == (idx + 1) as String
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(TRACK) == (idx + 1) as String
             if (idx % 2 == 1) {
-                assert mp3File.getID3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
+                assert mp3File.getId3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
             } else {
-                assert !mp3File.getID3v2Tag().has(TRACK_TOTAL)
+                assert !mp3File.getId3v2Tag().has(TRACK_TOTAL)
             }
         }
 
@@ -247,7 +245,7 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         then:
         mp3Files
-            .findAll { mp3File -> mp3File.getID3v2Tag().get(TRACK).toInteger() % 2 }
+            .findAll { mp3File -> mp3File.getId3v2Tag().get(TRACK).toInteger() % 2 }
             .each { mp3File ->
                 1 * mockOutput.write(mp3File, "Wrote: ${TRACK_TOTAL}", "${mp3Files.size()}")
             }
@@ -255,7 +253,7 @@ class TrackTotalFixSpec extends Mp3Specification {
 
         and:
         mp3Files.every { mp3File ->
-            mp3File.getID3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
+            mp3File.getId3v2Tag().get(TRACK_TOTAL) == mp3Files.size() as String
         }
 
         and:

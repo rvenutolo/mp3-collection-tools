@@ -3,8 +3,6 @@ package org.venutolo.mp3.process.fix.impl
 import static org.venutolo.mp3.core.Field.TRACK
 import static org.venutolo.mp3.core.Field.TRACK_TOTAL
 
-import org.venutolo.mp3.core.ID3v1Tag
-import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class TrackFieldsFixSpec extends Mp3Specification {
@@ -34,8 +32,8 @@ class TrackFieldsFixSpec extends Mp3Specification {
     def "No output and returns false when MP3 file doesn't have tags"() {
 
         setup:
-        assert !mp3File.hasID3v1Tag()
-        assert !mp3File.hasID3v2Tag()
+        assert !mp3File.hasId3v1Tag()
+        assert !mp3File.hasId3v2Tag()
 
         when:
         def fixed = fixer.fix(mp3File)
@@ -51,13 +49,13 @@ class TrackFieldsFixSpec extends Mp3Specification {
     def "No output and returns false when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
-        def tag = new ID3v1Tag()
+        def tag = newId3v1Tag()
         // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
-        mp3File.setID3v1Tag(tag)
+        mp3File.setId3v1Tag(tag)
 
         and:
-        assert mp3File.hasID3v1Tag()
-        assert !mp3File.hasID3v2Tag()
+        assert mp3File.hasId3v1Tag()
+        assert !mp3File.hasId3v2Tag()
 
         when:
         def fixed = fixer.fix(mp3File)
@@ -73,26 +71,26 @@ class TrackFieldsFixSpec extends Mp3Specification {
     def "No output, returns false, and doesn't change track when track is #trackDesc and track total is #totalDesc"() {
 
         setup:
-        def tag = new ID3v2Tag()
+        def tag = newId3v2Tag()
         if (trackVal) {
             tag.set(TRACK, trackVal)
         }
         if (totalVal) {
             tag.set(TRACK_TOTAL, totalVal)
         }
-        mp3File.setID3v2Tag(tag)
+        mp3File.setId3v2Tag(tag)
 
         and:
-        assert mp3File.hasID3v2Tag()
+        assert mp3File.hasId3v2Tag()
         if (trackVal) {
-            assert mp3File.getID3v2Tag().get(TRACK) == trackVal
+            assert mp3File.getId3v2Tag().get(TRACK) == trackVal
         } else {
-            assert !mp3File.getID3v2Tag().has(TRACK)
+            assert !mp3File.getId3v2Tag().has(TRACK)
         }
         if (totalVal) {
-            assert mp3File.getID3v2Tag().get(TRACK_TOTAL) == totalVal
+            assert mp3File.getId3v2Tag().get(TRACK_TOTAL) == totalVal
         } else {
-            assert !mp3File.getID3v2Tag().has(TRACK_TOTAL)
+            assert !mp3File.getId3v2Tag().has(TRACK_TOTAL)
         }
 
         when:
@@ -105,8 +103,8 @@ class TrackFieldsFixSpec extends Mp3Specification {
         !fixed
 
         and:
-        mp3File.getID3v2Tag().get(TRACK) == trackVal
-        mp3File.getID3v2Tag().get(TRACK_TOTAL) == totalVal
+        mp3File.getId3v2Tag().get(TRACK) == trackVal
+        mp3File.getId3v2Tag().get(TRACK_TOTAL) == totalVal
 
         where:
         trackDesc    | totalDesc    | trackVal | totalVal
@@ -119,26 +117,26 @@ class TrackFieldsFixSpec extends Mp3Specification {
     def "Output, returns true, and sets track when track is #trackDesc and track total is #totalDesc"() {
 
         setup:
-        def tag = new ID3v2Tag()
+        def tag = newId3v2Tag()
         if (trackVal) {
             tag.set(TRACK, trackVal)
         }
         if (totalVal) {
             tag.set(TRACK_TOTAL, totalVal)
         }
-        mp3File.setID3v2Tag(tag)
+        mp3File.setId3v2Tag(tag)
 
         and:
-        assert mp3File.hasID3v2Tag()
+        assert mp3File.hasId3v2Tag()
         if (trackVal) {
-            assert mp3File.getID3v2Tag().get(TRACK) == trackVal
+            assert mp3File.getId3v2Tag().get(TRACK) == trackVal
         } else {
-            assert !mp3File.getID3v2Tag().has(TRACK)
+            assert !mp3File.getId3v2Tag().has(TRACK)
         }
         if (totalVal) {
-            assert mp3File.getID3v2Tag().get(TRACK_TOTAL) == totalVal
+            assert mp3File.getId3v2Tag().get(TRACK_TOTAL) == totalVal
         } else {
-            assert !mp3File.getID3v2Tag().has(TRACK_TOTAL)
+            assert !mp3File.getId3v2Tag().has(TRACK_TOTAL)
         }
 
         when:
@@ -156,8 +154,8 @@ class TrackFieldsFixSpec extends Mp3Specification {
         fixed
 
         and:
-        mp3File.getID3v2Tag().get(TRACK) == (newTrackVal ?: trackVal)
-        mp3File.getID3v2Tag().get(TRACK_TOTAL) == (newTotalVal ?: totalVal)
+        mp3File.getId3v2Tag().get(TRACK) == (newTrackVal ?: trackVal)
+        mp3File.getId3v2Tag().get(TRACK_TOTAL) == (newTotalVal ?: totalVal)
 
         where:
         trackDesc    | totalDesc    | trackVal | totalVal | newTrackVal | newTotalVal

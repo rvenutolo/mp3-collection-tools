@@ -5,12 +5,14 @@ import static Field.ALBUM_ARTIST
 import static Field.GENRE
 import static Field.TRACK_TOTAL
 import static Field.YEAR
+import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
 
 import java.util.regex.Pattern
+import static org.venutolo.mp3.core.Id3v2Tag.Version
 
 class Constants {
 
-    public static final ID3v2Tag.Version ID3V2_TARGET_VERSION = ID3v2Tag.Version.V2_4
+    public static final Version ID3V2_TARGET_VERSION = V2_4
     public static final String ALBUM_IMAGE_FILENAME = 'Folder.jpg'
     public static final String ALBUM_IMAGE_FORMAT = 'JPEG'
     public static final int TARGET_PIXELS = 1000

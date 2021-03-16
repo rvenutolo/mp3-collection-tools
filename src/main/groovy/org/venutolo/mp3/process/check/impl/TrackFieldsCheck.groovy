@@ -18,7 +18,7 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
 
     @Override
     protected void checkInternal(@Nonnull final Mp3File mp3File) {
-        def tag = mp3File.getID3v2Tag()
+        def tag = mp3File.getId3v2Tag()
         [TRACK, TRACK_TOTAL].each { field ->
             def val = tag.get(field)
             if (val.startsWith('0')) {

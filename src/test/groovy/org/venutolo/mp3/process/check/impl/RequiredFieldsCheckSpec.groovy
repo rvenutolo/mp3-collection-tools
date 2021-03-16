@@ -2,8 +2,6 @@ package org.venutolo.mp3.process.check.impl
 
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
 
-import org.venutolo.mp3.core.ID3v1Tag
-import org.venutolo.mp3.core.ID3v2Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class RequiredFieldsCheckSpec extends Mp3Specification {
@@ -33,8 +31,8 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
     def "No output when MP3 file doesn't have tags"() {
 
         setup:
-        assert !mp3File.hasID3v1Tag()
-        assert !mp3File.hasID3v2Tag()
+        assert !mp3File.hasId3v1Tag()
+        assert !mp3File.hasId3v2Tag()
 
         when:
         checker.check(mp3File)
@@ -47,14 +45,14 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
     def "No output when MP3 file has ID3v1 tag and doesn't have ID3v2 tag"() {
 
         setup:
-        mp3File.setID3v1Tag(new ID3v1Tag())
+        mp3File.setId3v1Tag(newId3v1Tag())
 
         and:
-        assert mp3File.hasID3v1Tag()
+        assert mp3File.hasId3v1Tag()
         REQUIRED_FIELDS.each { field ->
-            assert !mp3File.getID3v1Tag().has(field)
+            assert !mp3File.getId3v1Tag().has(field)
         }
-        assert !mp3File.hasID3v2Tag()
+        assert !mp3File.hasId3v2Tag()
 
         when:
         checker.check(mp3File)
@@ -67,7 +65,7 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
     def "Output when missing #missingField"() {
 
         setup:
-        def tag = new ID3v2Tag()
+        def tag = newId3v2Tag()
         REQUIRED_FIELDS
             .findAll { field ->
                 field != missingField
@@ -75,11 +73,11 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
             .each { field ->
                 tag.set(field, fieldVal(field))
             }
-        mp3File.setID3v2Tag(tag)
+        mp3File.setId3v2Tag(tag)
 
         and:
-        assert mp3File.hasID3v2Tag()
-        assert !mp3File.getID3v2Tag().has(missingField)
+        assert mp3File.hasId3v2Tag()
+        assert !mp3File.getId3v2Tag().has(missingField)
         REQUIRED_FIELDS
             .findAll { field ->
                 field != missingField
@@ -103,16 +101,16 @@ class RequiredFieldsCheckSpec extends Mp3Specification {
     def "No output when all required fields are populated"() {
 
         setup:
-        def tag = new ID3v2Tag()
+        def tag = newId3v2Tag()
         REQUIRED_FIELDS.each { field ->
             tag.set(field, fieldVal(field))
         }
-        mp3File.setID3v2Tag(tag)
+        mp3File.setId3v2Tag(tag)
 
         and:
-        assert mp3File.hasID3v2Tag()
+        assert mp3File.hasId3v2Tag()
         REQUIRED_FIELDS.each { field ->
-            assert mp3File.getID3v2Tag().get(field) == fieldVal(field)
+            assert mp3File.getId3v2Tag().get(field) == fieldVal(field)
         }
 
         when:

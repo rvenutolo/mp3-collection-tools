@@ -18,7 +18,7 @@ class YearFieldCheck extends AbstractMp3FileCheck {
 
     @Override
     protected void checkInternal(@Nonnull final Mp3File mp3File) {
-        def tag = mp3File.getID3v2Tag()
+        def tag = mp3File.getId3v2Tag()
         def year = tag.get(YEAR)
         if (year && !FOUR_DIGITS.matcher(year).matches()) {
             output.write(mp3File, "${YEAR.toString().capitalize()} not in #### format", year)

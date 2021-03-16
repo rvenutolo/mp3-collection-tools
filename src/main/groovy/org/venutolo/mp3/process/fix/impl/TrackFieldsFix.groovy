@@ -21,7 +21,7 @@ class TrackFieldsFix extends AbstractMp3FileFix {
 
     @Override
     protected boolean fixInternal(@Nonnull final Mp3File mp3File) {
-        def tag = mp3File.getID3v2Tag()
+        def tag = mp3File.getId3v2Tag()
         def fixed = false
         [TRACK, TRACK_TOTAL].each { field ->
             def val = tag.get(field)

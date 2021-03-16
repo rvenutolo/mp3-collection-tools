@@ -12,7 +12,7 @@ trait Mp3FileProcess {
     }
 
     boolean shouldRunProcess(@Nonnull final Mp3File mp3File, final boolean requiresId3v2Tags) {
-        !requiresId3v2Tags || (requiresId3v2Tags && mp3File.hasID3v2Tag())
+        !requiresId3v2Tags || (requiresId3v2Tags && mp3File.hasId3v2Tag())
     }
 
 }
