@@ -1,10 +1,8 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Constants.SAME_VALUE_FIELDS
-import static org.venutolo.mp3.Field.ALBUM
+import static org.venutolo.mp3.core.Constants.SAME_VALUE_FIELDS
+import static org.venutolo.mp3.core.Field.ALBUM
 
-import org.jaudiotagger.tag.id3.ID3v1Tag
-import org.jaudiotagger.tag.id3.ID3v24Tag
 import org.venutolo.mp3.specs.Mp3Specification
 
 class SameFieldValueCheckSpec extends Mp3Specification {
@@ -55,8 +53,8 @@ class SameFieldValueCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            assert !mp3File.hasID3v1Tag()
-            assert !mp3File.hasID3v2Tag()
+            assert !mp3File.hasId3v1Tag()
+            assert !mp3File.hasId3v2Tag()
         }
 
         when:
@@ -71,16 +69,16 @@ class SameFieldValueCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.eachWithIndex { mp3File, idx ->
-            def tag = new ID3v1Tag()
-            tag.setAlbum(fieldVal(ALBUM, idx))
-            mp3File.setID3v1Tag(tag)
+            def tag = newId3v1Tag()
+            tag.set(ALBUM, fieldVal(ALBUM, idx))
+            mp3File.setId3v1Tag(tag)
         }
 
         and:
         mp3Files.eachWithIndex { mp3File, idx ->
-            assert mp3File.hasID3v1Tag()
-            assert mp3File.getID3v1Tag().getFirst(ALBUM.key) == fieldVal(ALBUM, idx)
-            assert !mp3File.hasID3v2Tag()
+            assert mp3File.hasId3v1Tag()
+            assert mp3File.getId3v1Tag().get(ALBUM) == fieldVal(ALBUM, idx)
+            assert !mp3File.hasId3v2Tag()
         }
 
         when:
@@ -95,12 +93,12 @@ class SameFieldValueCheckSpec extends Mp3Specification {
 
         setup:
         mp3Files.each { mp3File ->
-            mp3File.setID3v2Tag(new ID3v24Tag())
+            mp3File.setId3v2Tag(newId3v2Tag())
         }
 
         and:
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
+            assert mp3File.hasId3v2Tag()
         }
 
         when:
@@ -114,16 +112,16 @@ class SameFieldValueCheckSpec extends Mp3Specification {
     def "No output when MP3 files have same #field values"() {
 
         setup:
-        def tag = new ID3v24Tag()
-        tag.setField(field.key, fieldVal(field))
+        def tag = newId3v2Tag()
+        tag.set(field, fieldVal(field))
         mp3Files.each { mp3File ->
-            mp3File.setID3v2Tag(tag)
+            mp3File.setId3v2Tag(tag)
         }
 
         and:
         mp3Files.each { mp3File ->
-            assert mp3File.hasID3v2Tag()
-            assert mp3File.getID3v2Tag().getFirst(field.key) == fieldVal(field)
+            assert mp3File.hasId3v2Tag()
+            assert mp3File.getId3v2Tag().get(field) == fieldVal(field)
         }
 
         when:
@@ -136,5 +134,7 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         field << SAME_VALUE_FIELDS
 
     }
+
+    // TODO missing test for when there should be output
 
 }

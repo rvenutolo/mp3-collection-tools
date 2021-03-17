@@ -2,7 +2,7 @@ package org.venutolo.mp3.process.check.impl
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractDirCheck
 
 @Slf4j

@@ -1,6 +1,6 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Constants.ALBUM_IMAGE_FILENAME
+import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 
 import java.nio.file.Files
 import org.venutolo.mp3.specs.Mp3Specification

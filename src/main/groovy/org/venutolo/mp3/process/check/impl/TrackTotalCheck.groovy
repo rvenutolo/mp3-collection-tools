@@ -1,12 +1,12 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Field.TRACK
-import static org.venutolo.mp3.Field.TRACK_TOTAL
+import static org.venutolo.mp3.core.Field.TRACK
+import static org.venutolo.mp3.core.Field.TRACK_TOTAL
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMultipleMp3FilesCheck
 
 @Slf4j
@@ -17,9 +17,9 @@ class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
     }
 
     @Override
-    protected void checkInternal(@Nonnull final Collection<MP3File> mp3Files, @Nonnull final File dir) {
+    protected void checkInternal(@Nonnull final Collection<Mp3File> mp3Files, @Nonnull final File dir) {
         def maxTrackNumber = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().getFirst(TRACK.key) }
+            .collect { mp3File -> mp3File.getId3v2Tag().get(TRACK) }
             .findAll { s -> !s.isEmpty() }
             .collect { s -> s as Integer }
             .max()
@@ -27,12 +27,12 @@ class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
             return
         }
         def anyTrackTotalWrong = mp3Files
-            .collect { mp3File -> mp3File.getID3v2Tag().getFirst(TRACK_TOTAL.key) }
+            .collect { mp3File -> mp3File.getId3v2Tag().get(TRACK_TOTAL) }
             .findAll { s -> !s.isEmpty() }
             .collect { s -> s as Integer }
             .any { trackTotal -> trackTotal != maxTrackNumber }
         if (anyTrackTotalWrong) {
-            output.write(dir, "Wrong ${TRACK_TOTAL.desc}")
+            output.write(dir, "Wrong ${TRACK_TOTAL}")
         }
     }
 

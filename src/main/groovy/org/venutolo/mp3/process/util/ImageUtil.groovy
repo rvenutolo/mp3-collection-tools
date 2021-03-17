@@ -9,9 +9,13 @@ import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import javax.imageio.ImageIO
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Output
 
 @Slf4j
+// TODO move this class up a package
+// TODO make this a non-static class that takes resize filter (as enum) and target format (as enum)
+// TODO unit test this class
+// TODO unit test the classes that use this after converting to non-static class
 class ImageUtil {
 
     // In this class, if the method is passed an Output instance, that indicates

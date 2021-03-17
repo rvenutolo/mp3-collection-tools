@@ -1,9 +1,9 @@
 package org.venutolo.mp3.process.check
 
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
 import org.slf4j.Logger
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.traits.LogAndOutputValidation
 import org.venutolo.mp3.process.traits.Mp3FileProcess
 
@@ -25,17 +25,17 @@ abstract class AbstractMp3FileCheck implements Mp3FileCheck, Mp3FileProcess, Log
     }
 
     @Override
-    void check(@Nonnull final MP3File mp3File) {
+    void check(@Nonnull final Mp3File mp3File) {
         validateMp3File(mp3File)
         if (shouldRunProcess(mp3File, requiresId3v2Tags)) {
-            log.debug('Checking MP3 file: {}', mp3File.file.canonicalPath)
+            log.debug('Checking MP3 file: {}', mp3File.getPath())
             checkInternal(mp3File)
-            log.debug('Checked MP3 file: {}', mp3File.file.canonicalPath)
+            log.debug('Checked MP3 file: {}', mp3File.getPath())
         } else {
-            log.debug('Skipping MP3 file: {}', mp3File.file.canonicalPath)
+            log.debug('Skipping MP3 file: {}', mp3File.getPath())
         }
     }
 
-    protected abstract void checkInternal(@Nonnull final MP3File mp3File)
+    protected abstract void checkInternal(@Nonnull final Mp3File mp3File)
 
 }

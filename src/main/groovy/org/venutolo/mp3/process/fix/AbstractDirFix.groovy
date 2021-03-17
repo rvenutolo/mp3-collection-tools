@@ -2,7 +2,7 @@ package org.venutolo.mp3.process.fix
 
 import javax.annotation.Nonnull
 import org.slf4j.Logger
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.traits.DirProcess
 import org.venutolo.mp3.process.traits.LogAndOutputValidation
 

@@ -1,12 +1,12 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Constants.FOUR_DIGITS
-import static org.venutolo.mp3.Field.YEAR
+import static org.venutolo.mp3.core.Constants.FOUR_DIGITS
+import static org.venutolo.mp3.core.Field.YEAR
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMp3FileCheck
 
 @Slf4j
@@ -17,11 +17,11 @@ class YearFieldCheck extends AbstractMp3FileCheck {
     }
 
     @Override
-    protected void checkInternal(@Nonnull final MP3File mp3File) {
-        def tag = mp3File.getID3v2Tag()
-        def year = tag.getFirst(YEAR.key)
+    protected void checkInternal(@Nonnull final Mp3File mp3File) {
+        def tag = mp3File.getId3v2Tag()
+        def year = tag.get(YEAR)
         if (year && !FOUR_DIGITS.matcher(year).matches()) {
-            output.write(mp3File, "${YEAR.desc.capitalize()} not in #### format", year)
+            output.write(mp3File, "${YEAR.toString().capitalize()} not in #### format", year)
         }
     }
 

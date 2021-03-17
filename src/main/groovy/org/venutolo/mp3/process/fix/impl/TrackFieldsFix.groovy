@@ -1,13 +1,13 @@
 package org.venutolo.mp3.process.fix.impl
 
-import static org.venutolo.mp3.Field.TRACK
-import static org.venutolo.mp3.Field.TRACK_TOTAL
+import static org.venutolo.mp3.core.Field.TRACK
+import static org.venutolo.mp3.core.Field.TRACK_TOTAL
 
 import groovy.util.logging.Slf4j
 import java.util.regex.Pattern
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractMp3FileFix
 
 @Slf4j
@@ -20,15 +20,15 @@ class TrackFieldsFix extends AbstractMp3FileFix {
     }
 
     @Override
-    protected boolean fixInternal(@Nonnull final MP3File mp3File) {
-        def tag = mp3File.getID3v2Tag()
+    protected boolean fixInternal(@Nonnull final Mp3File mp3File) {
+        def tag = mp3File.getId3v2Tag()
         def fixed = false
         [TRACK, TRACK_TOTAL].each { field ->
-            def val = tag.getFirst(field.key)
+            def val = tag.get(field)
             if (val.startsWith('0')) {
                 def newVal = val.replaceFirst(ZERO_PADDING, '')
-                tag.setField(field.key, newVal)
-                output.write(mp3File, "Removed ${field.desc} 0-padding")
+                tag.set(field, newVal)
+                output.write(mp3File, "Removed ${field} 0-padding")
                 fixed = true
             }
         }

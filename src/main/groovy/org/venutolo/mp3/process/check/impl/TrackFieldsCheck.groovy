@@ -1,12 +1,12 @@
 package org.venutolo.mp3.process.check.impl
 
-import static org.venutolo.mp3.Field.TRACK
-import static org.venutolo.mp3.Field.TRACK_TOTAL
+import static org.venutolo.mp3.core.Field.TRACK
+import static org.venutolo.mp3.core.Field.TRACK_TOTAL
 
 import groovy.util.logging.Slf4j
 import javax.annotation.Nonnull
-import org.jaudiotagger.audio.mp3.MP3File
-import org.venutolo.mp3.Output
+import org.venutolo.mp3.core.Mp3File
+import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMp3FileCheck
 
 @Slf4j
@@ -17,12 +17,12 @@ class TrackFieldsCheck extends AbstractMp3FileCheck {
     }
 
     @Override
-    protected void checkInternal(@Nonnull final MP3File mp3File) {
-        def tag = mp3File.getID3v2Tag()
+    protected void checkInternal(@Nonnull final Mp3File mp3File) {
+        def tag = mp3File.getId3v2Tag()
         [TRACK, TRACK_TOTAL].each { field ->
-            def val = tag.getFirst(field.key)
+            def val = tag.get(field)
             if (val.startsWith('0')) {
-                output.write(mp3File, "${field.desc} has 0-padding", val)
+                output.write(mp3File, "${field} has 0-padding", val)
             }
         }
     }
