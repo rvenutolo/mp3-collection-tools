@@ -11,12 +11,10 @@ class JAudioTaggerId3v1Tag extends AbstractJAudioTaggerId3Tag<JatId3v1Tag> imple
 
     @Nonnull private final JatId3v1Tag jatTag
 
-    // TODO check if/where used
     JAudioTaggerId3v1Tag() {
         this(new JatId3v1Tag())
     }
 
-    // TODO check if/where used
     protected JAudioTaggerId3v1Tag(@Nonnull private final JatId3v1Tag jatTag) {
         requireNonNull(jatTag, 'Tag cannot be null')
         this.jatTag = jatTag

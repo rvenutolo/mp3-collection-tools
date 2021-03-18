@@ -27,19 +27,12 @@ class JAudioTaggerId3v2Tag extends AbstractJAudioTaggerId3Tag<JatAbstractId3v2Ta
     @Nonnull
     private final Version version
 
-    // TODO check if/where used
-    JAudioTaggerId3v2Tag() {
-        this(V2_4)
-    }
-
-    // TODO check if/where used
     JAudioTaggerId3v2Tag(@Nonnull final Version version) {
         requireNonNull(version, 'Version cannot be null')
         this.jatTag = VERSION_TO_CLASS_MAP[version].newInstance()
         this.version = version
     }
 
-    // TODO where is this used?
     protected JAudioTaggerId3v2Tag(@Nonnull private final JatAbstractId3v2Tag jatTag) {
         requireNonNull(jatTag, 'Tag cannot be null')
         this.jatTag = jatTag
