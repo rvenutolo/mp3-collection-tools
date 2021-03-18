@@ -2,16 +2,20 @@ package org.venutolo.mp3.process.check.impl
 
 import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 
-import java.nio.file.Files
 import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class Mp3DirContentsCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-
+    private def copyUtil
     private def checker = new Mp3DirContentsCheck(mockOutput)
+
+    def setup() {
+        copyUtil = new TempDirFileCopyUtil(tempDir)
+    }
 
     def "NPE when output is null"() {
 
@@ -57,7 +61,7 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
 
         setup:
         (1..3).each { idx ->
-            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+            copyUtil.copy(mp3File.file, "${idx}.mp3")
         }
 
         when:
@@ -72,9 +76,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
 
         setup:
         (1..3).each { idx ->
-            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+            copyUtil.copy(mp3File.file, "${idx}.mp3")
         }
-        Files.copy(jpgFile.toPath(), new File("${tempDir}/${ALBUM_IMAGE_FILENAME}").toPath())
+        copyUtil.copy(jpgFile, ALBUM_IMAGE_FILENAME)
 
         when:
         checker.check(tempDir)
@@ -87,12 +91,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
     def "Output when some mp3 files have non-lowercase file extension"() {
 
         setup:
-        def lowercaseFile = new File("${tempDir}/lower.mp3")
-        def uppercaseFile1 = new File("${tempDir}/upper1.MP3")
-        def uppercaseFile2 = new File("${tempDir}/upper2.Mp3")
-        Files.copy(mp3File.file.toPath(), lowercaseFile.toPath())
-        Files.copy(mp3File.file.toPath(), uppercaseFile1.toPath())
-        Files.copy(mp3File.file.toPath(), uppercaseFile2.toPath())
+        copyUtil.copy(mp3File.file, 'lower.mp3')
+        def uppercaseFile1 = copyUtil.copy(mp3File.file, 'upper1.MP3')
+        def uppercaseFile2 = copyUtil.copy(mp3File.file, 'upper2.Mp3')
 
         when:
         checker.check(tempDir)
@@ -107,15 +108,12 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
     def "Output when there are unexpected files"() {
 
         setup:
-        def lowercaseFolderJpg = new File("${tempDir}/folder.jpg")
-        def randomFile1 = new File("${tempDir}/foo.jpg")
-        def randomFile2 = new File("${tempDir}/bar.txt")
         (1..3).each { idx ->
-            Files.copy(mp3File.file.toPath(), new File("${tempDir}/${idx}.mp3").toPath())
+            copyUtil.copy(mp3File.file, "${idx}.mp3")
         }
-        Files.copy(jpgFile.toPath(), lowercaseFolderJpg.toPath())
-        Files.copy(jpgFile.toPath(), randomFile1.toPath())
-        Files.copy(jpgFile.toPath(), randomFile2.toPath())
+        def lowercaseFolderJpg = copyUtil.copy(jpgFile, 'folder.jpg')
+        def randomFile1 = copyUtil.copy(jpgFile, 'foo.jpg')
+        def randomFile2 = copyUtil.copy(jpgFile, 'bar.txt')
 
         when:
         checker.check(tempDir)

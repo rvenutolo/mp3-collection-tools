@@ -1,15 +1,19 @@
 package org.venutolo.mp3.process.check.impl
 
-import java.nio.file.Files
 import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class GenericDirContentsCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-
+    private def copyUtil
     private def checker = new GenericDirContentsCheck(mockOutput)
+
+    def setup() {
+        copyUtil = new TempDirFileCopyUtil(tempDir)
+    }
 
     def "NPE when output is null"() {
 
@@ -56,7 +60,7 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
 
         setup:
         new File("${tempDir}/dir").mkdir()
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
 
         when:
         checker.check(tempDir)
@@ -84,8 +88,8 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
     def "No output when dir contains only MP3 files"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file1.mp3").toPath())
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file2.mp3").toPath())
+        copyUtil.copy(mp3File.file, 'file1.mp3')
+        copyUtil.copy(mp3File.file, 'file2.mp3')
 
         when:
         checker.check(tempDir)
@@ -98,7 +102,7 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
     def "No output when dir contains files but no MP3 files"() {
 
         setup:
-        Files.copy(jpgFile.toPath(), new File("${tempDir}/file.jpg").toPath())
+        copyUtil.copy(jpgFile, 'file.jpg')
 
         when:
         checker.check(tempDir)

@@ -4,16 +4,20 @@ import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FORMAT
 import static org.venutolo.mp3.process.util.ImageUtil.getImageFormat
 
-import java.nio.file.Files
 import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class AlbumImageFormatFixSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-
+    private def copyUtil
     private def fixer = new AlbumImageFormatFix(mockOutput)
+
+    def setup() {
+        copyUtil = new TempDirFileCopyUtil(tempDir)
+    }
 
     def "NPE when output is null"() {
 
@@ -61,8 +65,7 @@ class AlbumImageFormatFixSpec extends Mp3Specification {
     def "No output and returns false when dir has JPG format Folder.jpg"() {
 
         setup:
-        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        Files.copy(jpgFile.toPath(), imageFile.toPath())
+        copyUtil.copy(jpgFile, ALBUM_IMAGE_FILENAME)
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -78,9 +81,7 @@ class AlbumImageFormatFixSpec extends Mp3Specification {
     def "Output, returns false, and reformats image when dir has non-JPG Folder.jpg"() {
 
         setup:
-        def pngFile = new File("${RESOURCE_DIR}/images/1500x1500.png")
-        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        Files.copy(pngFile.toPath(), imageFile.toPath())
+        def imageFile = copyUtil.copy('images/1500x1500.png', ALBUM_IMAGE_FILENAME)
 
         when:
         def fixed = fixer.fix(tempDir)

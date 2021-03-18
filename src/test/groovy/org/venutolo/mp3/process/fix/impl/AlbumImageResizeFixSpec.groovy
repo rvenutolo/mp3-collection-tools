@@ -5,16 +5,20 @@ import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 import static org.venutolo.mp3.process.util.ImageUtil.readImage
 import static org.venutolo.mp3.process.util.ImageUtil.writeImage
 
-import java.nio.file.Files
 import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class AlbumImageResizeFixSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-
+    private def copyUtil
     private def fixer = new AlbumImageResizeFix(mockOutput)
+
+    def setup() {
+        copyUtil = new TempDirFileCopyUtil(tempDir)
+    }
 
     def "NPE when output is null"() {
 
@@ -62,7 +66,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
     def "No output and returns false when no album image"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -78,10 +82,8 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
     def "No output and returns false when album image not named Folder.jpg"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origImageFile = new File("${RESOURCE_DIR}/images/1500x1500.png")
-        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME.replace('jpg', 'png')}")
-        Files.copy(origImageFile.toPath(), imageFile.toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
+        copyUtil.copy('images/1500x1500.png', ALBUM_IMAGE_FILENAME.replace('jpg', 'png'))
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -97,7 +99,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
     def "No output, returns false, and does not resize image when image is #width x #height (#desc)"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
         def origSizeImage = readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg")).get()
         def resizedImage = fastResizeImage(origSizeImage, width, height)
         def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
@@ -144,7 +146,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
     def "No output, returns false, and resizes image when image is #width x #height (#desc)"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
         def origSizeImage = readImage(new File("${RESOURCE_DIR}/images/1500x1500.jpg")).get()
         def resizedImage = fastResizeImage(origSizeImage, width, height)
         def albumImageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")

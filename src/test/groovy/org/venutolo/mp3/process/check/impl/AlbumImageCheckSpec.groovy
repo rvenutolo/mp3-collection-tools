@@ -3,16 +3,20 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 
-import java.nio.file.Files
 import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class AlbumImageCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-
+    private def copyUtil
     private def checker = new AlbumImageCheck(mockOutput)
+
+    def setup() {
+        copyUtil = new TempDirFileCopyUtil(tempDir)
+    }
 
     def "NPE when output is null"() {
 
@@ -57,7 +61,7 @@ class AlbumImageCheckSpec extends Mp3Specification {
     def "Output when no album image"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
 
         when:
         checker.check(tempDir)
@@ -71,10 +75,8 @@ class AlbumImageCheckSpec extends Mp3Specification {
     def "Output for #width x #height album JPG image"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origImageFile = new File("${RESOURCE_DIR}/images/${width}x${height}.jpg")
-        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        Files.copy(origImageFile.toPath(), imageFile.toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
+        def imageFile = copyUtil.copy("images/${width}x${height}.jpg", ALBUM_IMAGE_FILENAME)
 
         when:
         checker.check(tempDir)
@@ -102,10 +104,8 @@ class AlbumImageCheckSpec extends Mp3Specification {
     def "Output when album image is a misnamed JPG"() {
 
         setup:
-        Files.copy(mp3File.file.toPath(), new File("${tempDir}/file.mp3").toPath())
-        def origImageFile = new File("${RESOURCE_DIR}/images/${TARGET_PIXELS}x${TARGET_PIXELS}.png")
-        def imageFile = new File("${tempDir}/${ALBUM_IMAGE_FILENAME}")
-        Files.copy(origImageFile.toPath(), imageFile.toPath())
+        copyUtil.copy(mp3File.file, 'file.mp3')
+        def imageFile = copyUtil.copy("images/${TARGET_PIXELS}x${TARGET_PIXELS}.png", ALBUM_IMAGE_FILENAME)
 
         when:
         checker.check(tempDir)
