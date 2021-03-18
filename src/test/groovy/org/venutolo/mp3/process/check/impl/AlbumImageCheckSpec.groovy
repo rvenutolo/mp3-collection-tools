@@ -108,10 +108,6 @@ class AlbumImageCheckSpec extends Mp3Specification {
         copyUtil.copy(mp3File, 'file.mp3')
         def imageFile = copyUtil.copy(pngFile, ALBUM_IMAGE_FILENAME)
 
-        and:
-        def imageFormat = ImageUtil.getImageFormat(imageFile).get()
-        assert imageFormat == 'PNG'
-
         when:
         checker.check(tempDir)
 
