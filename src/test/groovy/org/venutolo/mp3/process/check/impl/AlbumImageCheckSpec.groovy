@@ -3,6 +3,7 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 
+import org.venutolo.mp3.process.util.ImageUtil
 import org.venutolo.mp3.specs.Mp3Specification
 import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
@@ -61,7 +62,7 @@ class AlbumImageCheckSpec extends Mp3Specification {
     def "Output when no album image"() {
 
         setup:
-        copyUtil.copy(mp3File.file, 'file.mp3')
+        copyUtil.copy(mp3File, 'file.mp3')
 
         when:
         checker.check(tempDir)
@@ -75,8 +76,8 @@ class AlbumImageCheckSpec extends Mp3Specification {
     def "Output for #width x #height album JPG image"() {
 
         setup:
-        copyUtil.copy(mp3File.file, 'file.mp3')
-        def imageFile = copyUtil.copy("images/${width}x${height}.jpg", ALBUM_IMAGE_FILENAME)
+        copyUtil.copy(mp3File, 'file.mp3')
+        def imageFile = copyUtil.copyResized(jpgFile, ALBUM_IMAGE_FILENAME, width, height)
 
         when:
         checker.check(tempDir)
@@ -89,23 +90,27 @@ class AlbumImageCheckSpec extends Mp3Specification {
 
         where:
         width | height || minDimensionWarn | largeWarn | notSquareWarn
-        500   | 500    || 1                | 0         | 0
-        500   | 1000   || 0                | 0         | 1
-        500   | 1500   || 0                | 0         | 1
-        1000  | 500    || 0                | 0         | 1
+        999   | 999    || 1                | 0         | 0
+        999   | 1000   || 0                | 0         | 1
+        999   | 1001   || 0                | 0         | 1
+        1000  | 999    || 0                | 0         | 1
         1000  | 1000   || 0                | 0         | 0
-        1000  | 1500   || 0                | 0         | 1
-        1500  | 500    || 0                | 0         | 1
-        1500  | 1000   || 0                | 0         | 1
-        1500  | 1500   || 0                | 1         | 0
+        1000  | 1001   || 0                | 0         | 1
+        1001  | 999    || 0                | 0         | 1
+        1001  | 1000   || 0                | 0         | 1
+        1001  | 1001   || 0                | 1         | 0
 
     }
 
     def "Output when album image is a misnamed JPG"() {
 
         setup:
-        copyUtil.copy(mp3File.file, 'file.mp3')
-        def imageFile = copyUtil.copy("images/${TARGET_PIXELS}x${TARGET_PIXELS}.png", ALBUM_IMAGE_FILENAME)
+        copyUtil.copy(mp3File, 'file.mp3')
+        def imageFile = copyUtil.copy(pngFile, ALBUM_IMAGE_FILENAME)
+
+        and:
+        def imageFormat = ImageUtil.getImageFormat(imageFile).get()
+        assert imageFormat == 'PNG'
 
         when:
         checker.check(tempDir)

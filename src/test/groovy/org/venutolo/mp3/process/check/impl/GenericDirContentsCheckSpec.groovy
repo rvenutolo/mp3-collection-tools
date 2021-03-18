@@ -60,7 +60,7 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
 
         setup:
         new File("${tempDir}/dir").mkdir()
-        copyUtil.copy(mp3File.file, 'file.mp3')
+        copyUtil.copy(mp3File, 'file.mp3')
 
         when:
         checker.check(tempDir)
@@ -88,8 +88,8 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
     def "No output when dir contains only MP3 files"() {
 
         setup:
-        copyUtil.copy(mp3File.file, 'file1.mp3')
-        copyUtil.copy(mp3File.file, 'file2.mp3')
+        copyUtil.copy(mp3File, 'file1.mp3')
+        copyUtil.copy(mp3File, 'file2.mp3')
 
         when:
         checker.check(tempDir)

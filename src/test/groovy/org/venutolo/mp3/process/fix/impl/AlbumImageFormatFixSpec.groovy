@@ -81,7 +81,7 @@ class AlbumImageFormatFixSpec extends Mp3Specification {
     def "Output, returns false, and reformats image when dir has non-JPG Folder.jpg"() {
 
         setup:
-        def imageFile = copyUtil.copy('images/1500x1500.png', ALBUM_IMAGE_FILENAME)
+        def imageFile = copyUtil.copy(pngFile, ALBUM_IMAGE_FILENAME)
 
         when:
         def fixed = fixer.fix(tempDir)

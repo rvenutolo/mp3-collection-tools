@@ -61,7 +61,7 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
 
         setup:
         (1..3).each { idx ->
-            copyUtil.copy(mp3File.file, "${idx}.mp3")
+            copyUtil.copy(mp3File, "${idx}.mp3")
         }
 
         when:
@@ -76,7 +76,7 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
 
         setup:
         (1..3).each { idx ->
-            copyUtil.copy(mp3File.file, "${idx}.mp3")
+            copyUtil.copy(mp3File, "${idx}.mp3")
         }
         copyUtil.copy(jpgFile, ALBUM_IMAGE_FILENAME)
 
@@ -91,9 +91,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
     def "Output when some mp3 files have non-lowercase file extension"() {
 
         setup:
-        copyUtil.copy(mp3File.file, 'lower.mp3')
-        def uppercaseFile1 = copyUtil.copy(mp3File.file, 'upper1.MP3')
-        def uppercaseFile2 = copyUtil.copy(mp3File.file, 'upper2.Mp3')
+        copyUtil.copy(mp3File, 'lower.mp3')
+        def uppercaseFile1 = copyUtil.copy(mp3File, 'upper1.MP3')
+        def uppercaseFile2 = copyUtil.copy(mp3File, 'upper2.Mp3')
 
         when:
         checker.check(tempDir)
@@ -109,7 +109,7 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
 
         setup:
         (1..3).each { idx ->
-            copyUtil.copy(mp3File.file, "${idx}.mp3")
+            copyUtil.copy(mp3File, "${idx}.mp3")
         }
         def lowercaseFolderJpg = copyUtil.copy(jpgFile, 'folder.jpg')
         def randomFile1 = copyUtil.copy(jpgFile, 'foo.jpg')
