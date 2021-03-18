@@ -6,7 +6,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class RequiredFieldsCheckSpec extends Mp3Specification {
 
-    private def checker = new RequiredFieldsCheck(mockOutput)
+    private RequiredFieldsCheck checker = new RequiredFieldsCheck(mockOutput)
 
     def "NPE when output is null"() {
 

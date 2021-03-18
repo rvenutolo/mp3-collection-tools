@@ -8,7 +8,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class ExtraneousFieldFixSpec extends Mp3Specification {
 
-    private def fixer = new ExtraneousFieldFix(mockOutput)
+    private ExtraneousFieldFix fixer = new ExtraneousFieldFix(mockOutput)
 
     def "NPE when output is null"() {
 

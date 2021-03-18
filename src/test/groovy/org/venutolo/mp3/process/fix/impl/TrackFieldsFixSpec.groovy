@@ -7,7 +7,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class TrackFieldsFixSpec extends Mp3Specification {
 
-    private def fixer = new TrackFieldsFix(mockOutput)
+    private TrackFieldsFix fixer = new TrackFieldsFix(mockOutput)
 
     def "NPE when output is null"() {
 

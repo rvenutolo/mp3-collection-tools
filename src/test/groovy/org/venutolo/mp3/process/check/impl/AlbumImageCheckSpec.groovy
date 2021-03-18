@@ -11,8 +11,8 @@ class AlbumImageCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-    private def copyUtil
-    private def checker = new AlbumImageCheck(mockOutput)
+    private TempDirFileCopyUtil copyUtil
+    private AlbumImageCheck checker = new AlbumImageCheck(mockOutput)
 
     def setup() {
         copyUtil = new TempDirFileCopyUtil(tempDir)

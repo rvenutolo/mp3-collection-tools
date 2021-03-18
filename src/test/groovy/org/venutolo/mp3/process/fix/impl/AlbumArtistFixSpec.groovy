@@ -84,7 +84,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
         [ARTIST_NON_UNIFORM, ALBUM_ARTIST_MIX_SAME_DIFFERENT_NON_UNIFORM],
     ]
 
-    private def fixer = new AlbumArtistFix(mockOutput)
+    private AlbumArtistFix fixer = new AlbumArtistFix(mockOutput)
 
     def "NPE when output is null"() {
 

@@ -9,7 +9,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
-    private def checker = new ExtraneousFieldsCheck(mockOutput)
+    private ExtraneousFieldsCheck checker = new ExtraneousFieldsCheck(mockOutput)
 
     def "NPE when output is null"() {
 

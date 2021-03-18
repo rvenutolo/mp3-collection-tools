@@ -6,7 +6,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class OverlappingTrackCheckSpec extends Mp3Specification {
 
-    private def checker = new OverlappingTrackCheck(mockOutput)
+    private OverlappingTrackCheck checker = new OverlappingTrackCheck(mockOutput)
 
     def "NPE when output is null"() {
 

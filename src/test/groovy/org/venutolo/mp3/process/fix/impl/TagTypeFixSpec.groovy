@@ -8,7 +8,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class TagTypeFixSpec extends Mp3Specification {
 
-    private def fixer = new TagTypeFix(mockOutput)
+    private TagTypeFix fixer = new TagTypeFix(mockOutput)
 
     def "NPE when output is null"() {
 

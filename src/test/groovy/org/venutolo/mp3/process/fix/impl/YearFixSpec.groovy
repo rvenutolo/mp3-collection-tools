@@ -6,7 +6,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class YearFixSpec extends Mp3Specification {
 
-    private def fixer = new YearFix(mockOutput)
+    private YearFix fixer = new YearFix(mockOutput)
 
     def "NPE when output is null"() {
 

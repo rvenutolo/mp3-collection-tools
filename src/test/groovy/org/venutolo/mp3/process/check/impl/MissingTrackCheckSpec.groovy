@@ -6,7 +6,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class MissingTrackCheckSpec extends Mp3Specification {
 
-    private def checker = new MissingTrackCheck(mockOutput)
+    private MissingTrackCheck checker = new MissingTrackCheck(mockOutput)
 
     def "NPE when output is null"() {
 

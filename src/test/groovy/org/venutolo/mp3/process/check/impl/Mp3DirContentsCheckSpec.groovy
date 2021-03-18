@@ -10,8 +10,8 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-    private def copyUtil
-    private def checker = new Mp3DirContentsCheck(mockOutput)
+    private TempDirFileCopyUtil copyUtil
+    private Mp3DirContentsCheck checker = new Mp3DirContentsCheck(mockOutput)
 
     def setup() {
         copyUtil = new TempDirFileCopyUtil(tempDir)

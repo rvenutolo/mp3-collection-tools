@@ -8,7 +8,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class TagTypeCheckSpec extends Mp3Specification {
 
-    private def checker = new TagTypeCheck(mockOutput)
+    private TagTypeCheck checker = new TagTypeCheck(mockOutput)
 
     def "NPE when output is null"() {
 

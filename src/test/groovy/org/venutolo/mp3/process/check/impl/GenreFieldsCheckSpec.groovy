@@ -7,7 +7,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class GenreFieldsCheckSpec extends Mp3Specification {
 
-    private def checker = new GenreFieldsCheck(mockOutput)
+    private GenreFieldsCheck checker = new GenreFieldsCheck(mockOutput)
 
     def "NPE when output is null"() {
 

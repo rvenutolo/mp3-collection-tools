@@ -8,8 +8,8 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-    private def copyUtil
-    private def checker = new GenericDirContentsCheck(mockOutput)
+    private TempDirFileCopyUtil copyUtil
+    private GenericDirContentsCheck checker = new GenericDirContentsCheck(mockOutput)
 
     def setup() {
         copyUtil = new TempDirFileCopyUtil(tempDir)

@@ -10,8 +10,8 @@ class AlbumImageFilenameFixSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-    private def copyUtil
-    private def fixer = new AlbumImageFilenameFix(mockOutput)
+    private TempDirFileCopyUtil copyUtil
+    private AlbumImageFilenameFix fixer = new AlbumImageFilenameFix(mockOutput)
 
     def setup() {
         copyUtil = new TempDirFileCopyUtil(tempDir)

@@ -6,7 +6,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class YearFieldCheckSpec extends Mp3Specification {
 
-    private def checker = new YearFieldCheck(mockOutput)
+    private YearFieldCheck checker = new YearFieldCheck(mockOutput)
 
     def "NPE when output is null"() {
 

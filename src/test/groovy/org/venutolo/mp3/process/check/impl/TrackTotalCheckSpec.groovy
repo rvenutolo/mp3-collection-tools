@@ -7,7 +7,7 @@ import org.venutolo.mp3.specs.Mp3Specification
 
 class TrackTotalCheckSpec extends Mp3Specification {
 
-    private def checker = new TrackTotalCheck(mockOutput)
+    private TrackTotalCheck checker = new TrackTotalCheck(mockOutput)
 
     def "NPE when output is null"() {
 

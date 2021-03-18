@@ -13,8 +13,8 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
     @TempDir
     private File tempDir
-    private def copyUtil
-    private def fixer = new AlbumImageResizeFix(mockOutput)
+    private TempDirFileCopyUtil copyUtil
+    private AlbumImageResizeFix fixer = new AlbumImageResizeFix(mockOutput)
 
     def setup() {
         copyUtil = new TempDirFileCopyUtil(tempDir)
