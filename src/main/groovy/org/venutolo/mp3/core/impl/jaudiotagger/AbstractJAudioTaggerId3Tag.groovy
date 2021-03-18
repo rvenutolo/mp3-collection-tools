@@ -19,7 +19,7 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
     @Override
     @Nonnull
     String get(@Nonnull final Field field) {
-        requireNonNull(field, "Field cannot be null")
+        requireNonNull(field, 'Field cannot be null')
         def jatField = toJatField(field)
         // This "all" values is just a check for a situation I don't think will
         // happen, but I'd like to know if it does.
@@ -34,8 +34,8 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
 
     @Override
     void set(@Nonnull final Field field, @Nonnull final String value) {
-        requireNonNull(field, "Field cannot be null")
-        requireNonNull(value, "Value cannot be null")
+        requireNonNull(field, 'Field cannot be null')
+        requireNonNull(value, 'Value cannot be null')
         if (field.isNumeric && !value.isEmpty() && !(value ==~ INTEGER_REGEX)) {
             throw new IllegalArgumentException("Cannot set ${field} to non-numeric value: ${value}")
         }
@@ -45,7 +45,7 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
 
     @Override
     void delete(@Nonnull final Field field) {
-        requireNonNull(field, "Field cannot be null")
+        requireNonNull(field, 'Field cannot be null')
         def jatField = toJatField(field)
         getJatTag().deleteField(jatField)
     }

@@ -15,7 +15,7 @@ class JAudioTaggerMp3File implements Mp3File {
     @Nonnull private final JATMp3File jatMp3File
 
     JAudioTaggerMp3File(@Nonnull final File file) {
-        requireNonNull(file, "File cannot be null")
+        requireNonNull(file, 'File cannot be null')
         this.jatMp3File = new JATMp3File(file)
     }
 
@@ -33,7 +33,7 @@ class JAudioTaggerMp3File implements Mp3File {
 
     @Override
     void setId3v1Tag(@Nonnull final Id3v1Tag tag) {
-        requireNonNull(tag, "Tag cannot be null")
+        requireNonNull(tag, 'Tag cannot be null')
         jatMp3File.setID3v1Tag(((JAudioTaggerId3v1Tag)tag).getJatTag())
     }
 
@@ -50,7 +50,7 @@ class JAudioTaggerMp3File implements Mp3File {
 
     @Override
     void setId3v2Tag(@Nonnull final Id3v2Tag tag) {
-        requireNonNull(tag, "Tag cannot be null")
+        requireNonNull(tag, 'Tag cannot be null')
         jatMp3File.setID3v2Tag(((JAudioTaggerId3v2Tag)tag).getJatTag())
     }
 
