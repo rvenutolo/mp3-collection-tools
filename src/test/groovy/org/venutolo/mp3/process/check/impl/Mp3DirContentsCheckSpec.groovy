@@ -78,7 +78,7 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
         (1..3).each { idx ->
             copyUtil.copy(mp3File, "${idx}.mp3")
         }
-        copyUtil.copy(jpgFile, ALBUM_IMAGE_FILENAME)
+        copyUtil.copy(JPG_FILE, ALBUM_IMAGE_FILENAME)
 
         when:
         checker.check(tempDir)
@@ -111,9 +111,9 @@ class Mp3DirContentsCheckSpec extends Mp3Specification {
         (1..3).each { idx ->
             copyUtil.copy(mp3File, "${idx}.mp3")
         }
-        def lowercaseFolderJpg = copyUtil.copy(jpgFile, 'folder.jpg')
-        def randomFile1 = copyUtil.copy(jpgFile, 'foo.jpg')
-        def randomFile2 = copyUtil.copy(jpgFile, 'bar.txt')
+        def lowercaseFolderJpg = copyUtil.copy(JPG_FILE, 'folder.jpg')
+        def randomFile1 = copyUtil.copy(JPG_FILE, 'foo.jpg')
+        def randomFile2 = copyUtil.copy(JPG_FILE, 'bar.txt')
 
         when:
         checker.check(tempDir)

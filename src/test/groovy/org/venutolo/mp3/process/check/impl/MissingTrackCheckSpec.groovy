@@ -57,7 +57,7 @@ class MissingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -78,7 +78,7 @@ class MissingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -96,7 +96,7 @@ class MissingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -119,7 +119,7 @@ class MissingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -142,11 +142,11 @@ class MissingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         (1..(NUM_MP3_FILES - 1)).each { idx ->
-            1 * mockOutput.write(dir, "Missing ${TRACK} #${idx}")
+            1 * mockOutput.write(RESOURCE_DIR, "Missing ${TRACK} #${idx}")
         }
         0 * mockOutput._
 

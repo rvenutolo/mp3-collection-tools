@@ -3,7 +3,6 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 
-import org.venutolo.mp3.process.util.ImageUtil
 import org.venutolo.mp3.specs.Mp3Specification
 import org.venutolo.mp3.specs.TempDirFileCopyUtil
 import spock.lang.TempDir
@@ -77,7 +76,7 @@ class AlbumImageCheckSpec extends Mp3Specification {
 
         setup:
         copyUtil.copy(mp3File, 'file.mp3')
-        def imageFile = copyUtil.copyResized(jpgFile, ALBUM_IMAGE_FILENAME, width, height)
+        def imageFile = copyUtil.copyResized(JPG_FILE, ALBUM_IMAGE_FILENAME, width, height)
 
         when:
         checker.check(tempDir)
@@ -106,7 +105,7 @@ class AlbumImageCheckSpec extends Mp3Specification {
 
         setup:
         copyUtil.copy(mp3File, 'file.mp3')
-        def imageFile = copyUtil.copy(pngFile, ALBUM_IMAGE_FILENAME)
+        def imageFile = copyUtil.copy(PNG_FILE, ALBUM_IMAGE_FILENAME)
 
         when:
         checker.check(tempDir)

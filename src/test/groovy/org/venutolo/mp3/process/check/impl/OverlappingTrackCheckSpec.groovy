@@ -57,7 +57,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -80,7 +80,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -100,7 +100,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -123,7 +123,7 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -146,10 +146,10 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
-        1 * mockOutput.write(dir, "Multiple ${TRACK} #1")
+        1 * mockOutput.write(RESOURCE_DIR, "Multiple ${TRACK} #1")
         0 * mockOutput._
 
     }

@@ -40,7 +40,6 @@ interface Mp3File {
     // TODO take in target version?
     void convertId3v2VersionTo24()
 
-
     @Override
     default String toString() {
         // TODO see which class name is used

@@ -82,7 +82,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
         setup:
         copyUtil.copy(mp3File, 'file.mp3')
-        copyUtil.copy(pngFile, ALBUM_IMAGE_FILENAME.replace('jpg', 'png'))
+        copyUtil.copy(PNG_FILE, ALBUM_IMAGE_FILENAME.replace('jpg', 'png'))
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -99,7 +99,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
         setup:
         copyUtil.copy(mp3File, 'file.mp3')
-        def albumImageFile = copyUtil.copyResized(jpgFile, ALBUM_IMAGE_FILENAME, width, height)
+        def albumImageFile = copyUtil.copyResized(JPG_FILE, ALBUM_IMAGE_FILENAME, width, height)
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -136,7 +136,7 @@ class AlbumImageResizeFixSpec extends Mp3Specification {
 
         setup:
         copyUtil.copy(mp3File, 'file.mp3')
-        def albumImageFile = copyUtil.copyResized(jpgFile, ALBUM_IMAGE_FILENAME, width, height)
+        def albumImageFile = copyUtil.copyResized(JPG_FILE, ALBUM_IMAGE_FILENAME, width, height)
 
         when:
         def fixed = fixer.fix(tempDir)

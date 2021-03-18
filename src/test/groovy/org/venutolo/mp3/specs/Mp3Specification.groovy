@@ -13,24 +13,23 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.core.impl.jaudiotagger.JAudioTaggerCoreTypesFactory
 import spock.lang.Specification
 
-abstract class Mp3Specification extends Specification {
+class Mp3Specification extends Specification {
 
     private static final CoreTypesFactory CORE_TYPES_FACTORY = new JAudioTaggerCoreTypesFactory()
 
     // TODO make sure all tests work regardless of value
     protected static final int NUM_MP3_FILES = 4
     protected static final File RESOURCE_DIR = new File('src/test/resources')
+    protected static final File JPG_FILE = new File(RESOURCE_DIR, "${TARGET_PIXELS}x${TARGET_PIXELS}.jpg")
+    protected static final File PNG_FILE = new File(RESOURCE_DIR, "${TARGET_PIXELS}x${TARGET_PIXELS}.png")
 
-    protected def mockOutput = Mock(Output)
-    protected def mp3File = newMp3File()
-    protected def mp3Files = (0..(NUM_MP3_FILES - 1)).collect { idx -> newMp3File() }
-    protected def dir = RESOURCE_DIR
-    protected def jpgFile = new File("${RESOURCE_DIR}/${TARGET_PIXELS}x${TARGET_PIXELS}.jpg")
-    protected def pngFile = new File("${RESOURCE_DIR}/${TARGET_PIXELS}x${TARGET_PIXELS}.png")
+    protected Output mockOutput = Mock(Output)
+    protected Mp3File mp3File = newMp3File()
+    protected Collection<Mp3File> mp3Files = (1..NUM_MP3_FILES).collect { newMp3File() }
 
     @Nonnull
     protected static Mp3File newMp3File() {
-        CORE_TYPES_FACTORY.newMp3File(new File("${RESOURCE_DIR}/test.mp3"))
+        CORE_TYPES_FACTORY.newMp3File(new File(RESOURCE_DIR, 'test.mp3'))
     }
 
     @Nonnull
@@ -50,7 +49,7 @@ abstract class Mp3Specification extends Specification {
 
     @Nonnull
     protected static String fieldVal(@Nonnull final Field field) {
-        field.isNumeric ? '1' : "${field.toString().toLowerCase()}"
+        field.isNumeric ? '1' : field.toString().toLowerCase()
     }
 
     @Nonnull

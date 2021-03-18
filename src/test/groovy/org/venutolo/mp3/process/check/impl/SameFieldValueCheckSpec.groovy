@@ -58,7 +58,7 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -82,7 +82,7 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -102,7 +102,7 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -125,7 +125,7 @@ class SameFieldValueCheckSpec extends Mp3Specification {
         }
 
         when:
-        checker.check(mp3Files, dir)
+        checker.check(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._

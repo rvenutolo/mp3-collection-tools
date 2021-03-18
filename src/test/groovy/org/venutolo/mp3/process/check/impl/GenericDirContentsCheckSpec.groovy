@@ -102,7 +102,7 @@ class GenericDirContentsCheckSpec extends Mp3Specification {
     def "No output when dir contains files but no MP3 files"() {
 
         setup:
-        copyUtil.copy(jpgFile, 'file.jpg')
+        copyUtil.copy(JPG_FILE, 'file.jpg')
 
         when:
         checker.check(tempDir)

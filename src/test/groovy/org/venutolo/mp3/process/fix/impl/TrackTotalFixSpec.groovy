@@ -58,7 +58,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -80,7 +80,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -104,7 +104,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -128,7 +128,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -152,7 +152,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -176,7 +176,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -201,7 +201,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         mp3Files.each { mp3File ->
@@ -241,7 +241,7 @@ class TrackTotalFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         mp3Files

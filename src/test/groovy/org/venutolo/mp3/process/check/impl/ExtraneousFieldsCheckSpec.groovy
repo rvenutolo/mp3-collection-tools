@@ -130,7 +130,7 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
 
         setup:
         def tag = newId3v2Tag()
-        tag.setArtwork(jpgFile)
+        tag.setArtwork(JPG_FILE)
         mp3File.setId3v2Tag(tag)
 
         and:

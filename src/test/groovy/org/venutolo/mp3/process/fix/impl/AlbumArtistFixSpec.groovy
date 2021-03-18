@@ -135,7 +135,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -162,7 +162,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._
@@ -253,7 +253,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
             .collect { it.v1 }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         mp3FilesThatShouldBeFixed.each { mp3File ->
@@ -427,7 +427,7 @@ class AlbumArtistFixSpec extends Mp3Specification {
         }
 
         when:
-        def fixed = fixer.fix(mp3Files, dir)
+        def fixed = fixer.fix(mp3Files, RESOURCE_DIR)
 
         then:
         0 * mockOutput._

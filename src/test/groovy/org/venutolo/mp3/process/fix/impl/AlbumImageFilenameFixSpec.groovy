@@ -63,7 +63,7 @@ class AlbumImageFilenameFixSpec extends Mp3Specification {
     def "No output and returns false when dir has Folder.jpg"() {
 
         setup:
-        copyUtil.copy(jpgFile, ALBUM_IMAGE_FILENAME)
+        copyUtil.copy(JPG_FILE, ALBUM_IMAGE_FILENAME)
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -79,8 +79,8 @@ class AlbumImageFilenameFixSpec extends Mp3Specification {
     def "No output, returns false, and does not rename files when dir has Folder.jpg and #filename"() {
 
         setup:
-        copyUtil.copy(jpgFile, ALBUM_IMAGE_FILENAME)
-        copyUtil.copy(jpgFile, filename)
+        copyUtil.copy(JPG_FILE, ALBUM_IMAGE_FILENAME)
+        copyUtil.copy(JPG_FILE, filename)
 
         when:
         def fixed = fixer.fix(tempDir)
@@ -102,7 +102,7 @@ class AlbumImageFilenameFixSpec extends Mp3Specification {
     def "Output, returns false, and renames file when dir has single misnamed file (#filename)"() {
 
         setup:
-        def badFile = copyUtil.copy(jpgFile, filename)
+        def badFile = copyUtil.copy(JPG_FILE, filename)
 
         when:
         def fixed = fixer.fix(tempDir)
