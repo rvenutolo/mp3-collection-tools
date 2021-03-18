@@ -28,26 +28,32 @@ abstract class Mp3Specification extends Specification {
     protected def jpgFile = new File("${RESOURCE_DIR}/${TARGET_PIXELS}x${TARGET_PIXELS}.jpg")
     protected def pngFile = new File("${RESOURCE_DIR}/${TARGET_PIXELS}x${TARGET_PIXELS}.png")
 
+    @Nonnull
     protected static Mp3File newMp3File() {
         CORE_TYPES_FACTORY.newMp3File(new File("${RESOURCE_DIR}/test.mp3"))
     }
 
+    @Nonnull
     protected static Id3v1Tag newId3v1Tag() {
         CORE_TYPES_FACTORY.newId3v1Tag()
     }
 
+    @Nonnull
     protected static Id3v2Tag newId3v2Tag() {
         CORE_TYPES_FACTORY.newId3v2Tag()
     }
 
-    protected static Id3v2Tag newId3v2Tag(Version version) {
+    @Nonnull
+    protected static Id3v2Tag newId3v2Tag(@Nonnull final Version version) {
         CORE_TYPES_FACTORY.newId3v2Tag(version)
     }
 
+    @Nonnull
     protected static String fieldVal(@Nonnull final Field field) {
         field.isNumeric ? '1' : "${field.toString().toLowerCase()}"
     }
 
+    @Nonnull
     protected static String fieldVal(@Nonnull final Field field, final int idx) {
         field.isNumeric ? (idx + 1) as String : "${field.toString().toLowerCase()}_${idx + 1}"
     }

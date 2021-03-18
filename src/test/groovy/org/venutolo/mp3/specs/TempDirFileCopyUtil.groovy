@@ -24,10 +24,12 @@ class TempDirFileCopyUtil {
         this.tempDir = tempDir
     }
 
+    @Nonnull
     File copy(@Nonnull final Mp3File mp3File, @Nonnull final String destName) {
         copy(mp3File.file, destName)
     }
 
+    @Nonnull
     File copy(@Nonnull final File srcFile, @Nonnull final String destName) {
         def destFile = new File(tempDir, destName)
         log.debug("Copying from: {} to: {}", srcFile, destFile)
@@ -36,6 +38,7 @@ class TempDirFileCopyUtil {
         destFile
     }
 
+    @Nonnull
     File copyResized(@Nonnull final File srcFile, @Nonnull final String destName, final int width, final int height) {
         def destFile = new File(tempDir, destName)
         log.debug("Resizing ({}x{}) and copying from: {} to: {}", width, height, srcFile, destFile)
