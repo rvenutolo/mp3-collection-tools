@@ -15,7 +15,6 @@ interface Mp3File {
         getFile().getCanonicalPath()
     }
 
-    // TODO use optional?
     @Nullable
     Id3v1Tag getId3v1Tag()
 
@@ -27,7 +26,6 @@ interface Mp3File {
 
     void removeId3v1Tag()
 
-    // TODO use optional
     @Nullable
     Id3v2Tag getId3v2Tag()
 
@@ -42,7 +40,6 @@ interface Mp3File {
 
     @Override
     default String toString() {
-        // TODO see which class name is used
         "MP3 [" +
             "path: ${getPath()}, " +
             "id3v1: ${getId3v1Tag()}, " +
