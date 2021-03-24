@@ -3,7 +3,6 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.core.Constants.EXTRANEOUS_FIELDS
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
 import static org.venutolo.mp3.core.Field.COMMENT
-import static org.venutolo.mp3.core.Field.COVER_ART
 
 import org.venutolo.mp3.specs.Mp3Specification
 
@@ -122,27 +121,7 @@ class ExtraneousFieldsCheckSpec extends Mp3Specification {
         0 * mockOutput._
 
         where:
-        field << EXTRANEOUS_FIELDS.findAll { field -> field != COVER_ART }
-
-    }
-
-    def "Output when cover art is populated"() {
-
-        setup:
-        def tag = newId3v2Tag()
-        tag.setArtwork(JPG_FILE)
-        mp3File.setId3v2Tag(tag)
-
-        and:
-        assert mp3File.hasId3v2Tag()
-        assert mp3File.getId3v2Tag().hasArtwork()
-
-        when:
-        checker.check(mp3File)
-
-        then:
-        1 * mockOutput.write(mp3File, "Extraneous field: ${COVER_ART}")
-        0 * mockOutput._
+        field << EXTRANEOUS_FIELDS
 
     }
 

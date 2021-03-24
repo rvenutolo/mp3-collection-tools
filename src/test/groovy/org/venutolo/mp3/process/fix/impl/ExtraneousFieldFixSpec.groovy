@@ -2,7 +2,6 @@ package org.venutolo.mp3.process.fix.impl
 
 import static org.venutolo.mp3.core.Constants.EXTRANEOUS_FIELDS
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
-import static org.venutolo.mp3.core.Field.COVER_ART
 
 import org.venutolo.mp3.specs.Mp3Specification
 
@@ -138,33 +137,7 @@ class ExtraneousFieldFixSpec extends Mp3Specification {
         !mp3File.getId3v2Tag().has(field)
 
         where:
-        field << EXTRANEOUS_FIELDS.findAll { field -> field != COVER_ART }
-
-    }
-
-    def "Output, returns true, and removes field when cover art is populated"() {
-
-        setup:
-        def tag = newId3v2Tag()
-        tag.setArtwork(JPG_FILE)
-        mp3File.setId3v2Tag(tag)
-
-        and:
-        assert mp3File.hasId3v2Tag()
-        assert mp3File.getId3v2Tag().hasArtwork()
-
-        when:
-        def fixed = fixer.fix(mp3File)
-
-        then:
-        1 * mockOutput.write(mp3File, "Removed: ${COVER_ART}")
-        0 * mockOutput._
-
-        and:
-        fixed
-
-        and:
-        !mp3File.getId3v2Tag().hasArtwork()
+        field << EXTRANEOUS_FIELDS
 
     }
 
