@@ -1,6 +1,8 @@
 package org.venutolo.mp3.core
 
+import java.awt.image.BufferedImage
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
 
 interface Id3v2Tag extends Id3Tag {
 
@@ -23,14 +25,19 @@ interface Id3v2Tag extends Id3Tag {
     }
 
     default String getTagType() {
-        "ID3 v${getVersion()}"
+        "ID3v${getVersion()}"
     }
-
-    void setArtwork(@Nonnull final File file)
-
-    boolean hasArtwork()
 
     @Nonnull
     Version getVersion()
+
+    boolean hasArtwork()
+
+    void setArtwork(@Nonnull final File file)
+
+    @Nullable
+    BufferedImage getArtwork()
+
+    void deleteArtwork()
 
 }

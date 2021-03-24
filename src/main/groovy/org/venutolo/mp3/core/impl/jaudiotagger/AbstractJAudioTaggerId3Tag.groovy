@@ -14,43 +14,6 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
     private static final Pattern INTEGER_REGEX = ~/\d+/
 
     @Nonnull
-    protected abstract T getJatTag()
-
-    @Override
-    @Nonnull
-    String get(@Nonnull final Field field) {
-        requireNonNull(field, 'Field cannot be null')
-        def jatField = toJatField(field)
-        // This "all" values is just a check for a situation I don't think will
-        // happen, but I'd like to know if it does.
-        def allValues = getJatTag().getAll(jatField)
-        if (allValues.size() > 1) {
-            throw new IllegalStateException("${field} has multiple values: ${allValues.join(', ')}")
-        }
-        // Return the result of getFirst as in at least one case (RATING), the
-        // result from the first element of "all" values isn't what I want.
-        getJatTag().getFirst(jatField)
-    }
-
-    @Override
-    void set(@Nonnull final Field field, @Nonnull final String value) {
-        requireNonNull(field, 'Field cannot be null')
-        requireNonNull(value, 'Value cannot be null')
-        if (field.isNumeric && !value.isEmpty() && !(value ==~ INTEGER_REGEX)) {
-            throw new IllegalArgumentException("Cannot set ${field} to non-numeric value: ${value}")
-        }
-        def jatField = toJatField(field)
-        getJatTag().setField(jatField, value)
-    }
-
-    @Override
-    void delete(@Nonnull final Field field) {
-        requireNonNull(field, 'Field cannot be null')
-        def jatField = toJatField(field)
-        getJatTag().deleteField(jatField)
-    }
-
-    @Nonnull
     private static JatField toJatField(@Nonnull final Field field) {
         if (!FIELD_TO_FIELD_KEY_MAP.containsKey(field)) {
             throw new IllegalStateException("No mapping for: ${field}")
@@ -78,7 +41,6 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
         (Field.COMPOSER_SORT)                  : JatField.COMPOSER_SORT,
         (Field.CONDUCTOR)                      : JatField.CONDUCTOR,
         (Field.COUNTRY)                        : JatField.COUNTRY,
-        (Field.COVER_ART)                      : JatField.COVER_ART,
         (Field.DISC_NO)                        : JatField.DISC_NO,
         (Field.DISC_SUBTITLE)                  : JatField.DISC_SUBTITLE,
         (Field.DISC_TOTAL)                     : JatField.DISC_TOTAL,
@@ -134,5 +96,42 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
         (Field.URL_WIKIPEDIA_RELEASE_SITE)     : JatField.URL_WIKIPEDIA_RELEASE_SITE,
         (Field.YEAR)                           : JatField.YEAR
     ].asImmutable()
+
+    @Nonnull
+    protected abstract T getJatTag()
+
+    @Override
+    @Nonnull
+    String get(@Nonnull final Field field) {
+        requireNonNull(field, 'Field cannot be null')
+        def jatField = toJatField(field)
+        // This "all" values is just a check for a situation I don't think will
+        // happen, but I'd like to know if it does.
+        def allValues = getJatTag().getAll(jatField)
+        if (allValues.size() > 1) {
+            throw new IllegalStateException("${field} has multiple values: ${allValues.join(', ')}")
+        }
+        // Return the result of getFirst as in at least one case (RATING), the
+        // result from the first element of "all" values isn't what I want.
+        getJatTag().getFirst(jatField)
+    }
+
+    @Override
+    void set(@Nonnull final Field field, @Nonnull final String value) {
+        requireNonNull(field, 'Field cannot be null')
+        requireNonNull(value, 'Value cannot be null')
+        if (field.isNumeric && !value.isEmpty() && !(value ==~ INTEGER_REGEX)) {
+            throw new IllegalArgumentException("Cannot set ${field} to non-numeric value: ${value}")
+        }
+        def jatField = toJatField(field)
+        getJatTag().setField(jatField, value)
+    }
+
+    @Override
+    void delete(@Nonnull final Field field) {
+        requireNonNull(field, 'Field cannot be null')
+        def jatField = toJatField(field)
+        getJatTag().deleteField(jatField)
+    }
 
 }
