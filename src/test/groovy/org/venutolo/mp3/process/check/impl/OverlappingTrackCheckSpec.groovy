@@ -69,13 +69,14 @@ class OverlappingTrackCheckSpec extends Mp3Specification {
         setup:
         mp3Files.each { mp3File ->
             def tag = newId3v1Tag()
-            // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
+            tag.set(TRACK, '1')
             mp3File.setId3v1Tag(tag)
         }
 
         and:
         mp3Files.each { mp3File ->
             assert mp3File.hasId3v1Tag()
+            assert mp3File.getId3v1Tag().get(TRACK) == '1'
             assert !mp3File.hasId3v2Tag()
         }
 

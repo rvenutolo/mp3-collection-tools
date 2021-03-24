@@ -50,11 +50,11 @@ class TrackFieldsFixSpec extends Mp3Specification {
 
         setup:
         def tag = newId3v1Tag()
-        // NOTE: cannot actually set ID3v1 track values due to missing functionality in MP3 library
         mp3File.setId3v1Tag(tag)
 
         and:
         assert mp3File.hasId3v1Tag()
+        assert !mp3File.getId3v1Tag().get(TRACK)
         assert !mp3File.hasId3v2Tag()
 
         when:
