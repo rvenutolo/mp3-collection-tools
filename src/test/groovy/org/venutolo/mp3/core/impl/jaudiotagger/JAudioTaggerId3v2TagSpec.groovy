@@ -37,7 +37,7 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         }.flatten() as List<VersionAndField>
     }
 
-    static boolean compareImages(final BufferedImage img1, final BufferedImage img2) {
+    static boolean sameImages(final BufferedImage img1, final BufferedImage img2) {
         if (img1.getWidth() != img2.getWidth() || img1.getHeight() != img2.getHeight()) {
             return false
         }
@@ -348,28 +348,59 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
     }
 
-    def "#version sets/gets artwork"() {
+    def "#version sets/gets artwork from file"() {
 
         setup:
         def tag = new JAudioTaggerId3v2Tag(version)
         tag.setArtwork(JPG_FILE)
-        def bufferedImage = ImageIO.read(JPG_FILE)
+        def image = ImageIO.read(JPG_FILE)
 
         expect:
-        compareImages(tag.getArtwork(), bufferedImage)
+        sameImages(tag.getArtwork(), image)
 
         where:
         version << Version.values().toList()
 
     }
 
-    def "#version setting artwork to null throws NPE"() {
+    def "#version sets/gets artwork from image"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(version)
+        def image = ImageIO.read(JPG_FILE)
+        tag.setArtwork(image)
+
+        expect:
+        sameImages(tag.getArtwork(), image)
+
+        where:
+        version << Version.values().toList()
+
+    }
+
+    def "#version setting artwork to null file throws NPE"() {
 
         setup:
         def tag = new JAudioTaggerId3v2Tag(version)
 
         when:
-        tag.setArtwork(null)
+        tag.setArtwork(null as File)
+
+        then:
+        thrown(NullPointerException)
+
+        where:
+        version << Version.values().toList()
+
+    }
+
+    def "#version setting artwork to null image throws NPE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(version)
+
+        when:
+        tag.setArtwork(null as BufferedImage)
 
         then:
         thrown(NullPointerException)
@@ -434,6 +465,34 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
         where:
         version << Version.values().toList()
+
+    }
+
+    def "converts from #origVersion to #targetVersion"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(origVersion)
+        REQUIRED_FIELDS.each { field ->
+            tag.set(field, fieldVal(field))
+        }
+        tag.setArtwork(JPG_FILE)
+
+        when:
+        def convertedTag = tag.asVersion(targetVersion)
+
+        then:
+        convertedTag.version == targetVersion
+        convertedTag.populatedFields() == tag.populatedFields()
+        sameImages(convertedTag.getArtwork(), tag.getArtwork())
+
+        where:
+        origVersion || targetVersion
+        V2_2 || V2_3
+        V2_2 || V2_4
+        V2_3 || V2_2
+        V2_3 || V2_4
+        V2_4 || V2_2
+        V2_4 || V2_3
 
     }
 

@@ -33,11 +33,15 @@ interface Id3v2Tag extends Id3Tag {
 
     void setArtwork(@Nonnull final File file)
 
+    void setArtwork(@Nonnull final BufferedImage image)
+
     @Nullable
     BufferedImage getArtwork()
 
     boolean hasArtwork()
 
     void deleteArtwork()
+
+    Id3v2Tag asVersion(@Nonnull final Version version)
 
 }
