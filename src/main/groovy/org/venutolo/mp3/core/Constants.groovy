@@ -10,7 +10,7 @@ import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
 import java.util.regex.Pattern
 import org.venutolo.mp3.core.Id3v2Tag.Version
 
-class Constants {
+final class Constants {
 
     public static final Version ID3V2_TARGET_VERSION = V2_4
     public static final String ALBUM_IMAGE_FILENAME = 'Folder.jpg'
