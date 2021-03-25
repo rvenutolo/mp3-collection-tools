@@ -123,12 +123,9 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
         if (value.isEmpty()) {
             throw new IllegalArgumentException("${field} is empty string")
         }
-        if (field.isNumeric && !value.isEmpty() && !(value ==~ INTEGER_REGEX)) {
-            throw new IllegalArgumentException("Cannot set ${field} to non-numeric value: '${value}'")
-        }
         if (field.pattern && !field.pattern.matcher(value).matches()) {
             throw new IllegalArgumentException(
-                "Cannot set ${field} to value that does not match expected pattern: '${value}'"
+                "Cannot set ${field} to value that does not match expected pattern -- value: '${value}' pattern: ${field.pattern.pattern()}"
             )
         }
         def jatField = toJatField(field)

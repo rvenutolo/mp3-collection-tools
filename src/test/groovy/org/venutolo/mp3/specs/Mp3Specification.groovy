@@ -1,8 +1,8 @@
 package org.venutolo.mp3.specs
 
+import static org.venutolo.mp3.core.Constants.FOUR_DIGITS
+import static org.venutolo.mp3.core.Constants.POSITIVE_INTEGER
 import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
-import static org.venutolo.mp3.core.Field.ORIGINAL_YEAR
-import static org.venutolo.mp3.core.Field.YEAR
 import static org.venutolo.mp3.core.Id3v2Tag.Version
 
 import javax.annotation.Nonnull
@@ -51,26 +51,30 @@ class Mp3Specification extends Specification {
 
     @Nonnull
     protected static String fieldVal(@Nonnull final Field field) {
-        switch (field) {
-            case [YEAR, ORIGINAL_YEAR]:
-                return '2020'
-            case { it.isNumeric }:
-                return '1'
-            default:
-                return field.toString().toLowerCase()
+        if (!field.pattern) {
+            return field.toString().toLowerCase()
         }
+        if (field.pattern == FOUR_DIGITS) {
+            return '2000'
+        }
+        if (field.pattern == POSITIVE_INTEGER) {
+            return '1'
+        }
+        throw new IllegalStateException("expected pattern: ${field.pattern}")
     }
 
     @Nonnull
     protected static String fieldVal(@Nonnull final Field field, final int idx) {
-        switch (field) {
-            case [YEAR, ORIGINAL_YEAR]:
-                return (idx + 2020) as String
-            case { it.isNumeric }:
-                return (idx + 1) as String
-            default:
-                return "${field.toString().toLowerCase()}_${idx + 1}"
+        if (!field.pattern) {
+            return "${field.toString().toLowerCase()}_${idx + 1}"
         }
+        if (field.pattern == FOUR_DIGITS) {
+            return (idx + 2000) as String
+        }
+        if (field.pattern == POSITIVE_INTEGER) {
+            return (idx + 1) as String
+        }
+        throw new IllegalStateException("expected pattern: ${field.pattern}")
     }
 
 }
