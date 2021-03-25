@@ -334,21 +334,26 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
         and: 'equal to tag with same fields'
         tag == sameTag
+        tag.hashCode() == sameTag.hashCode()
 
         and: 'not equal to null'
         tag != null
 
         and: 'not equal to id3 tag'
         tag != id3v1Tag
+        tag.hashCode() != id3v1Tag.hashCode()
 
         and: 'not equal to other version id3v2 tags'
         otherId3v2Tags.every { otherTag -> tag != otherTag }
+        otherId3v2Tags.every { otherTag -> tag.hashCode() != otherTag.hashCode() }
 
         and: 'not equal to other v2.4 tag with populated fields'
         diffFieldTags.every { otherTag -> tag != otherTag }
+        diffFieldTags.every { otherTag -> tag.hashCode() != otherTag.hashCode() }
 
         and: 'not equal to other 2.4 tag with artwork'
         tag != diffArtworkTag
+        tag.hashCode() != diffArtworkTag.hashCode()
 
     }
 

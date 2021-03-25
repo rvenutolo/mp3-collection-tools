@@ -96,7 +96,9 @@ final class JAudioTaggerId3v2Tag extends AbstractJAudioTaggerId3Tag<JatAbstractI
 
     @Override
     int hashCode() {
-        Objects.hash(jatTag, version)
+        // Wrapped class does not implement hashCode().
+        // AbstractID3v2Tag::equals uses frameMap, so use that in hash.
+        Objects.hash(jatTag.frameMap, version)
     }
 
 }
