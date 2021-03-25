@@ -1,6 +1,8 @@
 package org.venutolo.mp3.core.impl.jaudiotagger
 
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
+import static org.venutolo.mp3.core.Field.ORIGINAL_YEAR
+import static org.venutolo.mp3.core.Field.YEAR
 import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_2
 import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_3
 import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
@@ -8,6 +10,7 @@ import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
 import groovy.transform.Immutable
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
+import org.apache.commons.lang3.RandomStringUtils
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag
 import org.venutolo.mp3.core.Field
 import org.venutolo.mp3.core.Id3v2Tag.Version
@@ -17,7 +20,6 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
     @Immutable
     static class VersionAndField {
-
         Version version
         Field field
     }
@@ -97,6 +99,23 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
     }
 
+    def "#versionAndField.version sets/gets #versionAndField.field (random string)"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
+        def fieldValue = RandomStringUtils.randomAlphanumeric(32)
+        tag.set(versionAndField.field, fieldValue)
+
+        expect:
+        tag.get(versionAndField.field) == fieldValue
+
+        where:
+        versionAndField << allCombinations(Field.values().findAll { field ->
+            !field.isNumeric && field != YEAR && field != ORIGINAL_YEAR
+        })
+
+    }
+
     def "#version set null field throws NPE"() {
 
         setup:
@@ -161,19 +180,51 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
     }
 
-    def "#versionAndField.version setting #versionAndField.field to non-numeric string does not throw IAE"() {
+    def "#versionAndField.version setting #versionAndField.field to numeric string does not throw IAE"() {
 
         setup:
         def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         when:
-        tag.set(versionAndField.field, 'x')
+        tag.set(versionAndField.field, '1234')
 
         then:
         noExceptionThrown()
 
         where:
-        versionAndField << allCombinations(Field.values().findAll { field -> !field.isNumeric })
+        versionAndField << allCombinations(Field.values().findAll { field -> field.isNumeric })
+
+    }
+
+    def "#versionAndField.version setting #versionAndField.field to non-four-digit string throws IAE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
+
+        when:
+        tag.set(versionAndField.field, 'year')
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        versionAndField << allCombinations([YEAR, ORIGINAL_YEAR])
+
+    }
+
+    def "#versionAndField.version setting #versionAndField.field to four-digit string does not throw IAE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
+
+        when:
+        tag.set(versionAndField.field, '1234')
+
+        then:
+        noExceptionThrown()
+
+        where:
+        versionAndField << allCombinations([YEAR, ORIGINAL_YEAR])
 
     }
 

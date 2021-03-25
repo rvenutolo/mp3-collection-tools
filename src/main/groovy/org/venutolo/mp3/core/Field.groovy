@@ -1,6 +1,10 @@
 package org.venutolo.mp3.core
 
+import static org.venutolo.mp3.core.Constants.FOUR_DIGITS
+
+import java.util.regex.Pattern
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
 
 enum Field {
 
@@ -57,7 +61,7 @@ enum Field {
     ORIGINAL_ALBUM('original album', false, false, false),
     ORIGINAL_ARTIST('original artist', false, false, false),
     ORIGINAL_LYRICIST('original lyricist', false, false, false),
-    ORIGINAL_YEAR('original year', false, false, false),
+    ORIGINAL_YEAR('original year', false, false, false, FOUR_DIGITS),
     PRODUCER('producer', false, false, false),
     RATING('rating', false, true, false),
     RECORD_LABEL('record label', false, false, false),
@@ -76,19 +80,26 @@ enum Field {
     URL_OFFICIAL_RELEASE_SITE('official release site', false, false, false),
     URL_WIKIPEDIA_ARTIST_SITE('Wikipedia artist site', false, false, false),
     URL_WIKIPEDIA_RELEASE_SITE('Wikipedia release site', false, false, false),
-    YEAR('year', true, false, true)
+    YEAR('year', true, false, true, FOUR_DIGITS)
 
-    @Nonnull
-    private final String desc
+    @Nonnull private final String desc
     final boolean isRequired
     final boolean isNumeric
     final boolean isId3
+    @Nullable final Pattern pattern
 
-    private Field(@Nonnull final String desc, final boolean isRequired, final boolean isNumeric, final boolean isId3) {
+    private Field(
+        @Nonnull final String desc,
+        final boolean isRequired,
+        final boolean isNumeric,
+        final boolean isId3,
+        final Pattern pattern = null
+    ) {
         this.desc = desc
         this.isRequired = isRequired
         this.isNumeric = isNumeric
         this.isId3 = isId3
+        this.pattern = pattern
     }
 
     String toString() {
