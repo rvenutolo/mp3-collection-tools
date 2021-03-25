@@ -22,7 +22,8 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         Field field
     }
 
-    // Can use multi-variable data pipes, but types are lost along the way
+    // Can use multi-variable data pipes in test, but types for those variable are lost.
+    // So use this so types aren't lost and IDE won't warn on wrong types on method calls.
     static List<VersionAndField> allCombinations(
         final Collection<Field> fields = Field.values(),
         final Collection<Version> versions = Version.values()
