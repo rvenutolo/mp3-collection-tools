@@ -31,12 +31,12 @@ interface Id3v2Tag extends Id3Tag {
     @Nonnull
     Version getVersion()
 
-    boolean hasArtwork()
-
     void setArtwork(@Nonnull final File file)
 
     @Nullable
     BufferedImage getArtwork()
+
+    boolean hasArtwork()
 
     void deleteArtwork()
 

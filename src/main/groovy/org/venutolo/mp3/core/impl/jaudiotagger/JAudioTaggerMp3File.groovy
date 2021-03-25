@@ -10,7 +10,7 @@ import org.venutolo.mp3.core.Id3v2Tag
 import org.venutolo.mp3.core.Mp3File
 
 // TODO unit test
-class JAudioTaggerMp3File implements Mp3File {
+final class JAudioTaggerMp3File implements Mp3File {
 
     @Nonnull private final JATMp3File jatMp3File
 

@@ -9,7 +9,7 @@ import org.venutolo.mp3.core.Field
 import org.venutolo.mp3.core.Id3v1Tag
 
 // TODO unit test
-class JAudioTaggerId3v1Tag extends AbstractJAudioTaggerId3Tag<JatId3v1Tag> implements Id3v1Tag {
+final class JAudioTaggerId3v1Tag extends AbstractJAudioTaggerId3Tag<JatId3v1Tag> implements Id3v1Tag {
 
     @Nonnull private final JatId3v1Tag jatTag
 
@@ -33,6 +33,26 @@ class JAudioTaggerId3v1Tag extends AbstractJAudioTaggerId3Tag<JatId3v1Tag> imple
     String get(@Nonnull final Field field) {
         def fieldValue = super.get(field)
         (field == Field.TRACK && fieldValue == '0') ? '' : fieldValue
+    }
+
+    @Override
+    boolean equals(o) {
+        if (this.is(o)) {
+            return true
+        }
+        if (o == null || getClass() != o.class) {
+            return false
+        }
+        def that = (JAudioTaggerId3v1Tag) o
+        if (jatTag != that.jatTag) {
+            return false
+        }
+        return true
+    }
+
+    @Override
+    int hashCode() {
+        Objects.hash(jatTag)
     }
 
 }

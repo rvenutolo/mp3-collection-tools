@@ -7,7 +7,7 @@ import org.venutolo.mp3.core.Id3v2Tag
 import org.venutolo.mp3.core.Id3v2Tag.Version
 import org.venutolo.mp3.core.Mp3File
 
-class JAudioTaggerCoreTypesFactory implements CoreTypesFactory {
+final class JAudioTaggerCoreTypesFactory implements CoreTypesFactory {
 
     @Nonnull
     Mp3File newMp3File(@Nonnull final File file) {
