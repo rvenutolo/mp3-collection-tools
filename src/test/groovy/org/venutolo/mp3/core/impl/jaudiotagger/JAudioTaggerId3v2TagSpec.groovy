@@ -68,6 +68,83 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
     }
 
+    def "set null field throws NPE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.set(null, '1')
+
+        then:
+        thrown(NullPointerException)
+
+    }
+
+    def "setting #field to null throws NPE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.set(field, null)
+
+        then:
+        thrown(NullPointerException)
+
+        where:
+        field << Field.values().toList()
+
+    }
+
+    def "setting #field to empty string throws IAE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.set(field, '')
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        field << Field.values().toList()
+
+    }
+
+    def "setting #field to non-numeric string throws IAE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.set(field, 'x')
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        field << Field.values().findAll {field -> field.isNumeric }.toList()
+
+    }
+
+    def "setting #field to non-numeric string does not throw IAE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.set(field, 'x')
+
+        then:
+        noExceptionThrown()
+
+        where:
+        field << Field.values().findAll {field -> !field.isNumeric }.toList()
+
+    }
+
     def "get #field returns empty string when not set"() {
 
         setup:
@@ -78,6 +155,19 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
         where:
         field << Field.values().toList()
+
+    }
+
+    def "get null field throws NPE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.get(null)
+
+        then:
+        thrown(NullPointerException)
 
     }
 
@@ -161,6 +251,22 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
         expect:
         compareImages(tag.getArtwork(), bufferedImage)
+
+    }
+
+    def "setting artwork to null throws NPE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(V2_4)
+
+        when:
+        tag.setArtwork(null)
+
+        then:
+        thrown(NullPointerException)
+
+        where:
+        field << Field.values().toList()
 
     }
 

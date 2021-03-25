@@ -120,6 +120,9 @@ abstract class AbstractJAudioTaggerId3Tag<T extends JatTag> implements Id3Tag {
     void set(@Nonnull final Field field, @Nonnull final String value) {
         requireNonNull(field, 'Field cannot be null')
         requireNonNull(value, 'Value cannot be null')
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("${field} is empty string")
+        }
         if (field.isNumeric && !value.isEmpty() && !(value ==~ INTEGER_REGEX)) {
             throw new IllegalArgumentException("Cannot set ${field} to non-numeric value: ${value}")
         }
