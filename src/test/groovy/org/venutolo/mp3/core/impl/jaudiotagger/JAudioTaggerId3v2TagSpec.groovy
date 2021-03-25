@@ -1,8 +1,11 @@
 package org.venutolo.mp3.core.impl.jaudiotagger
 
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
+import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_2
+import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_3
 import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
 
+import groovy.transform.Immutable
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag
@@ -11,6 +14,25 @@ import org.venutolo.mp3.core.Id3v2Tag.Version
 import org.venutolo.mp3.specs.Mp3Specification
 
 class JAudioTaggerId3v2TagSpec extends Mp3Specification {
+
+    @Immutable
+    static class VersionAndField {
+
+        Version version
+        Field field
+    }
+
+    // Can use multi-variable data pipes, but types are lost along the way
+    static List<VersionAndField> allCombinations(
+        final Collection<Field> fields = Field.values(),
+        final Collection<Version> versions = Version.values()
+    ) {
+        versions.collect { version ->
+            fields.collect { field ->
+                new VersionAndField(version, field)
+            }
+        }.flatten() as List<VersionAndField>
+    }
 
     static boolean compareImages(final BufferedImage img1, final BufferedImage img2) {
         if (img1.getWidth() != img2.getWidth() || img1.getHeight() != img2.getHeight()) {
@@ -43,35 +65,41 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 
     }
 
-    def "tag type is v2.4"() {
+    def "#version tag type is '#expected'"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         expect:
-        tag.getTagType() == 'ID3v2.4'
-
-    }
-
-    def "sets/gets #field"() {
-
-        setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
-        def fieldValue = fieldVal(field)
-        tag.set(field, fieldValue)
-
-        expect:
-        tag.get(field) == fieldValue
+        tag.getTagType() == expected
 
         where:
-        field << Field.values().toList()
+        version || expected
+        V2_2    || 'ID3v2.2'
+        V2_3    || 'ID3v2.3'
+        V2_4    || 'ID3v2.4'
 
     }
 
-    def "set null field throws NPE"() {
+    def "#versionAndField.version sets/gets #versionAndField.field"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
+        def fieldValue = fieldVal(versionAndField.field)
+        tag.set(versionAndField.field, fieldValue)
+
+        expect:
+        tag.get(versionAndField.field) == fieldValue
+
+        where:
+        versionAndField << allCombinations()
+
+    }
+
+    def "#version set null field throws NPE"() {
+
+        setup:
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         when:
         tag.set(null, '1')
@@ -79,89 +107,92 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         then:
         thrown(NullPointerException)
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "setting #field to null throws NPE"() {
+    def "#versionAndField.version setting #versionAndField.field to null throws NPE"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         when:
-        tag.set(field, null)
+        tag.set(versionAndField.field, null)
 
         then:
         thrown(NullPointerException)
 
         where:
-        field << Field.values().toList()
+        versionAndField << allCombinations()
 
     }
 
-    def "setting #field to empty string throws IAE"() {
+    def "#versionAndField.version setting #versionAndField.field to empty string throws IAE"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         when:
-        tag.set(field, '')
+        tag.set(versionAndField.field, '')
 
         then:
         thrown(IllegalArgumentException)
 
         where:
-        field << Field.values().toList()
+        versionAndField << allCombinations()
 
     }
 
-    def "setting #field to non-numeric string throws IAE"() {
+    def "#versionAndField.version setting #versionAndField.field to non-numeric string throws IAE"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         when:
-        tag.set(field, 'x')
+        tag.set(versionAndField.field, 'x')
 
         then:
         thrown(IllegalArgumentException)
 
         where:
-        field << Field.values().findAll {field -> field.isNumeric }.toList()
+        versionAndField << allCombinations(Field.values().findAll { field -> field.isNumeric })
 
     }
 
-    def "setting #field to non-numeric string does not throw IAE"() {
+    def "#versionAndField.version setting #versionAndField.field to non-numeric string does not throw IAE"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         when:
-        tag.set(field, 'x')
+        tag.set(versionAndField.field, 'x')
 
         then:
         noExceptionThrown()
 
         where:
-        field << Field.values().findAll {field -> !field.isNumeric }.toList()
+        versionAndField << allCombinations(Field.values().findAll { field -> !field.isNumeric })
 
     }
 
-    def "get #field returns empty string when not set"() {
+    def "#versionAndField.version get #versionAndField.field returns empty string when not set"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         expect:
-        tag.get(field) == ''
+        tag.get(versionAndField.field) == ''
 
         where:
-        field << Field.values().toList()
+        versionAndField << allCombinations()
 
     }
 
-    def "get null field throws NPE"() {
+    def "#version get null field throws NPE"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         when:
         tag.get(null)
@@ -169,60 +200,63 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         then:
         thrown(NullPointerException)
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "has #field returns false for non-set field"() {
+    def "#versionAndField.version has #versionAndField.field returns false for non-set field"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
 
         expect:
-        !tag.has(field)
+        !tag.has(versionAndField.field)
 
         where:
-        field << Field.values().toList()
+        versionAndField << allCombinations()
 
     }
 
-    def "has #field returns true for set field"() {
+    def "#versionAndField.version has #versionAndField.field returns true for set field"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
-        tag.set(field, fieldVal(field))
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
+        tag.set(versionAndField.field, fieldVal(versionAndField.field))
 
         expect:
-        tag.has(field)
+        tag.has(versionAndField.field)
 
         where:
-        field << Field.values().toList()
+        versionAndField << allCombinations()
 
     }
 
-    def "deletes #field"() {
+    def "#versionAndField.version deletes #versionAndField.field"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
-        tag.set(field, fieldVal(field))
+        def tag = new JAudioTaggerId3v2Tag(versionAndField.version)
+        tag.set(versionAndField.field, fieldVal(versionAndField.field))
 
         when:
-        tag.delete(field)
+        tag.delete(versionAndField.field)
 
         then:
-        !tag.has(field)
-        !tag.get(field)
+        !tag.has(versionAndField.field)
+        !tag.get(versionAndField.field)
 
         where:
-        field << Field.values().toList()
+        versionAndField << allCombinations()
 
     }
 
-    def "returns populated fields"() {
+    def "#version returns populated fields"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
         def expectedMap = [:]
-        REQUIRED_FIELDS.eachWithIndex { field, idx ->
-            def fieldValue = fieldVal(field, idx)
+        REQUIRED_FIELDS.each { field ->
+            def fieldValue = fieldVal(field)
             tag.set(field, fieldValue)
             expectedMap[field] = fieldValue
         }
@@ -230,34 +264,43 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         expect:
         tag.populatedFields() == expectedMap
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "returns expected version"() {
+    def "#version returns expected version"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         expect:
-        tag.getVersion() == V2_4
+        tag.getVersion() == version
+
+        where:
+        version << Version.values().toList()
 
     }
 
-    def "sets/gets artwork"() {
+    def "#version sets/gets artwork"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
         tag.setArtwork(JPG_FILE)
         def bufferedImage = ImageIO.read(JPG_FILE)
 
         expect:
         compareImages(tag.getArtwork(), bufferedImage)
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "setting artwork to null throws NPE"() {
+    def "#version setting artwork to null throws NPE"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         when:
         tag.setArtwork(null)
@@ -266,45 +309,54 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         thrown(NullPointerException)
 
         where:
-        field << Field.values().toList()
+        version << Version.values().toList()
 
     }
 
-    def "get artwork returns null when not set"() {
+    def "#version get artwork returns null when not set"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         expect:
         tag.getArtwork() == null
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "has artwork returns false for non-set artwork"() {
+    def "#version has artwork returns false for non-set artwork"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
 
         expect:
         !tag.hasArtwork()
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "has artwork returns true for set field"() {
+    def "#version has artwork returns true for set field"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
         tag.setArtwork(JPG_FILE)
 
         expect:
         tag.hasArtwork()
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "deletes artwork"() {
+    def "#version deletes artwork"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
         tag.setArtwork(JPG_FILE)
 
         when:
@@ -314,20 +366,23 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         !tag.hasArtwork()
         !tag.getArtwork()
 
+        where:
+        version << Version.values().toList()
+
     }
 
-    def "verify equals/hashCode"() {
+    def "#version verify equals/hashCode"() {
 
         setup:
-        def tag = new JAudioTaggerId3v2Tag(V2_4)
-        def sameTag = new JAudioTaggerId3v2Tag(V2_4)
+        def tag = new JAudioTaggerId3v2Tag(version)
+        def sameTag = new JAudioTaggerId3v2Tag(version)
         def id3v1Tag = new JAudioTaggerId3v1Tag()
         def otherId3v2Tags = Version.values()
-            .findAll { version -> version != V2_4 }
-            .collect { version -> new JAudioTaggerId3v2Tag(version) }
+            .findAll { other -> version != other }
+            .collect { other -> new JAudioTaggerId3v2Tag(other) }
         def diffFieldTags = Field.values()
-            .collect { field -> new JAudioTaggerId3v2Tag(V2_4).tap { set(field, fieldVal(field)) } }
-        def diffArtworkTag = new JAudioTaggerId3v2Tag(V2_4).tap { setArtwork(JPG_FILE) }
+            .collect { field -> new JAudioTaggerId3v2Tag(version).tap { set(field, fieldVal(field)) } }
+        def diffArtworkTag = new JAudioTaggerId3v2Tag(version).tap { setArtwork(JPG_FILE) }
 
         expect: 'equal to itself'
         tag == tag
@@ -354,6 +409,9 @@ class JAudioTaggerId3v2TagSpec extends Mp3Specification {
         and: 'not equal to other 2.4 tag with artwork'
         tag != diffArtworkTag
         tag.hashCode() != diffArtworkTag.hashCode()
+
+        where:
+        version << Version.values().toList()
 
     }
 
