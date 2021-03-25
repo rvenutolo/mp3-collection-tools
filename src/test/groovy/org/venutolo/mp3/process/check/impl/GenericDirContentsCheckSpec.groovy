@@ -1,7 +1,7 @@
 package org.venutolo.mp3.process.check.impl
 
-import org.venutolo.mp3.specs.Mp3Specification
-import org.venutolo.mp3.specs.TempDirFileCopyUtil
+import org.venutolo.mp3.Mp3Specification
+import org.venutolo.mp3.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class GenericDirContentsCheckSpec extends Mp3Specification {

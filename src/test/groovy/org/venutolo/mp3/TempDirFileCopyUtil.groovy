@@ -1,4 +1,4 @@
-package org.venutolo.mp3.specs
+package org.venutolo.mp3
 
 import static java.util.Objects.requireNonNull
 

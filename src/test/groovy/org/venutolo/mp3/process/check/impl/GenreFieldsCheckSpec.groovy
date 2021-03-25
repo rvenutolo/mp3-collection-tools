@@ -3,7 +3,7 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.core.Constants.ALLOWED_GENRES
 import static org.venutolo.mp3.core.Field.GENRE
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class GenreFieldsCheckSpec extends Mp3Specification {
 

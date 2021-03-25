@@ -4,7 +4,7 @@ import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_2
 import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_3
 import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class TagTypeCheckSpec extends Mp3Specification {
 

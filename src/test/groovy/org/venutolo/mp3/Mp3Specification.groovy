@@ -1,4 +1,4 @@
-package org.venutolo.mp3.specs
+package org.venutolo.mp3
 
 import static org.venutolo.mp3.core.Constants.FOUR_DIGITS
 import static org.venutolo.mp3.core.Constants.POSITIVE_INTEGER

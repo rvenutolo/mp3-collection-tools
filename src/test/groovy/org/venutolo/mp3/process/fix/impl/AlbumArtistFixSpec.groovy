@@ -15,7 +15,7 @@ import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.ArtistConditi
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.ArtistCondition.ARTIST_NON_UNIFORM
 import static org.venutolo.mp3.process.fix.impl.AlbumArtistFixSpec.ArtistCondition.ARTIST_UNIFORM
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class AlbumArtistFixSpec extends Mp3Specification {
 

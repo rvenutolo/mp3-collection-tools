@@ -4,7 +4,7 @@ import static org.venutolo.mp3.core.Constants.EXTRANEOUS_FIELDS
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
 import static org.venutolo.mp3.core.Field.COMMENT
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class ExtraneousFieldsCheckSpec extends Mp3Specification {
 

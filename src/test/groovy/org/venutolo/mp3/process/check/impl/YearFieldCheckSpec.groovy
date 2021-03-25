@@ -2,7 +2,7 @@ package org.venutolo.mp3.process.check.impl
 
 import static org.venutolo.mp3.core.Field.YEAR
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class YearFieldCheckSpec extends Mp3Specification {
 

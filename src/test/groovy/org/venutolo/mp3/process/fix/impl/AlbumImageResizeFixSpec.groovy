@@ -4,8 +4,8 @@ import static org.venutolo.mp3.core.Constants.ALBUM_IMAGE_FILENAME
 import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 import static org.venutolo.mp3.process.util.ImageUtil.readImage
 
-import org.venutolo.mp3.specs.Mp3Specification
-import org.venutolo.mp3.specs.TempDirFileCopyUtil
+import org.venutolo.mp3.Mp3Specification
+import org.venutolo.mp3.TempDirFileCopyUtil
 import spock.lang.TempDir
 
 class AlbumImageResizeFixSpec extends Mp3Specification {

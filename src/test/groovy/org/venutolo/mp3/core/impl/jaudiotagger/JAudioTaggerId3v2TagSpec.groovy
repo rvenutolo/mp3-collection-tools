@@ -14,7 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag
 import org.venutolo.mp3.core.Field
 import org.venutolo.mp3.core.Id3v2Tag.Version
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class JAudioTaggerId3v2TagSpec extends Mp3Specification {
 

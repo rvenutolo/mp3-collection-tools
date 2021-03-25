@@ -3,7 +3,7 @@ package org.venutolo.mp3.process.check.impl
 import static org.venutolo.mp3.core.Constants.SAME_VALUE_FIELDS
 import static org.venutolo.mp3.core.Field.ALBUM
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class SameFieldValueCheckSpec extends Mp3Specification {
 

@@ -2,7 +2,7 @@ package org.venutolo.mp3.process.check.impl
 
 import static org.venutolo.mp3.core.Constants.REQUIRED_FIELDS
 
-import org.venutolo.mp3.specs.Mp3Specification
+import org.venutolo.mp3.Mp3Specification
 
 class RequiredFieldsCheckSpec extends Mp3Specification {
 
