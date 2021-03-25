@@ -10,7 +10,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractMultipleMp3FilesFix
 
 @Slf4j
-class AlbumArtistFix extends AbstractMultipleMp3FilesFix {
+final class AlbumArtistFix extends AbstractMultipleMp3FilesFix {
 
     AlbumArtistFix(@Nonnull final Output output) {
         super(log, output, true)

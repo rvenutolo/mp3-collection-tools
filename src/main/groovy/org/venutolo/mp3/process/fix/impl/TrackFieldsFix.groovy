@@ -11,7 +11,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractMp3FileFix
 
 @Slf4j
-class TrackFieldsFix extends AbstractMp3FileFix {
+final class TrackFieldsFix extends AbstractMp3FileFix {
 
     private static final Pattern ZERO_PADDING = ~$/^0+(?!$)/$
 

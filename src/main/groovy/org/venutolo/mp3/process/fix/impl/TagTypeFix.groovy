@@ -9,7 +9,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractMp3FileFix
 
 @Slf4j
-class TagTypeFix extends AbstractMp3FileFix {
+final class TagTypeFix extends AbstractMp3FileFix {
 
     TagTypeFix(@Nonnull final Output output) {
         super(log, output, false)

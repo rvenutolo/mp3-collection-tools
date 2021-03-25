@@ -14,7 +14,7 @@ import org.venutolo.mp3.process.fix.AbstractDirFix
 import org.venutolo.mp3.process.util.ImageUtil
 
 @Slf4j
-class AlbumImageResizeFix extends AbstractDirFix {
+final class AlbumImageResizeFix extends AbstractDirFix {
 
     private static final float SQUARE_TOLERANCE = 0.98f
 

@@ -9,7 +9,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractMp3FileFix
 
 @Slf4j
-class ExtraneousFieldFix extends AbstractMp3FileFix {
+final class ExtraneousFieldFix extends AbstractMp3FileFix {
 
     ExtraneousFieldFix(@Nonnull final Output output) {
         super(log, output, true)

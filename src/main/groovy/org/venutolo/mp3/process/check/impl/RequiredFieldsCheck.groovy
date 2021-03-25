@@ -9,7 +9,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMp3FileCheck
 
 @Slf4j
-class RequiredFieldsCheck extends AbstractMp3FileCheck {
+final class RequiredFieldsCheck extends AbstractMp3FileCheck {
 
     RequiredFieldsCheck(@Nonnull final Output output) {
         super(log, output, true)

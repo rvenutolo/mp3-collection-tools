@@ -9,7 +9,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMp3FileCheck
 
 @Slf4j
-class TagTypeCheck extends AbstractMp3FileCheck {
+final class TagTypeCheck extends AbstractMp3FileCheck {
 
     TagTypeCheck(@Nonnull final Output output) {
         super(log, output, false)

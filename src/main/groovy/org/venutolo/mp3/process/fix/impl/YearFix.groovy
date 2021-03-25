@@ -10,7 +10,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractMp3FileFix
 
 @Slf4j
-class YearFix extends AbstractMp3FileFix {
+final class YearFix extends AbstractMp3FileFix {
 
     YearFix(@Nonnull final Output output) {
         super(log, output, true)

@@ -9,7 +9,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMultipleMp3FilesCheck
 
 @Slf4j
-class OverlappingTrackCheck extends AbstractMultipleMp3FilesCheck {
+final class OverlappingTrackCheck extends AbstractMultipleMp3FilesCheck {
 
     OverlappingTrackCheck(@Nonnull final Output output) {
         super(log, output, true)

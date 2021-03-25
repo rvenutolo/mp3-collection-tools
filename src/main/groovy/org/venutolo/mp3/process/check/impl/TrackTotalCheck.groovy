@@ -10,7 +10,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractMultipleMp3FilesCheck
 
 @Slf4j
-class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
+final class TrackTotalCheck extends AbstractMultipleMp3FilesCheck {
 
     TrackTotalCheck(@Nonnull final Output output) {
         super(log, output, true)

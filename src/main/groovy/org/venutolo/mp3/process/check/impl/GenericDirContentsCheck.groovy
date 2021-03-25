@@ -6,7 +6,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractDirCheck
 
 @Slf4j
-class GenericDirContentsCheck extends AbstractDirCheck {
+final class GenericDirContentsCheck extends AbstractDirCheck {
 
     GenericDirContentsCheck(@Nonnull final Output output) {
         super(log, output, false)

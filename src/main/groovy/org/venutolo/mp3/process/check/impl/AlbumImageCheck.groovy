@@ -12,7 +12,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.check.AbstractDirCheck
 
 @Slf4j
-class AlbumImageCheck extends AbstractDirCheck {
+final class AlbumImageCheck extends AbstractDirCheck {
 
     AlbumImageCheck(@Nonnull final Output output) {
         super(log, output, true)

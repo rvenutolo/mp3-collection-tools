@@ -12,7 +12,7 @@ import org.venutolo.mp3.core.Output
 import org.venutolo.mp3.process.fix.AbstractDirFix
 
 @Slf4j
-class AlbumImageFormatFix extends AbstractDirFix {
+final class AlbumImageFormatFix extends AbstractDirFix {
 
     AlbumImageFormatFix(@Nonnull final Output output) {
         super(log, output, false)
