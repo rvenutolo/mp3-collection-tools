@@ -28,7 +28,7 @@ final class TagTypeFix extends AbstractMp3FileFix {
             final def v2Version = mp3File.getId3v2Tag().getVersion()
             if (v2Version != ID3V2_TARGET_VERSION) {
                 log.debug("Converting tag to ID3v{}: {}", ID3V2_TARGET_VERSION, mp3File.getPath())
-                mp3File.convertId3v2VersionTo24()
+                mp3File.setId3v2Tag(mp3File.getId3v2Tag().asVersion(ID3V2_TARGET_VERSION))
                 output.write(mp3File, "Converted to ID3v${ID3V2_TARGET_VERSION} tag")
                 fixed = true
             }

@@ -35,9 +35,6 @@ interface Mp3File {
         getId3v2Tag()
     }
 
-    // TODO take in target version?
-    void convertId3v2VersionTo24()
-
     @Override
     default String toString() {
         "MP3 [" +

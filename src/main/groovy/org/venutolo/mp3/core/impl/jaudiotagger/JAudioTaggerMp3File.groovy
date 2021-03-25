@@ -54,10 +54,4 @@ final class JAudioTaggerMp3File implements Mp3File {
         jatMp3File.setID3v2Tag(((JAudioTaggerId3v2Tag)tag).getJatTag())
     }
 
-    @Override
-    void convertId3v2VersionTo24() {
-        // TODO is there a better way to convert tag versions?
-        jatMp3File.setID3v2Tag(jatMp3File.getID3v2TagAsv24())
-    }
-
 }
