@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import org.jaudiotagger.tag.id3.ID3v11Tag
+import org.jaudiotagger.tag.id3.ID3v11Tag as JatId3v11Tag
 import org.jaudiotagger.audio.mp3.MP3File as JATMp3File
 import org.venutolo.mp3.core.Id3v1Tag
 import org.venutolo.mp3.core.Id3v2Tag
@@ -17,6 +19,13 @@ final class JAudioTaggerMp3File implements Mp3File {
     JAudioTaggerMp3File(@Nonnull final File file) {
         requireNonNull(file, 'File cannot be null')
         this.jatMp3File = new JATMp3File(file)
+        if (jatMp3File.hasID3v1Tag()) {
+            // ensure that id3 tag is the 'v11' version
+            def id3Tag = jatMp3File.getID3v1Tag()
+            if (!(id3Tag instanceof JatId3v11Tag)) {
+                jatMp3File.setID3v1Tag(new ID3v11Tag(id3Tag))
+            }
+        }
     }
 
     @Nonnull
@@ -28,7 +37,7 @@ final class JAudioTaggerMp3File implements Mp3File {
     @Nullable
     @Override
     Id3v1Tag getId3v1Tag() {
-        jatMp3File.hasID3v1Tag() ? new JAudioTaggerId3v1Tag(jatMp3File.getID3v1Tag()) : null
+        jatMp3File.hasID3v1Tag() ? new JAudioTaggerId3v1Tag(jatMp3File.getID3v1Tag() as JatId3v11Tag) : null
     }
 
     @Override

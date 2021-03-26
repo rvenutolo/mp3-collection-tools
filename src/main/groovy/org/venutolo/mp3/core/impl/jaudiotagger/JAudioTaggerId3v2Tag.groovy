@@ -20,7 +20,6 @@ import org.jaudiotagger.tag.id3.ID3v24Tag as JatId3v24Tag
 import org.jaudiotagger.tag.images.ArtworkFactory
 import org.venutolo.mp3.core.Id3v2Tag
 
-// TODO unit test
 final class JAudioTaggerId3v2Tag extends AbstractJAudioTaggerId3Tag<JatAbstractId3v2Tag> implements Id3v2Tag {
 
     private static final Map<Version, Class<? extends JatAbstractId3v2Tag>> VERSION_TO_CLASS_MAP = [
