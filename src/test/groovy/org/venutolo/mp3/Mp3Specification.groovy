@@ -4,20 +4,18 @@ import static org.venutolo.mp3.core.Constants.FOUR_DIGITS
 import static org.venutolo.mp3.core.Constants.POSITIVE_INTEGER
 import static org.venutolo.mp3.core.Constants.TARGET_PIXELS
 import static org.venutolo.mp3.core.Id3v2Tag.Version
+import static org.venutolo.mp3.core.Id3v2Tag.Version.V2_4
 
 import javax.annotation.Nonnull
-import org.venutolo.mp3.core.CoreTypesFactory
 import org.venutolo.mp3.core.Field
 import org.venutolo.mp3.core.Id3v1Tag
 import org.venutolo.mp3.core.Id3v2Tag
 import org.venutolo.mp3.core.Mp3File
 import org.venutolo.mp3.core.Output
-import org.venutolo.mp3.core.impl.jaudiotagger.JAudioTaggerCoreTypesFactory
 import spock.lang.Specification
 
 class Mp3Specification extends Specification {
 
-    private static final CoreTypesFactory CORE_TYPES_FACTORY = new JAudioTaggerCoreTypesFactory()
 
     // TODO make sure all tests work regardless of value
     protected static final int NUM_MP3_FILES = 4
@@ -31,22 +29,22 @@ class Mp3Specification extends Specification {
 
     @Nonnull
     protected static Mp3File newMp3File() {
-        CORE_TYPES_FACTORY.newMp3File(new File(RESOURCE_DIR, 'test.mp3'))
+        new TestMp3File(new File(RESOURCE_DIR, 'test.mp3'))
     }
 
     @Nonnull
     protected static Id3v1Tag newId3v1Tag() {
-        CORE_TYPES_FACTORY.newId3v1Tag()
+        new TestId3v1Tag()
     }
 
     @Nonnull
     protected static Id3v2Tag newId3v2Tag() {
-        CORE_TYPES_FACTORY.newId3v2Tag()
+        new TestId3v2Tag(V2_4)
     }
 
     @Nonnull
     protected static Id3v2Tag newId3v2Tag(@Nonnull final Version version) {
-        CORE_TYPES_FACTORY.newId3v2Tag(version)
+        new TestId3v2Tag(version)
     }
 
     @Nonnull
